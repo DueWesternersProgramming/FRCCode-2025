@@ -21,14 +21,12 @@ import frc.robot.commands.drive.RunAtVelocity;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.drive.autoalign.AlignWithPose;
 import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.subsystems.example.ExampleSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
 public class RobotContainer {
 
     public final DriveSubsystem driveSubsystem = new DriveSubsystem();
     public final VisionSubsystem visionSubsystem = new VisionSubsystem();
-    public final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
     private final Joystick driveJoystick = new Joystick(RobotConstants.PortConstants.Controller.DRIVE_JOYSTICK);
     private final Joystick operatorJoystick = new Joystick(RobotConstants.PortConstants.Controller.OPERATOR_JOYSTICK);
