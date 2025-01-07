@@ -3,7 +3,7 @@ package frc.robot.subsystems.drive;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import com.kauailabs.navx.frc.AHRS;
+import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -116,7 +116,8 @@ public class DriveSubsystem extends SubsystemBase {
                         RobotConstants.PortConstants.CAN.REAR_RIGHT_TURNING,
                         RobotConstants.PortConstants.CAN.REAR_RIGHT_STEERING, false);
 
-                m_gyro = new AHRS(Port.kMXP);
+                m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
+
                 m_gyro.reset();
                 resetEncoders();
 
