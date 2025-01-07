@@ -7,6 +7,7 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -21,11 +22,14 @@ import frc.robot.commands.drive.RunAtVelocity;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.drive.autoalign.AlignWithPose;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystemNeos;
+import frc.robot.subsystems.drive.DriveSubsystemSim;
 import frc.robot.subsystems.vision.VisionSubsystem;
 
 public class RobotContainer {
 
-    public final DriveSubsystem driveSubsystem = new DriveSubsystem();
+    public final DriveSubsystem driveSubsystem;
+    
     public final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
     private final Joystick driveJoystick = new Joystick(RobotConstants.PortConstants.Controller.DRIVE_JOYSTICK);
@@ -38,6 +42,12 @@ public class RobotContainer {
     private final Field2d field = new Field2d();
 
     public RobotContainer() {
+        if (Robot.isReal()) {
+            this.driveSubsystem = new DriveSubsystemNeos(); // Real implementation
+        }
+        else {
+            this.driveSubsystem = new DriveSubsystemSim(); // Simulation implementation
+        }
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
         createNamedCommands();
@@ -63,10 +73,9 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        new JoystickButton(driveJoystick, 3).whileTrue((driveSubsystem.xCommand())); // Needs to be while true so the
-                                                                                     // command ends
+        
         new JoystickButton(driveJoystick, 1)
-                .whileTrue(AlignWithPose.alignWithSpeakerCommand(driveSubsystem));
+                .whileTrue(AlignWithPose.alignWithPoseCommand(new Pose2d()));
 
         new JoystickButton(driveJoystick, 1)
                 .whileTrue(driveSubsystem.gyroReset());

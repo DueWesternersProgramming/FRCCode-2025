@@ -10,15 +10,16 @@ import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.RobotContainer.UserPolicy;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystemNeos;
 
 public class TeleopDriveCommand extends Command {
     private final DriveSubsystem drive;
     private final Joystick joystick;
 
-    public TeleopDriveCommand(DriveSubsystem drive, Joystick joystick) {
-        this.drive = drive;
+    public TeleopDriveCommand(DriveSubsystem driveSubsystem, Joystick joystick) {
+        this.drive = driveSubsystem;
         this.joystick = joystick;
-        addRequirements(drive);
+        addRequirements(driveSubsystem);
     }
 
     @Override

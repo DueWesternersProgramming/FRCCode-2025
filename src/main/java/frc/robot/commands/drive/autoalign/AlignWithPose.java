@@ -16,6 +16,7 @@ import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.RobotConstants.PathPlannerConstants;
 import frc.robot.RobotContainer.UserPolicy;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystemNeos;
 import frc.robot.utils.CowboyUtils;
 
 public class AlignWithPose {
@@ -24,13 +25,7 @@ public class AlignWithPose {
 
     }
 
-    public static Command pathToPoseCommand(Pose2d target, DriveSubsystem driveSubsystem) {
-
-        HolonomicDriveController holonomicDriveController = new HolonomicDriveController(
-                new PIDController(3, 0, 0),
-                new PIDController(3, 0, 0), new ProfiledPIDController(3, 0, 0, new Constraints(3, 3)));
-        holonomicDriveController.setTolerance(new Pose2d(0.1, 0.1, new Rotation2d(10)));
-        
+    public static Command pathToPoseCommand(Pose2d target) {      
         
         Command roughAlignmentCommand = AutoBuilder.pathfindToPose(
                 target,
@@ -40,7 +35,7 @@ public class AlignWithPose {
         return new SequentialCommandGroup(roughAlignmentCommand);
     }
 
-    public static Command alignWithSpeakerCommand(DriveSubsystem driveSubsystem) {
-        return pathToPoseCommand(CowboyUtils.testPose, driveSubsystem);
+    public static Command alignWithPoseCommand(Pose2d pose) {
+        return pathToPoseCommand(CowboyUtils.testPose);
     }
 }

@@ -3,15 +3,15 @@ package frc.robot.commands.drive;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.RobotConstants.SubsystemEnabledConstants;
-import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.DriveSubsystemNeos;
 
 public class RunAtVelocity extends Command {
-    private final DriveSubsystem drive;
+    private final DriveSubsystemNeos drive;
     private final double x;
     private final double y;
     private final double rot;
 
-    public RunAtVelocity(DriveSubsystem drive, double x, double y, double rot) {
+    public RunAtVelocity(DriveSubsystemNeos drive, double x, double y, double rot) {
         this.x = x;
         this.y = y;
         this.rot = rot;
