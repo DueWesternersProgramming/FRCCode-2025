@@ -14,10 +14,10 @@ import java.util.Optional;
 import org.photonvision.simulation.VisionSystemSim;
 
 public class VisionSubsystem extends SubsystemBase {
-
-    public static Camera[] cameras = new Camera[2];
-    public static CameraSim[] cameraSims = new CameraSim[2];
-    private static String[] cameraNames = { "backLeftCamera", "backRightCamera" };
+    private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera", "backCamera" };
+    public static Camera[] cameras = new Camera[cameraNames.length];
+    public static CameraSim[] cameraSims = new CameraSim[cameraNames.length];
+    
     public static VisionSystemSim visionSim;
 
     public VisionSubsystem() {

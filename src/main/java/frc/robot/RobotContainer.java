@@ -7,6 +7,8 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.epilogue.EpilogueConfiguration;
+import edu.wpi.first.epilogue.logging.EpilogueBackend;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -41,7 +43,7 @@ public class RobotContainer {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
         createNamedCommands();
-
+        
         configureButtonBindings();
 
         try {
@@ -65,8 +67,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         new JoystickButton(driveJoystick, 3).whileTrue((driveSubsystem.xCommand())); // Needs to be while true so the
                                                                                      // command ends
-        new JoystickButton(driveJoystick, 1)
-                .whileTrue(AlignWithPose.alignWithSpeakerCommand(driveSubsystem));
 
         new JoystickButton(driveJoystick, 1)
                 .whileTrue(driveSubsystem.gyroReset());

@@ -1,5 +1,7 @@
 package frc.robot.utils;
 
+import java.io.IOException;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -8,7 +10,17 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public class CowboyUtils {
-    public static AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+    public static AprilTagFieldLayout aprilTagFieldLayout;
+
+    static {
+        try {
+            aprilTagFieldLayout = new AprilTagFieldLayout("src\\main\\resources\\Bedroom2025AprilTags.json");
+        } catch (IOException e) {
+            e.printStackTrace();
+            aprilTagFieldLayout = null;
+        }
+    }
+
     public static Pose2d testPose = new Pose2d(1.4, 5.55, new Rotation2d(Math.toRadians(0)));
 
     public static boolean isRedAlliance() {

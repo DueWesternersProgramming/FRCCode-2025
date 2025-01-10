@@ -1,8 +1,14 @@
 package frc.robot;
 
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
+
 import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -12,6 +18,20 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public final class RobotConstants {
+
+        public static final class ScoringConstants{
+                public static enum Height {
+                        L1, L2, L3
+                }
+                public static enum Side {
+                        Left, Algae, Right
+                }
+
+
+                
+                
+        }
+
         public static final class DrivetrainConstants {
                 public static final double FRONT_LEFT_VIRTUAL_OFFSET_RADIANS = 0;
                 public static final double FRONT_RIGHT_VIRTUAL_OFFSET_RADIANS = 0; // -We do not apply an offset to the
@@ -58,6 +78,18 @@ public final class RobotConstants {
                 public static final int GYRO_ORIENTATION = -1; // 1 for upside down, -1 for right side up.
 
                 public static final boolean FIELD_RELATIVE = true;
+        }
+
+        public static final class ElevatorConstants {
+                public static final double ELEVATOR_MAX_HEIGHT = 0.0;
+                public static final double ELEVATOR_MIN_HEIGHT = 0.0;
+                
+                
+                public static final class ScoringHeight {
+                        public static final double L1 = 0.0;
+                        public static final double L2 = 0.0;
+                        public static final double L3 = 0.0;
+                }
         }
 
         public static final class SwerveModuleConstants {
@@ -204,33 +236,34 @@ public final class RobotConstants {
         public static final class VisionConstants {
                 public static final Transform3d[] CAMERA_POSITIONS = {
                                 new Transform3d(
-                                                // Back Left
+                                                // Front Left
                                                 new Translation3d(
-                                                                Units.inchesToMeters(-13.5), // forward+
-                                                                Units.inchesToMeters(12.75), // left+
-                                                                Units.inchesToMeters(9)), // up+
+                                                                Units.inchesToMeters(5.56), // forward+
+                                                                Units.inchesToMeters(7.99), // left+
+                                                                Units.inchesToMeters(9.67)), // up+
                                                 new Rotation3d(
                                                                 Units.degreesToRadians(0),
-                                                                Units.degreesToRadians(-40), // Note, these are all
+                                                                Units.degreesToRadians(-20), // Note, these are all
                                                                                              // counter clockwise so to
                                                                                              // face up we
                                                                                              // need
-                                                                // -40 ;)
-                                                                Units.degreesToRadians(180 - 15))),
-                                // Back Right
+                                                                                        // - ;)
+                                                                Units.degreesToRadians(15))),
+
+                                                // Front Right
                                 new Transform3d(
                                                 new Translation3d(
-                                                                Units.inchesToMeters(-13.5), // forward+
-                                                                Units.inchesToMeters(-12.75), // left+
-                                                                Units.inchesToMeters(9)), // up+
+                                                                Units.inchesToMeters(5.56), // forward+
+                                                                Units.inchesToMeters(-7.99), // left+
+                                                                Units.inchesToMeters(25.416)), // up+
                                                 new Rotation3d(
                                                                 Units.degreesToRadians(0),
-                                                                Units.degreesToRadians(-40), // Note, these are all
+                                                                Units.degreesToRadians(-20), // Note, these are all
                                                                                              // counter clockwise so to
                                                                                              // face up we
                                                                                              // need -40 ;)
-                                                                Units.degreesToRadians(180 + 15))),
-                                // Front Left
+                                                                Units.degreesToRadians(-15))),
+                                // Back
                                 new Transform3d(
                                                 new Translation3d(
                                                                 Units.inchesToMeters(13.5), // forward+
@@ -242,19 +275,7 @@ public final class RobotConstants {
                                                                                              // counter clockwise so to
                                                                                              // face up we
                                                                                              // need -40 ;)
-                                                                Units.degreesToRadians(-15))),
-                                // Front Right
-                                new Transform3d(new Translation3d(
-                                                Units.inchesToMeters(13.5), // forward+
-                                                Units.inchesToMeters(-12.75), // left+
-                                                Units.inchesToMeters(9)), // up+
-                                                new Rotation3d(
-                                                                Units.degreesToRadians(0),
-                                                                Units.degreesToRadians(-40), // Note, these are all
-                                                                                             // counter clockwise so to
-                                                                                             // face up we
-                                                                                             // need -40 ;)
-                                                                Units.degreesToRadians(15))) };
+                                                                Units.degreesToRadians(-15))) };
         }
 
         public static final class SubsystemEnabledConstants {

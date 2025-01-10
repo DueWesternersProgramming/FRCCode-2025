@@ -39,8 +39,4 @@ public class AlignWithPose {
 
         return new SequentialCommandGroup(roughAlignmentCommand);
     }
-
-    public static Command alignWithSpeakerCommand(DriveSubsystem driveSubsystem) {
-        return pathToPoseCommand(CowboyUtils.testPose, driveSubsystem);
-    }
 }

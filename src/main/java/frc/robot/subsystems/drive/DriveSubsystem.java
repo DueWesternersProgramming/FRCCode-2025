@@ -640,6 +640,9 @@ public class DriveSubsystem extends SubsystemBase {
             if (RobotBase.isReal()) {
                 zeroHeading();
             }
+            else {
+                fakeGyro = 0;
+            }
         }, () -> {
             // end
         });
