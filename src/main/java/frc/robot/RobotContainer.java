@@ -19,11 +19,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RobotSystemsCheckCommand;
-import frc.robot.commands.drive.RunAtVelocity;
 import frc.robot.commands.drive.TeleopDriveCommand;
-import frc.robot.commands.drive.autoalign.AlignWithPose;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
+import frc.robot.commands.AutomatedScore;
 
 public class RobotContainer {
 
@@ -33,7 +32,12 @@ public class RobotContainer {
     private final Joystick driveJoystick = new Joystick(RobotConstants.PortConstants.Controller.DRIVE_JOYSTICK);
     private final Joystick operatorJoystick = new Joystick(RobotConstants.PortConstants.Controller.OPERATOR_JOYSTICK);
 
+    public final AutomationSelector automationSelector = new AutomationSelector();
+
     SendableChooser<Command> m_autoPositionChooser = new SendableChooser<>();
+
+    
+
 
     PowerDistribution pdp;
 
@@ -41,7 +45,6 @@ public class RobotContainer {
 
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
-
         createNamedCommands();
         
         configureButtonBindings();
@@ -67,9 +70,11 @@ public class RobotContainer {
     private void configureButtonBindings() {
         new JoystickButton(driveJoystick, 3).whileTrue((driveSubsystem.xCommand())); // Needs to be while true so the
                                                                                      // command ends
-
         new JoystickButton(driveJoystick, 1)
                 .whileTrue(driveSubsystem.gyroReset());
+        
+        new JoystickButton(driveJoystick, 2).whileTrue(new AutomatedScore(automationSelector::getReefSide,automationSelector::getPosition,automationSelector::getHeight, driveSubsystem));
+
 
         // Above = DriveJoystick, Below = OperatorJoystick
 

@@ -3,12 +3,14 @@ package frc.robot;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,17 +21,22 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public final class RobotConstants {
 
-        public static final class ScoringConstants{
-                public static enum Height {
-                        L1, L2, L3
-                }
-                public static enum Side {
-                        Left, Algae, Right
+        public static final class ScoringConstants {
+                public static final class BlueAlliance {
+                        public static final List<Pose2d> list = List.of(
+                                        new Pose2d(2.961, 4, new Rotation2d()),
+                                        new Pose2d(0,0, new Rotation2d()),
+                                        new Pose2d(0,0, new Rotation2d()),
+                                        new Pose2d(0,0, new Rotation2d()),
+                                        new Pose2d(0,0, new Rotation2d()),
+                                        new Pose2d(0,0, new Rotation2d()));
+
                 }
 
+                public static final class RedAlliance {
 
-                
-                
+                }
+
         }
 
         public static final class DrivetrainConstants {
@@ -83,8 +90,7 @@ public final class RobotConstants {
         public static final class ElevatorConstants {
                 public static final double ELEVATOR_MAX_HEIGHT = 0.0;
                 public static final double ELEVATOR_MIN_HEIGHT = 0.0;
-                
-                
+
                 public static final class ScoringHeight {
                         public static final double L1 = 0.0;
                         public static final double L2 = 0.0;
@@ -208,7 +214,6 @@ public final class RobotConstants {
                 public static final double FIELD_LENGTH_INCHES = 54 * 12 + 1; // 54ft 1in
                 public static final double FIELD_WIDTH_INCHES = 26 * 12 + 7; // 26ft 7in
 
-
         }
 
         public static final class TeleopConstants {
@@ -247,10 +252,10 @@ public final class RobotConstants {
                                                                                              // counter clockwise so to
                                                                                              // face up we
                                                                                              // need
-                                                                                        // - ;)
+                                                                                             // - ;)
                                                                 Units.degreesToRadians(15))),
 
-                                                // Front Right
+                                // Front Right
                                 new Transform3d(
                                                 new Translation3d(
                                                                 Units.inchesToMeters(5.56), // forward+
