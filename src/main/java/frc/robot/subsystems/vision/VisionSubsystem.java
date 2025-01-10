@@ -24,7 +24,7 @@ public class VisionSubsystem extends SubsystemBase {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
 
             if (RobotBase.isSimulation()) {
-                visionSim = new VisionSystemSim("main");
+                visionSim = new VisionSystemSim("visionSim");
                 visionSim.addAprilTags(CowboyUtils.aprilTagFieldLayout);
 
                 visionSim.clearCameras();
