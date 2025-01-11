@@ -1,4 +1,4 @@
-package frc.robot;
+package frc.robot.automation;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -11,7 +11,7 @@ public class AutomationSelector {
     SendableChooser<Integer> reefSideChooser = new SendableChooser<>();
     SendableChooser<Integer> positionChooser = new SendableChooser<>();
     SendableChooser<Integer> heightChooser = new SendableChooser<>();
-    
+
     public AutomationSelector() {
 
         reefSideChooser.addOption("1", 1);
@@ -34,7 +34,7 @@ public class AutomationSelector {
         Shuffleboard.getTab("AutomationSelectors").add(heightChooser);
 
     }
-    
+
     public int getReefSide() {
         return reefSideChooser.getSelected() == null ? 1 : reefSideChooser.getSelected();
     }

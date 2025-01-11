@@ -37,6 +37,7 @@ import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.RobotConstants.AutonomousConstants;
 import frc.robot.utils.SwerveUtils;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -134,38 +135,43 @@ public class DriveSubsystem extends SubsystemBase {
             }
         }
 
-        
-    try{
-      config = RobotConfig.fromGUISettings();
-    } catch (Exception e) {
-      // Handle exception as needed
-      e.printStackTrace();
-    }
-    
-    // Configure AutoBuilder last
-    AutoBuilder.configure(
-            DriveSubsystem::getPose, // Robot pose supplier
-            this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-            (speeds) -> runChassisSpeeds(speeds, false), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
-            new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
-            ),
-            config, // The robot configuration
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+        try {
+            config = RobotConfig.fromGUISettings();
+        } catch (Exception e) {
+            // Handle exception as needed
+            e.printStackTrace();
+        }
 
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
-              return false;
-            },
-            this // Reference to this subsystem to set requirements
-    );
+        // Configure AutoBuilder last
+        AutoBuilder.configure(
+                DriveSubsystem::getPose, // Robot pose supplier
+                this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+                this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                (speeds) -> runChassisSpeeds(speeds, false), // Method that will drive the robot given ROBOT RELATIVE
+                                                             // ChassisSpeeds. Also optionally outputs individual module
+                                                             // feedforwards
+                new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for
+                                                // holonomic drive trains
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(5.0, 0.0, 0.0) // Rotation PID constants
+                ),
+                config, // The robot configuration
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red
+                    // alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                this // Reference to this subsystem to set requirements
+        );
+        PathfindingCommand.warmupCommand().schedule();
+
     }
 
     private double getGyroAngle() {
@@ -208,7 +214,7 @@ public class DriveSubsystem extends SubsystemBase {
                     swerveModules[2].getTurningAbsoluteEncoder().getPosition(),
                     swerveModules[3].getTurningAbsoluteEncoder().getPosition()
             });
-            //SmartDashboard.putData("NAVX", m_gyro);
+            // SmartDashboard.putData("NAVX", m_gyro);
 
         }
 
@@ -264,7 +270,7 @@ public class DriveSubsystem extends SubsystemBase {
         if (RobotBase.isReal()) {
             for (int i = 0; i < VisionSubsystem.getLengthOfCameraList(); i++) {
                 Pose2d camPose = VisionSubsystem.getVisionPoses()[i];
-                if (camPose != null){
+                if (camPose != null) {
                     m_odometry.addVisionMeasurement(camPose, Timer.getFPGATimestamp());
                 }
             }
@@ -421,7 +427,8 @@ public class DriveSubsystem extends SubsystemBase {
     public void runChassisSpeeds(ChassisSpeeds speeds, Boolean fieldRelative) {
         Rotation2d rotation = RobotBase.isSimulation() ? Rotation2d.fromDegrees(
                 getGyroAngle()
-                        + (CowboyUtils.isRedAlliance() ? 180 : 0)) : Rotation2d.fromDegrees(0);
+                        + (CowboyUtils.isRedAlliance() ? 180 : 0))
+                : Rotation2d.fromDegrees(0);
 
         var swerveModuleStates = DrivetrainConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
                 fieldRelative
@@ -639,8 +646,7 @@ public class DriveSubsystem extends SubsystemBase {
             // init
             if (RobotBase.isReal()) {
                 zeroHeading();
-            }
-            else {
+            } else {
                 fakeGyro = 0;
             }
         }, () -> {

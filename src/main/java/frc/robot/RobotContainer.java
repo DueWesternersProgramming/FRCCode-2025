@@ -22,7 +22,8 @@ import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
-import frc.robot.commands.AutomatedScore;
+import frc.robot.automation.AutomationSelector;
+import frc.robot.automation.AutomatedScoring;
 
 public class RobotContainer {
 
@@ -36,9 +37,6 @@ public class RobotContainer {
 
     SendableChooser<Command> m_autoPositionChooser = new SendableChooser<>();
 
-    
-
-
     PowerDistribution pdp;
 
     private final Field2d field = new Field2d();
@@ -46,7 +44,7 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
         createNamedCommands();
-        
+
         configureButtonBindings();
 
         try {
@@ -72,9 +70,9 @@ public class RobotContainer {
                                                                                      // command ends
         new JoystickButton(driveJoystick, 1)
                 .whileTrue(driveSubsystem.gyroReset());
-        
-        new JoystickButton(driveJoystick, 2).whileTrue(new AutomatedScore(automationSelector::getReefSide,automationSelector::getPosition,automationSelector::getHeight, driveSubsystem));
 
+        new JoystickButton(driveJoystick, 2).whileTrue(AutomatedScoring.Score(automationSelector::getReefSide,
+                automationSelector::getPosition, automationSelector::getHeight, driveSubsystem));
 
         // Above = DriveJoystick, Below = OperatorJoystick
 
