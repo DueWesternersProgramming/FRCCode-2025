@@ -35,7 +35,7 @@ public final class RobotConstants {
 
                 public static final class RedAlliance {
                         public static final List<Pose2d> poses = List.of(
-                                        new Pose2d(14.635, 4, new Rotation2d(Math.toRadians(180))),
+                                        new Pose2d(14.635, 4, new Rotation2d(Math.toRadians(0))),
                                         new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))),
                                         new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))),
                                         new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))),
