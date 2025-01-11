@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 public class AutomatedScoring {
     static Pose2d targetPose;
     static double xOffset = .2;
-    static Field2d field;
+    static Field2d field = new Field2d();
 
     public static Pose2d pathPlanToReef(int reefSide, int position) {
         targetPose = CowboyUtils.isBlueAlliance() ? ScoringConstants.BlueAlliance.poses.get(reefSide - 1)
