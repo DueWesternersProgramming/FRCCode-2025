@@ -19,15 +19,15 @@ public class AutomatedScoring {
     static double xOffset = .2;
     static Field2d field = new Field2d();
 
-    public static Pose2d pathPlanToReef(int reefSide, int position) {
-        targetPose = CowboyUtils.isBlueAlliance() ? ScoringConstants.BlueAlliance.poses.get(reefSide - 1)
-                : ScoringConstants.RedAlliance.poses.get(reefSide - 1);
+    public static Pose2d pathPlanToReef(Supplier<Integer> reefSide, Supplier<Integer> position) {
+        targetPose = CowboyUtils.isBlueAlliance() ? ScoringConstants.BlueAlliance.poses.get(reefSide.get() - 1)
+                : ScoringConstants.RedAlliance.poses.get(reefSide.get() - 1);
 
         // Determine the correct x offset based on the position
         double adjustedXOffset = xOffset;
-        if (position == 0) {
+        if (position.get() == 0) {
             adjustedXOffset = xOffset;
-        } else if (position == 1) {
+        } else if (position.get() == 1) {
             adjustedXOffset = 0;
         } else {
             adjustedXOffset = -xOffset;
@@ -50,7 +50,7 @@ public class AutomatedScoring {
             Supplier<Integer> height,
             DriveSubsystem drivesubsystem) {
 
-        Pose2d pose = pathPlanToReef(reefSide.get(), position.get());
+        Pose2d pose = pathPlanToReef(reefSide, position);
 
         return new SequentialCommandGroup(
                 AlignWithPose.pathToPoseCommand(pose, drivesubsystem)

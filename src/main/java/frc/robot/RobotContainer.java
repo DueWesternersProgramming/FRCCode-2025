@@ -16,7 +16,9 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.drive.TeleopDriveCommand;
@@ -66,16 +68,19 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        new JoystickButton(driveJoystick, 3).whileTrue((driveSubsystem.xCommand())); // Needs to be while true so the
-                                                                                     // command ends
-        new JoystickButton(driveJoystick, 1)
-                .whileTrue(driveSubsystem.gyroReset());
+        new JoystickButton(driveJoystick, 3).whileTrue(driveSubsystem.xCommand()); // Needs to be while true so the
+                                                                                   // command ends
+        new JoystickButton(driveJoystick, 1).whileTrue(driveSubsystem.gyroReset());
 
-        new JoystickButton(driveJoystick, 2).whileTrue(AutomatedScoring.Score(automationSelector::getReefSide,
-                automationSelector::getPosition, automationSelector::getHeight, driveSubsystem));
+        new JoystickButton(driveJoystick, 2).whileTrue(
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> AutomatedScoring.Score(
+                                automationSelector::getReefSide,
+                                automationSelector::getPosition,
+                                automationSelector::getHeight,
+                                driveSubsystem).schedule())));
 
         // Above = DriveJoystick, Below = OperatorJoystick
-
     }
 
     public Command getAutonomousCommand() {
