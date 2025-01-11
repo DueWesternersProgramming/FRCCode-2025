@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.automation.AutomationSelector;
 import frc.robot.automation.AutomatedScoring;
@@ -31,6 +32,7 @@ public class RobotContainer {
 
     public final DriveSubsystem driveSubsystem = new DriveSubsystem();
     public final VisionSubsystem visionSubsystem = new VisionSubsystem();
+    public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     private final Joystick driveJoystick = new Joystick(RobotConstants.PortConstants.Controller.DRIVE_JOYSTICK);
     private final Joystick operatorJoystick = new Joystick(RobotConstants.PortConstants.Controller.OPERATOR_JOYSTICK);
@@ -78,7 +80,7 @@ public class RobotContainer {
                                 automationSelector::getReefSide,
                                 automationSelector::getPosition,
                                 automationSelector::getHeight,
-                                driveSubsystem).schedule())));
+                                driveSubsystem, elevatorSubsystem).schedule())));
 
         // Above = DriveJoystick, Below = OperatorJoystick
     }
