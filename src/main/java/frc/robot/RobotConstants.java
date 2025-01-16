@@ -57,19 +57,23 @@ public final class RobotConstants {
 
                 // Chassis configuration
 
-                public static final double DRIVE_BASE_RADIUS_METERS = 0.52705; // measurement from center point of robot
-                                                                               // to the
-                                                                               // center of one of the wheels. (use the
-                                                                               // CAD)
+                public static final double DRIVE_BASE_RADIUS_METERS = Units.inchesToMeters(17.5);; // measurement from
+                                                                                                   // center point of
+                                                                                                   // robot
+                // to the
+                // center of one of the wheels. (use the
+                // CAD)
 
-                public static final double LEFT_RIGHT_DISTANCE_METERS = Units.inchesToMeters(25); // Distance between
-                                                                                                  // centers of
-                                                                                                  // right
+                public static final double LEFT_RIGHT_DISTANCE_METERS = Units.inchesToMeters(24.750000); // Distance
+                                                                                                         // between
+                                                                                                         // centers of
+                                                                                                         // right
                 // and left wheels on robot
 
-                public static final double FRONT_BACK_DISTANCE_METERS = Units.inchesToMeters(25);// Distance between
-                                                                                                 // front and
-                                                                                                 // back
+                public static final double FRONT_BACK_DISTANCE_METERS = Units.inchesToMeters(24.750000);// Distance
+                                                                                                        // between
+                                                                                                        // front and
+                                                                                                        // back
                 // wheels on robot
 
                 public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
@@ -88,13 +92,20 @@ public final class RobotConstants {
                 public static final double ELEVATOR_MIN_HEIGHT = 0.0;
 
                 public static final class ScoringHeight {
-                        public static final double L1 = 0.0;
-                        public static final double L2 = 0.0;
-                        public static final double L3 = 0.0;
+                        public static final double L1 = 0;
+                        public static final double L2 = 0;
+                        public static final double L3 = 0;
                 }
 
                 public static final double MAX_MOTOR_RPM = 500.0;
                 public static final double MAX_MOTOR_ACCELERATION = 500.0;
+
+                public static final class SIM_CONSTANTS {
+                        public static final double MIN_LIGMENT_LENGTH = 0.043885;
+                        public static final double L1 = 0.15;
+                        public static final double L2 = 0.25;
+                        public static final double L3 = 0.4;
+                }
 
         }
 

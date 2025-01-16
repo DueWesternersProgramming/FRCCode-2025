@@ -11,10 +11,15 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotConstants.PortConstants.CAN;
+import frc.robot.subsystems.ElevatorWristSim;
 import frc.robot.Robot;
 import frc.robot.RobotConstants.ElevatorConstants;
 import com.revrobotics.spark.SparkBase.ResetMode;
@@ -52,32 +57,36 @@ public class ElevatorSubsystem extends SubsystemBase {
             elevatorMotor2.configure(elevatorMotor2Config, ResetMode.kResetSafeParameters,
                     PersistMode.kPersistParameters);
         } else {
-
+            new ElevatorWristSim();
         }
+
     }
 
     public static void goToSetpoint(double setpoint) {
         // Add code here to move the elevator to the scoring height
         if (RobotBase.isReal()) {
             elevatorMotor1Controller.setReference(setpoint, ControlType.kMAXMotionPositionControl);
-        } else {
-
         }
+
     }
 
     public static Command goToScoreSetpoint(Supplier<Integer> level, ElevatorSubsystem elevatorSubsystem) {
         return new InstantCommand(() -> {
             double setpoint;
-            if (level.get() == 1) {
-                setpoint = ElevatorConstants.ScoringHeight.L1;
-            } else if (level.get() == 2) {
-                setpoint = ElevatorConstants.ScoringHeight.L2;
-            } else if (level.get() == 3) {
-                setpoint = ElevatorConstants.ScoringHeight.L3;
+            if (RobotBase.isReal()) {
+                if (level.get() == 1) {
+                    setpoint = ElevatorConstants.ScoringHeight.L1;
+                } else if (level.get() == 2) {
+                    setpoint = ElevatorConstants.ScoringHeight.L2;
+                } else if (level.get() == 3) {
+                    setpoint = ElevatorConstants.ScoringHeight.L3;
+                } else {
+                    setpoint = ElevatorConstants.ScoringHeight.L1;
+                }
+                goToSetpoint(setpoint);
             } else {
-                setpoint = ElevatorConstants.ScoringHeight.L1;
+                ElevatorWristSim.setElevatorLength(level.get());
             }
-            goToSetpoint(setpoint);
             System.out.println("Going to level: " + level.get());
         }, elevatorSubsystem);
 
@@ -86,10 +95,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (RobotBase.isReal()) {
-            // Add code here to update the SmartDashboard with the current elevator height
-        } else {
 
-            // Add code here to update the SmartDashboard with the current elevator height
+        } else {
+            ElevatorWristSim.update();
         }
     }
 
