@@ -23,7 +23,7 @@ public class AutomatedScoring {
     static Field2d field = new Field2d();
 
     public static Pose2d pathPlanToReef(Supplier<Integer> reefSide, Supplier<Integer> position) {
-
+        System.out.println("Reef Side: " + reefSide.get());
         targetPose = ScoringConstants.BlueAlliance.poses.get(reefSide.get() - 1);
 
         if (CowboyUtils.isRedAlliance()) {

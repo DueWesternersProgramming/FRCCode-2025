@@ -1,49 +1,54 @@
 package frc.robot.automation;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotConstants.ScoringConstants;
+import edu.wpi.first.networktables.BooleanPublisher;
+import edu.wpi.first.networktables.IntegerPublisher;
+import edu.wpi.first.networktables.IntegerSubscriber;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.utils.CowboyUtils;
 
 public class AutomationSelector {
 
-    SendableChooser<Integer> reefSideChooser = new SendableChooser<>();
-    SendableChooser<Integer> positionChooser = new SendableChooser<>();
-    SendableChooser<Integer> heightChooser = new SendableChooser<>();
+    NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    // Get the table within that instance that contains the data. There can
+    // be as many tables as you like and exist to make it easier to organize
+    // your data. In this case, it's a table called datatable.
+    NetworkTable networkTable = inst.getTable("AutomationData");
+
+    IntegerPublisher reefSide;
+    IntegerPublisher position;
+    IntegerPublisher level;
+
+    IntegerSubscriber reefSideSub;
+    IntegerSubscriber positionSub;
+    IntegerSubscriber levelSub;
 
     public AutomationSelector() {
+        reefSide = networkTable.getIntegerTopic("Reef Side").publish();
+        position = networkTable.getIntegerTopic("Position").publish();
+        level = networkTable.getIntegerTopic("Level").publish();
+        reefSide.set(1);
+        position.set(1);
+        level.set(1);
 
-        reefSideChooser.addOption("1", 1);
-        reefSideChooser.addOption("2", 2);
-        reefSideChooser.addOption("3", 3);
-        reefSideChooser.addOption("4", 4);
-        reefSideChooser.addOption("5", 5);
-        reefSideChooser.addOption("6", 6);
-
-        positionChooser.addOption("Left", 0);
-        positionChooser.addOption("Middle", 1);
-        positionChooser.addOption("Right", 2);
-
-        heightChooser.addOption("L1", 1);
-        heightChooser.addOption("L2", 2);
-        heightChooser.addOption("L3", 3);
-
-        Shuffleboard.getTab("AutomationSelectors").add(reefSideChooser);
-        Shuffleboard.getTab("AutomationSelectors").add(positionChooser);
-        Shuffleboard.getTab("AutomationSelectors").add(heightChooser);
+        reefSideSub = networkTable.getIntegerTopic("Reef Side").subscribe(1);
+        positionSub = networkTable.getIntegerTopic("Position").subscribe(1);
+        levelSub = networkTable.getIntegerTopic("Level").subscribe(1);
 
     }
 
     public int getReefSide() {
-        return reefSideChooser.getSelected() == null ? 1 : reefSideChooser.getSelected();
+
+        return (int) reefSideSub.get();
     }
 
     public int getPosition() {
-        return positionChooser.getSelected() == null ? 1 : positionChooser.getSelected();
+        return (int) positionSub.get();
     }
 
     public int getHeight() {
-        return heightChooser.getSelected() == null ? 1 : heightChooser.getSelected();
+        return ((int) levelSub.get());
     }
+
 }
