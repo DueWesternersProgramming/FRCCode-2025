@@ -2,7 +2,10 @@ package frc.robot.automation;
 
 import java.util.function.Supplier;
 
+import org.opencv.core.Mat;
+
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,18 +22,23 @@ import com.pathplanner.lib.util.FlippingUtil;
 
 public class AutomatedScoring {
     static Pose2d targetPose;
-    static double xOffset = .2;
+    static double xOffset = .175;
+    static double yOffset = .05;
     static Field2d field = new Field2d();
 
     public static Pose2d pathPlanToReef(Supplier<Integer> reefSide, Supplier<Integer> position) {
-        System.out.println("Reef Side: " + reefSide.get());
+        // System.out.println("Reef Side: " + reefSide.get());
         targetPose = ScoringConstants.BlueAlliance.poses.get(reefSide.get() - 1);
 
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
+
+            targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
+                    new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 90))); // Not sure what to do
+                                                                                                 // about this
         }
 
-        // Determine the correct x offset based on the position
+        // Determine the correct x & y offset(s) based on the position
         double adjustedXOffset = xOffset;
         if (position.get() == 0) {
             adjustedXOffset = xOffset;
@@ -40,14 +48,12 @@ public class AutomatedScoring {
             adjustedXOffset = -xOffset;
         }
 
-        // Create a translation for the x offset
-        Translation2d translation = new Translation2d(0, adjustedXOffset);
+        // Create a translation for the offsets
+        Translation2d translation = new Translation2d(yOffset, adjustedXOffset);
 
         // Apply the translation to the target pose
         targetPose = targetPose.transformBy(new Transform2d(translation, targetPose.getRotation()));
 
-        // field.setRobotPose(targetPose);
-        // SmartDashboard.putData(field);
         return targetPose;
 
     }

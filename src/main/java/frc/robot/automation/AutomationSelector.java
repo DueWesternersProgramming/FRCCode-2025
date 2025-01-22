@@ -8,47 +8,35 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.robot.utils.CowboyUtils;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class AutomationSelector {
 
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    // Get the table within that instance that contains the data. There can
-    // be as many tables as you like and exist to make it easier to organize
-    // your data. In this case, it's a table called datatable.
-    NetworkTable networkTable = inst.getTable("AutomationData");
-
-    IntegerPublisher reefSide;
-    IntegerPublisher position;
-    IntegerPublisher level;
-
-    IntegerSubscriber reefSideSub;
-    IntegerSubscriber positionSub;
-    IntegerSubscriber levelSub;
-
     public AutomationSelector() {
-        reefSide = networkTable.getIntegerTopic("Reef Side").publish();
-        position = networkTable.getIntegerTopic("Position").publish();
-        level = networkTable.getIntegerTopic("Level").publish();
-        reefSide.set(1);
-        position.set(1);
-        level.set(1);
-
-        reefSideSub = networkTable.getIntegerTopic("Reef Side").subscribe(1);
-        positionSub = networkTable.getIntegerTopic("Position").subscribe(1);
-        levelSub = networkTable.getIntegerTopic("Level").subscribe(1);
-
+        // Publish initial values to SmartDashboard
+        SmartDashboard.putNumber("Reef Side", 1);
+        SmartDashboard.putNumber("Position", 1);
+        SmartDashboard.putNumber("Level", 1);
     }
 
     public int getReefSide() {
-
-        return (int) reefSideSub.get();
+        // Retrieve value from SmartDashboard
+        int value = (int) SmartDashboard.getNumber("Reef Side", 1);
+        System.out.println("Retrieved Reef Side: " + value);
+        return value;
     }
 
     public int getPosition() {
-        return (int) positionSub.get();
+        // Retrieve value from SmartDashboard
+        int value = (int) SmartDashboard.getNumber("Position", 1);
+        System.out.println("Retrieved Position: " + value);
+        return value;
     }
 
     public int getHeight() {
-        return ((int) levelSub.get());
+        // Retrieve value from SmartDashboard
+        int value = (int) SmartDashboard.getNumber("Level", 1);
+        System.out.println("Retrieved Level: " + value);
+        return value;
     }
-
 }

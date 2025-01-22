@@ -75,19 +75,18 @@ public class ElevatorSubsystem extends SubsystemBase {
             double setpoint;
             if (RobotBase.isReal()) {
                 if (level.get() == 1) {
-                    setpoint = ElevatorConstants.ScoringHeight.L1;
+                    setpoint = ElevatorConstants.HeightSetpoints.L1;
                 } else if (level.get() == 2) {
-                    setpoint = ElevatorConstants.ScoringHeight.L2;
+                    setpoint = ElevatorConstants.HeightSetpoints.L2;
                 } else if (level.get() == 3) {
-                    setpoint = ElevatorConstants.ScoringHeight.L3;
+                    setpoint = ElevatorConstants.HeightSetpoints.L3;
                 } else {
-                    setpoint = ElevatorConstants.ScoringHeight.L1;
+                    setpoint = ElevatorConstants.HeightSetpoints.L1;
                 }
                 goToSetpoint(setpoint);
             } else {
-                ElevatorWristSim.setElevatorLength(level.get());
+                ElevatorWristSim.setElevatorSimSetpoint(level.get()); // Passes in the L1-L3 in value to the sim logic
             }
-            System.out.println("Going to level: " + level.get());
         }, elevatorSubsystem);
 
     }
