@@ -84,7 +84,7 @@ public final class RobotConstants {
 
                 public static final int GYRO_ORIENTATION = -1; // 1 for upside down, -1 for right side up.
 
-                public static final boolean FIELD_RELATIVE = true;
+                public static final boolean FIELD_RELATIVE = false;
         }
 
         public static final class ElevatorConstants {
