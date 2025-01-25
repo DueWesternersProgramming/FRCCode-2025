@@ -48,8 +48,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
             elevatorMotor1Config.closedLoop.pid(0.1, 0.0, 0.0);
 
-            elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1);
-            elevatorMotor2Config.inverted(true);
+            elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1,true);
+            
+            
 
             elevatorMotor1.configure(elevatorMotor1Config, ResetMode.kResetSafeParameters,
                     PersistMode.kPersistParameters);
@@ -89,6 +90,10 @@ public class ElevatorSubsystem extends SubsystemBase {
             }
         }, elevatorSubsystem);
 
+    }
+
+    public void moveAtSpeed(double speed){
+        elevatorMotor1.set(speed*.5);
     }
 
     @Override

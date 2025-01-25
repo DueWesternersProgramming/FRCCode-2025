@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.drive.TeleopDriveCommand;
+import frc.robot.commands.elevator.MoveElevator;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
@@ -47,6 +48,7 @@ public class RobotContainer {
 
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
+        elevatorSubsystem.setDefaultCommand(new MoveElevator(elevatorSubsystem, operatorJoystick));
         createNamedCommands();
 
         configureButtonBindings();
@@ -74,13 +76,15 @@ public class RobotContainer {
                                                                                    // command ends
         new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
-        new JoystickButton(driveJoystick, 2).whileTrue(
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> AutomatedScoring.Score(
-                                automationSelector::getReefSide,
-                                automationSelector::getPosition,
-                                automationSelector::getHeight,
-                                driveSubsystem, elevatorSubsystem).schedule())));
+        // new JoystickButton(driveJoystick, 2).whileTrue(
+        //         new SequentialCommandGroup(
+        //                 new InstantCommand(() -> AutomatedScoring.Score(
+        //                         automationSelector::getReefSide,
+        //                         automationSelector::getPosition,
+        //                         automationSelector::getHeight,
+        //                         driveSubsystem, elevatorSubsystem).schedule())));
+
+        
 
         // Above = DriveJoystick, Below = OperatorJoystick
     }
