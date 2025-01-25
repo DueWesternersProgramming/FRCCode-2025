@@ -209,18 +209,19 @@ public class DriveSubsystem extends SubsystemBase {
                     swerveModules[3].getPosition().distanceMeters
             });
 
-            SmartDashboard.putNumberArray("Virtual abs encoders", new double[] {
-                    swerveModules[0].getTurningAbsoluteEncoder().getVirtualPosition(),
-                    swerveModules[1].getTurningAbsoluteEncoder().getVirtualPosition(),
-                    swerveModules[2].getTurningAbsoluteEncoder().getVirtualPosition(),
-                    swerveModules[3].getTurningAbsoluteEncoder().getVirtualPosition()
-            });
+            // SmartDashboard.putNumberArray("Virtual abs encoders", new double[] {
+            //         swerveModules[0].getTurningAbsoluteEncoder().getVirtualPosition(),
+            //         swerveModules[1].getTurningAbsoluteEncoder().getVirtualPosition(),
+            //         swerveModules[2].getTurningAbsoluteEncoder().getVirtualPosition(),
+            //         swerveModules[3].getTurningAbsoluteEncoder().getVirtualPosition()
+            // });
             SmartDashboard.putNumberArray("Raw abs encoders", new double[] {
                     swerveModules[0].getTurningAbsoluteEncoder().getPosition(),
                     swerveModules[1].getTurningAbsoluteEncoder().getPosition(),
                     swerveModules[2].getTurningAbsoluteEncoder().getPosition(),
                     swerveModules[3].getTurningAbsoluteEncoder().getPosition()
             });
+            SmartDashboard.putNumberArray("rev encoders", new double[]{swerveModules[0].getTurningEncoder().getPosition(),swerveModules[1].getTurningEncoder().getPosition(),swerveModules[2].getTurningEncoder().getPosition(),swerveModules[3].getTurningEncoder().getPosition()});
             SmartDashboard.putData("NAVX", m_gyro);
             publisher.set(getModuleStates());
 

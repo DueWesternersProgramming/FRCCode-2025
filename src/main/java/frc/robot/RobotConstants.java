@@ -84,7 +84,7 @@ public final class RobotConstants {
 
                 public static final int GYRO_ORIENTATION = -1; // 1 for upside down, -1 for right side up.
 
-                public static final boolean FIELD_RELATIVE = false;
+                public static final boolean FIELD_RELATIVE = true;
         }
 
         public static final class ElevatorConstants {
@@ -145,7 +145,7 @@ public final class RobotConstants {
 
                 public static final int DRIVING_MOTOR_PINION_TEETH = 16;
 
-                public static final boolean TURNING_ENCODER_INVERTED = false;
+                // public static final boolean TURNING_ENCODER_INVERTED = false;
 
                 public static final double DRIVING_MOTOR_FREE_SPEED_RPS = FREE_SPEED_RPM / 60;
                 public static final double WHEEL_DIAMETER_METERS = 0.1016;
@@ -160,7 +160,7 @@ public final class RobotConstants {
                 public static final double DRIVING_ENCODER_VELOCITY_FACTOR_METERS_PER_SECOND_PER_RPM = ((WHEEL_DIAMETER_METERS
                                 * Math.PI) / DRIVING_MOTOR_REDUCTION) / 60.0; // meters per second, per RPM
 
-                public static final double TURNING_MOTOR_REDUCTION = 150.0 / 7.0; // Ratio between internal relative
+                public static final double TURNING_MOTOR_REDUCTION = 12.8; // Ratio between internal relative
                                                                                   // encoder and
                                                                                   // the absolute encoder
 
@@ -227,12 +227,12 @@ public final class RobotConstants {
                         // Joystick Axis
                         public static final int DRIVE_COMMAND_X_AXIS = 0;
                         public static final int DRIVE_COMMAND_Y_AXIS = 1;
-                        public static final int DRIVE_COMMAND_ROT_AXIS = 4;
+                        public static final int DRIVE_COMMAND_ROT_AXIS = 2;
                 }
         }
 
         public static final class AutonomousConstants {
-                public static final boolean FLIP_PATHPLANNER_AUTOS = false;
+                //public static final boolean FLIP_PATHPLANNER_AUTOS = false;
 
                 public static final double X_CONTROLLER_P = 3.5;
                 public static final double Y_CONTROLLER_P = 3.5;

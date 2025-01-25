@@ -72,7 +72,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         new JoystickButton(driveJoystick, 3).whileTrue(driveSubsystem.xCommand()); // Needs to be while true so the
                                                                                    // command ends
-        new JoystickButton(driveJoystick, 1).whileTrue(driveSubsystem.gyroReset());
+        new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
         new JoystickButton(driveJoystick, 2).whileTrue(
                 new SequentialCommandGroup(
