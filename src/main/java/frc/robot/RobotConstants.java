@@ -3,12 +3,14 @@ package frc.robot;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,17 +21,18 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public final class RobotConstants {
 
-        public static final class ScoringConstants{
-                public static enum Height {
-                        L1, L2, L3
-                }
-                public static enum Side {
-                        Left, Algae, Right
+        public static final class ScoringConstants {
+                public static final class BlueAlliance {
+                        public static final List<Pose2d> poses = List.of(
+                                        new Pose2d(2.961, 4, new Rotation2d(Math.toRadians(0))),
+                                        new Pose2d(3.712, 2.723, new Rotation2d(Math.toRadians(30))),
+                                        new Pose2d(5.253, 2.656, new Rotation2d(Math.toRadians(-120))),
+                                        new Pose2d(6, 4, new Rotation2d(Math.toRadians(180))),
+                                        new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))),
+                                        new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))));
+
                 }
 
-
-                
-                
         }
 
         public static final class DrivetrainConstants {
@@ -54,19 +57,23 @@ public final class RobotConstants {
 
                 // Chassis configuration
 
-                public static final double DRIVE_BASE_RADIUS_METERS = 0.52705; // measurement from center point of robot
-                                                                               // to the
-                                                                               // center of one of the wheels. (use the
-                                                                               // CAD)
+                public static final double DRIVE_BASE_RADIUS_METERS = Units.inchesToMeters(17.5);; // measurement from
+                                                                                                   // center point of
+                                                                                                   // robot
+                // to the
+                // center of one of the wheels. (use the
+                // CAD)
 
-                public static final double LEFT_RIGHT_DISTANCE_METERS = Units.inchesToMeters(25); // Distance between
-                                                                                                  // centers of
-                                                                                                  // right
+                public static final double LEFT_RIGHT_DISTANCE_METERS = Units.inchesToMeters(24.750000); // Distance
+                                                                                                         // between
+                                                                                                         // centers of
+                                                                                                         // right
                 // and left wheels on robot
 
-                public static final double FRONT_BACK_DISTANCE_METERS = Units.inchesToMeters(25);// Distance between
-                                                                                                 // front and
-                                                                                                 // back
+                public static final double FRONT_BACK_DISTANCE_METERS = Units.inchesToMeters(24.750000);// Distance
+                                                                                                        // between
+                                                                                                        // front and
+                                                                                                        // back
                 // wheels on robot
 
                 public static final SwerveDriveKinematics DRIVE_KINEMATICS = new SwerveDriveKinematics(
@@ -83,13 +90,44 @@ public final class RobotConstants {
         public static final class ElevatorConstants {
                 public static final double ELEVATOR_MAX_HEIGHT = 0.0;
                 public static final double ELEVATOR_MIN_HEIGHT = 0.0;
-                
-                
-                public static final class ScoringHeight {
-                        public static final double L1 = 0.0;
-                        public static final double L2 = 0.0;
-                        public static final double L3 = 0.0;
+
+                public static final class HeightSetpoints {
+                        public static final double L1 = 0;
+                        public static final double L2 = 0;
+                        public static final double L3 = 0;
                 }
+
+                public static final double MAX_MOTOR_RPM = 500.0;
+                public static final double MAX_MOTOR_ACCELERATION = 500.0;
+
+                public static final class SimConstants {
+                        public static final double MIN_LIGMENT_LENGTH = 0.043885;
+                        public static final double L1 = 0.65;
+                        public static final double L2 = 0.85;
+                        public static final double L3 = 1.4;
+                }
+
+        }
+
+        public static final class WristConstants {
+                public static final double WRIST_MIN_ANGLE = 0.0;
+                public static final double ELEVATOR_MIN_HEIGHT = 30.0;
+
+                public static final class AngleSetpoints {
+                        public static final double L1 = 0;
+                        public static final double L2 = 0;
+                        public static final double L3 = 0;
+                }
+
+                public static final double MAX_MOTOR_RPM = 500.0;
+                public static final double MAX_MOTOR_ACCELERATION = 500.0;
+
+                public static final class SimConstants {
+                        public static final double L1 = 85;
+                        public static final double L2 = 87.5;
+                        public static final double L3 = 120;
+                }
+
         }
 
         public static final class SwerveModuleConstants {
@@ -107,7 +145,7 @@ public final class RobotConstants {
 
                 public static final int DRIVING_MOTOR_PINION_TEETH = 16;
 
-                public static final boolean TURNING_ENCODER_INVERTED = false;
+                // public static final boolean TURNING_ENCODER_INVERTED = false;
 
                 public static final double DRIVING_MOTOR_FREE_SPEED_RPS = FREE_SPEED_RPM / 60;
                 public static final double WHEEL_DIAMETER_METERS = 0.1016;
@@ -122,7 +160,7 @@ public final class RobotConstants {
                 public static final double DRIVING_ENCODER_VELOCITY_FACTOR_METERS_PER_SECOND_PER_RPM = ((WHEEL_DIAMETER_METERS
                                 * Math.PI) / DRIVING_MOTOR_REDUCTION) / 60.0; // meters per second, per RPM
 
-                public static final double TURNING_MOTOR_REDUCTION = 150.0 / 7.0; // Ratio between internal relative
+                public static final double TURNING_MOTOR_REDUCTION = 12.8; // Ratio between internal relative
                                                                                   // encoder and
                                                                                   // the absolute encoder
 
@@ -175,6 +213,9 @@ public final class RobotConstants {
                         public static final int REAR_LEFT_STEERING = 3;
                         public static final int REAR_RIGHT_STEERING = 4;
 
+                        public static final int ELEVATOR_MOTOR_1 = 13;
+                        public static final int ELEVATOR_MOTOR_2 = 14;
+
                 }
 
                 public static class Controller {
@@ -186,12 +227,12 @@ public final class RobotConstants {
                         // Joystick Axis
                         public static final int DRIVE_COMMAND_X_AXIS = 0;
                         public static final int DRIVE_COMMAND_Y_AXIS = 1;
-                        public static final int DRIVE_COMMAND_ROT_AXIS = 4;
+                        public static final int DRIVE_COMMAND_ROT_AXIS = 2;
                 }
         }
 
         public static final class AutonomousConstants {
-                public static final boolean FLIP_PATHPLANNER_AUTOS = false;
+                //public static final boolean FLIP_PATHPLANNER_AUTOS = false;
 
                 public static final double X_CONTROLLER_P = 3.5;
                 public static final double Y_CONTROLLER_P = 3.5;
@@ -208,7 +249,6 @@ public final class RobotConstants {
                 public static final double FIELD_LENGTH_INCHES = 54 * 12 + 1; // 54ft 1in
                 public static final double FIELD_WIDTH_INCHES = 26 * 12 + 7; // 26ft 7in
 
-
         }
 
         public static final class TeleopConstants {
@@ -216,7 +256,7 @@ public final class RobotConstants {
         }
 
         public static final class PathPlannerConstants {
-                public static final Alliance DEFAULT_ALLIANCE = Alliance.Blue;
+                // public static final Alliance DEFAULT_ALLIANCE = Alliance.Blue;
 
                 public static final double kMaxAngularAcceleration = 4 * Math.PI;
                 public static final double kMaxAccelerationMetersPerSecondSquared = 3.00;
@@ -247,10 +287,10 @@ public final class RobotConstants {
                                                                                              // counter clockwise so to
                                                                                              // face up we
                                                                                              // need
-                                                                                        // - ;)
+                                                                                             // - ;)
                                                                 Units.degreesToRadians(15))),
 
-                                                // Front Right
+                                // Front Right
                                 new Transform3d(
                                                 new Translation3d(
                                                                 Units.inchesToMeters(5.56), // forward+
@@ -280,6 +320,6 @@ public final class RobotConstants {
 
         public static final class SubsystemEnabledConstants {
                 public static final boolean DRIVE_SUBSYSTEM_ENABLED = true;
-                public static final boolean VISION_SUBSYSTEM_ENABLED = true;
+                public static final boolean VISION_SUBSYSTEM_ENABLED = false;
         }
 }

@@ -35,7 +35,7 @@ public class TeleopDriveCommand extends Command {
             double yRaw = -(joystick.getRawAxis(Controller.DRIVE_COMMAND_Y_AXIS));
             double rotRaw = -(joystick.getRawAxis(Controller.DRIVE_COMMAND_ROT_AXIS));
             if (joystick.getRawButton(9)) {
-                fieldRelative = !DrivetrainConstants.FIELD_RELATIVE;
+                //fieldRelative = !DrivetrainConstants.FIELD_RELATIVE;
             }
 
             double xConstrained = MathUtil.applyDeadband(

@@ -81,8 +81,9 @@ public class SwerveModule {
                 // Invert the turning controller, since the output shaft rotates in the opposite
                 // direction of
                 // the steering motor.
-                m_turningConfig.inverted(true);
+                m_turningConfig.inverted(false);
                 m_drivingConfig.inverted(drivingInverted);
+
 
                 // Enable PID wrap around for the turning motor. This will allow the PID
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
@@ -110,6 +111,7 @@ public class SwerveModule {
 
                 m_drivingConfig.idleMode(SwerveModuleConstants.DRIVING_MOTOR_IDLE_MODE);
                 m_turningConfig.idleMode(SwerveModuleConstants.TURNING_MOTOR_IDLE_MODE);
+                
 
                 m_drivingConfig.smartCurrentLimit(SwerveModuleConstants.DRIVING_MOTOR_CURRENT_LIMIT_AMPS);
                 m_turningConfig.smartCurrentLimit(SwerveModuleConstants.TURNING_MOTOR_CURRENT_LIMIT_AMPS);
@@ -122,7 +124,7 @@ public class SwerveModule {
                 m_turningSparkMax.configure(m_turningConfig, ResetMode.kNoResetSafeParameters,
                                 PersistMode.kPersistParameters);
 
-                m_desiredState.angle = new Rotation2d(m_turningEncoder.getPosition());
+                m_desiredState.angle = new Rotation2d(0);
                 m_drivingEncoder.setPosition(0);
         }
 
@@ -186,9 +188,9 @@ public class SwerveModule {
         public void resetEncoders() {
 
                 m_drivingEncoder.setPosition(0); // arbitrarily set driving encoder to zero
-
+        
                 // temp
-                // m_turningAbsoluteEncoder.resetVirtualPosition();
+                m_turningAbsoluteEncoder.resetVirtualPosition();
                 // the reading and setting of the calibrated absolute turning encoder values is
                 // done in the Drivetrain's constructor
 
@@ -202,9 +204,9 @@ public class SwerveModule {
          * Calibrates the virtual position (i.e. sets position offset) of the absolute
          * encoder.
          */
-        public void calibrateVirtualPosition(double angle) {
-                m_turningAbsoluteEncoder.setPositionOffset(angle);
-        }
+        // public void calibrateVirtualPosition(double angle) {
+        //         m_turningAbsoluteEncoder.setPositionOffset(angle);
+        // }
 
         public RelativeEncoder getDrivingEncoder() {
                 return m_drivingEncoder;

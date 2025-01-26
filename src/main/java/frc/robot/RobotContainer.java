@@ -16,22 +16,29 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RobotSystemsCheckCommand;
-import frc.robot.commands.drive.RunAtVelocity;
 import frc.robot.commands.drive.TeleopDriveCommand;
-import frc.robot.commands.drive.autoalign.AlignWithPose;
+import frc.robot.commands.elevator.MoveElevator;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
+import frc.robot.automation.AutomationSelector;
+import frc.robot.automation.AutomatedScoring;
 
 public class RobotContainer {
 
     public final DriveSubsystem driveSubsystem = new DriveSubsystem();
     public final VisionSubsystem visionSubsystem = new VisionSubsystem();
+    public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
     private final Joystick driveJoystick = new Joystick(RobotConstants.PortConstants.Controller.DRIVE_JOYSTICK);
     private final Joystick operatorJoystick = new Joystick(RobotConstants.PortConstants.Controller.OPERATOR_JOYSTICK);
+
+    public final AutomationSelector automationSelector = new AutomationSelector();
 
     SendableChooser<Command> m_autoPositionChooser = new SendableChooser<>();
 
@@ -41,9 +48,9 @@ public class RobotContainer {
 
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
-
+        elevatorSubsystem.setDefaultCommand(new MoveElevator(elevatorSubsystem, operatorJoystick));
         createNamedCommands();
-        
+
         configureButtonBindings();
 
         try {
@@ -65,14 +72,21 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        new JoystickButton(driveJoystick, 3).whileTrue((driveSubsystem.xCommand())); // Needs to be while true so the
-                                                                                     // command ends
+        new JoystickButton(driveJoystick, 3).whileTrue(driveSubsystem.xCommand()); // Needs to be while true so the
+                                                                                   // command ends
+        new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
-        new JoystickButton(driveJoystick, 1)
-                .whileTrue(driveSubsystem.gyroReset());
+        // new JoystickButton(driveJoystick, 2).whileTrue(
+        //         new SequentialCommandGroup(
+        //                 new InstantCommand(() -> AutomatedScoring.Score(
+        //                         automationSelector::getReefSide,
+        //                         automationSelector::getPosition,
+        //                         automationSelector::getHeight,
+        //                         driveSubsystem, elevatorSubsystem).schedule())));
+
+        
 
         // Above = DriveJoystick, Below = OperatorJoystick
-
     }
 
     public Command getAutonomousCommand() {

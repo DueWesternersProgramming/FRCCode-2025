@@ -1,4 +1,4 @@
-package frc.robot.commands.drive.autoalign;
+package frc.robot.automation;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -29,14 +29,13 @@ public class AlignWithPose {
         HolonomicDriveController holonomicDriveController = new HolonomicDriveController(
                 new PIDController(3, 0, 0),
                 new PIDController(3, 0, 0), new ProfiledPIDController(3, 0, 0, new Constraints(3, 3)));
-        holonomicDriveController.setTolerance(new Pose2d(0.1, 0.1, new Rotation2d(10)));
-        
-        
+        holonomicDriveController.setTolerance(new Pose2d(0.01, 0.01, new Rotation2d(Math.toRadians(5))));
+
         Command roughAlignmentCommand = AutoBuilder.pathfindToPose(
                 target,
                 PathPlannerConstants.DEFAULT_PATH_CONSTRAINTS,
                 0.0);
 
-        return new SequentialCommandGroup(roughAlignmentCommand);
+        return roughAlignmentCommand;
     }
 }

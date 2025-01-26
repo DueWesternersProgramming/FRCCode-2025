@@ -60,9 +60,9 @@ public class CanCoder
 	 *
 	 * @return the virtual position in radians.
 	 */
-	public double getVirtualPosition() {
-		return getPosition() - positionOffset;
-	}
+	// public double getVirtualPosition() {
+	// 	return getPosition() - positionOffset;
+	// }
 
 	/**
 	 * Resets the virtual position to the current raw position.
