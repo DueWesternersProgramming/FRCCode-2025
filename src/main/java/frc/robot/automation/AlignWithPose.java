@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.RobotConstants.PathPlannerConstants;
-import frc.robot.RobotContainer.UserPolicy;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.utils.CowboyUtils;
 
@@ -26,10 +25,13 @@ public class AlignWithPose {
 
     public static Command pathToPoseCommand(Pose2d target, DriveSubsystem driveSubsystem) {
 
-        HolonomicDriveController holonomicDriveController = new HolonomicDriveController(
-                new PIDController(3, 0, 0),
-                new PIDController(3, 0, 0), new ProfiledPIDController(3, 0, 0, new Constraints(3, 3)));
-        holonomicDriveController.setTolerance(new Pose2d(0.01, 0.01, new Rotation2d(Math.toRadians(5))));
+        // HolonomicDriveController holonomicDriveController = new
+        // HolonomicDriveController(
+        // new PIDController(3, 0, 0),
+        // new PIDController(3, 0, 0), new ProfiledPIDController(3, 0, 0, new
+        // Constraints(3, 3)));
+        // holonomicDriveController.setTolerance(new Pose2d(0.01, 0.01, new
+        // Rotation2d(Math.toRadians(5))));
 
         Command roughAlignmentCommand = AutoBuilder.pathfindToPose(
                 target,

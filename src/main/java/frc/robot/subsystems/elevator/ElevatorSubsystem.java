@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.subsystems.ElevatorWristSim;
 import frc.robot.Robot;
@@ -48,9 +49,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
             elevatorMotor1Config.closedLoop.pid(0.1, 0.0, 0.0);
 
-            elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1,true);
-            
-            
+            elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1, true);
 
             elevatorMotor1.configure(elevatorMotor1Config, ResetMode.kResetSafeParameters,
                     PersistMode.kPersistParameters);
@@ -71,29 +70,43 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
-    public static Command goToScoreSetpoint(Supplier<Integer> level, ElevatorSubsystem elevatorSubsystem) {
+    public void setEncoderValue(double value) {
+        // In rotations
+        elevatorMotor1.getEncoder().setPosition(value);
+    }
+
+    public Command goToScoreSetpoint(int level) {
         return new InstantCommand(() -> {
             double setpoint;
             if (RobotBase.isReal()) {
-                if (level.get() == 1) {
+                if (level == 1) {
                     setpoint = ElevatorConstants.HeightSetpoints.L1;
-                } else if (level.get() == 2) {
+                } else if (level == 2) {
                     setpoint = ElevatorConstants.HeightSetpoints.L2;
-                } else if (level.get() == 3) {
+                } else if (level == 3) {
                     setpoint = ElevatorConstants.HeightSetpoints.L3;
                 } else {
                     setpoint = ElevatorConstants.HeightSetpoints.L1;
                 }
                 goToSetpoint(setpoint);
             } else {
-                ElevatorWristSim.setElevatorSimSetpoint(level.get()); // Passes in the L1-L3 in value to the sim logic
+                ElevatorWristSim.setElevatorSimSetpoint(level); // Passes in the L1-L3 in value to the sim logic
             }
-        }, elevatorSubsystem);
+        }, this);
 
     }
 
-    public void moveAtSpeed(double speed){
-        elevatorMotor1.set(speed*.5);
+    public void moveAtSpeed(double speed) {
+        elevatorMotor1.set(speed * .5);
+    }
+
+    public Command homeElevator() {
+        return this.run(() -> elevatorMotor1.setVoltage(1)).until(() -> getCurrentDraw() > 30.0)
+                .finallyDo(() -> setEncoderValue(0));
+    }
+
+    public double getCurrentDraw() {
+        return elevatorMotor1.getOutputCurrent();
     }
 
     @Override

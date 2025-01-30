@@ -58,7 +58,7 @@ public class AutomatedScoring {
 
     }
 
-    public static Command Score(Supplier<Integer> reefSide, Supplier<Integer> position,
+    public static Command fullScore(Supplier<Integer> reefSide, Supplier<Integer> position,
             Supplier<Integer> height,
             DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem) {
 
@@ -66,8 +66,13 @@ public class AutomatedScoring {
 
         return new ParallelCommandGroup(
                 AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
-                ElevatorSubsystem.goToScoreSetpoint(height, elevatorSubsystem)
+                new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height.get()))
+
         // Add other commands here for automated scoring
         );
+    }
+
+    public static Command scoreNoPathing(int height, ElevatorSubsystem elevatorSubsystem) {
+        return new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height));
     }
 }

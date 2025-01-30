@@ -1,6 +1,5 @@
 package frc.robot.subsystems.drive;
 
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import com.studica.frc.AHRS;
@@ -19,22 +18,20 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotConstants;
 import frc.robot.RobotState;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.RobotConstants.SubsystemEnabledConstants;
-import frc.robot.RobotContainer.UserPolicy;
 import frc.robot.subsystems.drive.swerve.SwerveModule;
 import frc.robot.subsystems.drive.swerve.SwerveModuleSim;
 import frc.robot.subsystems.vision.VisionSubsystem;
-import frc.robot.RobotConstants.AutonomousConstants;
 import frc.robot.utils.SwerveUtils;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathfindingCommand;
@@ -182,14 +179,13 @@ public class DriveSubsystem extends SubsystemBase {
 
         SwerveModuleState[] states = new SwerveModuleState[swerveModuleSims.length];
         for (int i = 0; i < swerveModuleSims.length; i++) {
-            if (RobotBase.isReal()){
+            if (RobotBase.isReal()) {
                 states[i] = swerveModules[i].getState();
-            }
-            else{
+            } else {
                 states[i] = swerveModuleSims[i].getState();
             }
         }
-        
+
         return states;
     }
 
@@ -210,10 +206,10 @@ public class DriveSubsystem extends SubsystemBase {
             });
 
             // SmartDashboard.putNumberArray("Virtual abs encoders", new double[] {
-            //         swerveModules[0].getTurningAbsoluteEncoder().getVirtualPosition(),
-            //         swerveModules[1].getTurningAbsoluteEncoder().getVirtualPosition(),
-            //         swerveModules[2].getTurningAbsoluteEncoder().getVirtualPosition(),
-            //         swerveModules[3].getTurningAbsoluteEncoder().getVirtualPosition()
+            // swerveModules[0].getTurningAbsoluteEncoder().getVirtualPosition(),
+            // swerveModules[1].getTurningAbsoluteEncoder().getVirtualPosition(),
+            // swerveModules[2].getTurningAbsoluteEncoder().getVirtualPosition(),
+            // swerveModules[3].getTurningAbsoluteEncoder().getVirtualPosition()
             // });
             SmartDashboard.putNumberArray("Raw abs encoders", new double[] {
                     swerveModules[0].getTurningAbsoluteEncoder().getPosition(),
@@ -221,7 +217,11 @@ public class DriveSubsystem extends SubsystemBase {
                     swerveModules[2].getTurningAbsoluteEncoder().getPosition(),
                     swerveModules[3].getTurningAbsoluteEncoder().getPosition()
             });
-            SmartDashboard.putNumberArray("rev encoders", new double[]{swerveModules[0].getTurningEncoder().getPosition(),swerveModules[1].getTurningEncoder().getPosition(),swerveModules[2].getTurningEncoder().getPosition(),swerveModules[3].getTurningEncoder().getPosition()});
+            SmartDashboard.putNumberArray("rev encoders",
+                    new double[] { swerveModules[0].getTurningEncoder().getPosition(),
+                            swerveModules[1].getTurningEncoder().getPosition(),
+                            swerveModules[2].getTurningEncoder().getPosition(),
+                            swerveModules[3].getTurningEncoder().getPosition() });
             SmartDashboard.putData("NAVX", m_gyro);
             publisher.set(getModuleStates());
 
@@ -417,7 +417,7 @@ public class DriveSubsystem extends SubsystemBase {
 
             SwerveDriveKinematics.desaturateWheelSpeeds(
                     swerveModuleStates, DrivetrainConstants.MAX_SPEED_METERS_PER_SECOND);
-            if (UserPolicy.isManualControlled) {
+            if (RobotState.isManualControl) {
                 if (RobotBase.isReal()) {
                     swerveModules[0].setDesiredState(swerveModuleStates[0]);
                     swerveModules[1].setDesiredState(swerveModuleStates[1]);
@@ -664,11 +664,9 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Command xCommand() {
-        return Commands.startEnd(() -> {
+        return new InstantCommand(() -> {
             // init
-            UserPolicy.xLocked = !UserPolicy.xLocked;
-        }, () -> {
-            // end
+            RobotState.xLocked = !RobotState.xLocked;
         });
 
     }

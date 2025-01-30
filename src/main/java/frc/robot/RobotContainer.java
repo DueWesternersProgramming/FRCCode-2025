@@ -22,11 +22,12 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.drive.TeleopDriveCommand;
-import frc.robot.commands.elevator.MoveElevator;
+import frc.robot.commands.elevator.MoveElevatorManual;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.automation.AutomationSelector;
+import frc.robot.RobotConstants.OperationModes;
 import frc.robot.automation.AutomatedScoring;
 
 public class RobotContainer {
@@ -48,7 +49,10 @@ public class RobotContainer {
 
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
-        elevatorSubsystem.setDefaultCommand(new MoveElevator(elevatorSubsystem, operatorJoystick));
+        if (!OperationModes.isAutomationEnabled) {
+            elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
+        }
+
         createNamedCommands();
 
         configureButtonBindings();
@@ -69,22 +73,26 @@ public class RobotContainer {
         NamedCommands.registerCommand("Example", new RunCommand(() -> {
             System.out.println("Running...");
         }));
+        NamedCommands.registerCommand("Score L1", AutomatedScoring.scoreNoPathing(1, elevatorSubsystem));
+        NamedCommands.registerCommand("Score L2", AutomatedScoring.scoreNoPathing(2, elevatorSubsystem));
+        NamedCommands.registerCommand("Score L3", AutomatedScoring.scoreNoPathing(3, elevatorSubsystem));
     }
 
     private void configureButtonBindings() {
-        new JoystickButton(driveJoystick, 3).whileTrue(driveSubsystem.xCommand()); // Needs to be while true so the
-                                                                                   // command ends
+        new JoystickButton(driveJoystick, 3).onChange(driveSubsystem.xCommand()); // Needs to be while true so the
+                                                                                  // command ends
         new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
-        // new JoystickButton(driveJoystick, 2).whileTrue(
-        //         new SequentialCommandGroup(
-        //                 new InstantCommand(() -> AutomatedScoring.Score(
-        //                         automationSelector::getReefSide,
-        //                         automationSelector::getPosition,
-        //                         automationSelector::getHeight,
-        //                         driveSubsystem, elevatorSubsystem).schedule())));
+        new JoystickButton(driveJoystick, 2).whileTrue(
+                new SequentialCommandGroup(
+                        new InstantCommand(() -> AutomatedScoring.fullScore(
+                                automationSelector::getReefSide,
+                                automationSelector::getPosition,
+                                automationSelector::getHeight,
+                                driveSubsystem, elevatorSubsystem).schedule())));
 
-        
+        new JoystickButton(driveJoystick, 0).onTrue(RobotState.setCanRotate(true))
+                .onFalse(RobotState.setCanRotate(false));
 
         // Above = DriveJoystick, Below = OperatorJoystick
     }
@@ -105,8 +113,4 @@ public class RobotContainer {
         return field;
     }
 
-    public final class UserPolicy {
-        public static boolean xLocked = false;
-        public static boolean isManualControlled = true;
-    }
 }

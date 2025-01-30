@@ -1,11 +1,6 @@
 package frc.robot;
 
-import java.util.Dictionary;
-import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
-
 import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -17,7 +12,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
 public final class RobotConstants {
 
@@ -41,7 +35,8 @@ public final class RobotConstants {
                                                                                    // CANcoder
                                                                                    // angle, we just zero the encoders
                                                                                    // with the
-                                                                                   // wheels forward
+                                                                                   // wheels forward with bolt side
+                                                                                   // LEFT!!!
                                                                                    // -In radians
                 public static final double REAR_LEFT_VIRTUAL_OFFSET_RADIANS = 0;
                 public static final double REAR_RIGHT_VIRTUAL_OFFSET_RADIANS = 0;
@@ -161,8 +156,8 @@ public final class RobotConstants {
                                 * Math.PI) / DRIVING_MOTOR_REDUCTION) / 60.0; // meters per second, per RPM
 
                 public static final double TURNING_MOTOR_REDUCTION = 12.8; // Ratio between internal relative
-                                                                                  // encoder and
-                                                                                  // the absolute encoder
+                                                                           // encoder and
+                                                                           // the absolute encoder
 
                 public static final double TURNING_ENCODER_POSITION_FACTOR_RADIANS_PER_ROTATION = (2 * Math.PI)
                                 / TURNING_MOTOR_REDUCTION; // radians, per rotation
@@ -216,23 +211,27 @@ public final class RobotConstants {
                         public static final int ELEVATOR_MOTOR_1 = 13;
                         public static final int ELEVATOR_MOTOR_2 = 14;
 
+                        public static final int WRIST_MOTOR = 15;
+
                 }
 
                 public static class Controller {
                         public static final double JOYSTICK_AXIS_THRESHOLD = 0.2;
                         public static final int DRIVE_JOYSTICK = 0;
-                        public static final int PANEL = 1;
                         public static final int OPERATOR_JOYSTICK = 1;
 
                         // Joystick Axis
                         public static final int DRIVE_COMMAND_X_AXIS = 0;
                         public static final int DRIVE_COMMAND_Y_AXIS = 1;
                         public static final int DRIVE_COMMAND_ROT_AXIS = 2;
+
+                        // Manual control axis for operator
+                        public static final int ELEVATOR_MANUAL_CONTROL = 1;
                 }
         }
 
         public static final class AutonomousConstants {
-                //public static final boolean FLIP_PATHPLANNER_AUTOS = false;
+                // public static final boolean FLIP_PATHPLANNER_AUTOS = false;
 
                 public static final double X_CONTROLLER_P = 3.5;
                 public static final double Y_CONTROLLER_P = 3.5;
@@ -321,5 +320,9 @@ public final class RobotConstants {
         public static final class SubsystemEnabledConstants {
                 public static final boolean DRIVE_SUBSYSTEM_ENABLED = true;
                 public static final boolean VISION_SUBSYSTEM_ENABLED = false;
+        }
+
+        public static final class OperationModes {
+                public static final boolean isAutomationEnabled = true;
         }
 }
