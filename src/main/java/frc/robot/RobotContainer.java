@@ -23,11 +23,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.elevator.MoveElevatorManual;
+import frc.robot.commands.wrist.MoveWristManual;
+import frc.robot.subsystems.claw.ClawSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
+import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.automation.AutomationSelector;
-import frc.robot.RobotConstants.OperationModes;
+import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.automation.AutomatedScoring;
 
 public class RobotContainer {
@@ -35,6 +38,8 @@ public class RobotContainer {
     public final DriveSubsystem driveSubsystem = new DriveSubsystem();
     public final VisionSubsystem visionSubsystem = new VisionSubsystem();
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    public final WristSubsystem wristSubsystem = new WristSubsystem();
+    public final ClawSubsystem clawSubsystem = new ClawSubsystem();
 
     private final Joystick driveJoystick = new Joystick(RobotConstants.PortConstants.Controller.DRIVE_JOYSTICK);
     private final Joystick operatorJoystick = new Joystick(RobotConstants.PortConstants.Controller.OPERATOR_JOYSTICK);
@@ -49,16 +54,16 @@ public class RobotContainer {
 
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
-        if (!OperationModes.isAutomationEnabled) {
-            elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
-        }
+
+        elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
+        wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem, operatorJoystick));
 
         createNamedCommands();
 
         configureButtonBindings();
 
         try {
-            pdp = new PowerDistribution(16, ModuleType.kRev);
+            pdp = new PowerDistribution(CAN.PDH, ModuleType.kRev);
             m_autoPositionChooser = AutoBuilder.buildAutoChooser("Test Auto");
             Shuffleboard.getTab("Autonomous Selection").add(m_autoPositionChooser);
             Shuffleboard.getTab("Power").add(pdp);
@@ -73,12 +78,18 @@ public class RobotContainer {
         NamedCommands.registerCommand("Example", new RunCommand(() -> {
             System.out.println("Running...");
         }));
-        NamedCommands.registerCommand("Score L1", AutomatedScoring.scoreNoPathing(1, elevatorSubsystem));
-        NamedCommands.registerCommand("Score L2", AutomatedScoring.scoreNoPathing(2, elevatorSubsystem));
-        NamedCommands.registerCommand("Score L3", AutomatedScoring.scoreNoPathing(3, elevatorSubsystem));
+        NamedCommands.registerCommand("Score L1",
+                AutomatedScoring.scoreNoPathing(1, elevatorSubsystem, wristSubsystem, clawSubsystem));
+        NamedCommands.registerCommand("Score L2",
+                AutomatedScoring.scoreNoPathing(2, elevatorSubsystem, wristSubsystem, clawSubsystem));
+        NamedCommands.registerCommand("Score L3",
+                AutomatedScoring.scoreNoPathing(3, elevatorSubsystem, wristSubsystem, clawSubsystem));
     }
 
     private void configureButtonBindings() {
+        new JoystickButton(driveJoystick, 0).onTrue(RobotState.setCanRotate(true))
+                .onFalse(RobotState.setCanRotate(false));
+
         new JoystickButton(driveJoystick, 3).onChange(driveSubsystem.xCommand()); // Needs to be while true so the
                                                                                   // command ends
         new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
@@ -89,10 +100,7 @@ public class RobotContainer {
                                 automationSelector::getReefSide,
                                 automationSelector::getPosition,
                                 automationSelector::getHeight,
-                                driveSubsystem, elevatorSubsystem).schedule())));
-
-        new JoystickButton(driveJoystick, 0).onTrue(RobotState.setCanRotate(true))
-                .onFalse(RobotState.setCanRotate(false));
+                                driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem))));
 
         // Above = DriveJoystick, Below = OperatorJoystick
     }

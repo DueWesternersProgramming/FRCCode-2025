@@ -58,24 +58,28 @@ public class WristSubsystem extends SubsystemBase {
 
     }
 
-    public static Command goToScoreSetpoint(Supplier<Integer> level, WristSubsystem wristSubsystem) {
+    public void moveAtSpeed(double speed) {
+        wristMotor.set(speed * .75);
+    }
+
+    public Command goToScoreSetpoint(int level) {
         return new InstantCommand(() -> {
             double setpoint;
             if (RobotBase.isReal()) {
-                if (level.get() == 1) {
+                if (level == 1) {
                     setpoint = WristConstants.AngleSetpoints.L1;
-                } else if (level.get() == 2) {
+                } else if (level == 2) {
                     setpoint = WristConstants.AngleSetpoints.L2;
-                } else if (level.get() == 3) {
+                } else if (level == 3) {
                     setpoint = WristConstants.AngleSetpoints.L3;
                 } else {
                     setpoint = WristConstants.AngleSetpoints.L1;
                 }
                 goToSetpoint(setpoint);
             }
-            ElevatorWristSim.setWristSimSetpoint(level.get()); // Passes in the L1-L3 in value to the sim logic
+            ElevatorWristSim.setWristSimSetpoint(level); // Passes in the L1-L3 in value to the sim logic
 
-        }, wristSubsystem);
+        }, this);
     }
 
     @Override

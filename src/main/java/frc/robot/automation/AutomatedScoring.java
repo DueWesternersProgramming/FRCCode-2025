@@ -13,8 +13,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.claw.ClawSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.RobotConstants.ScoringConstants;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -60,19 +62,19 @@ public class AutomatedScoring {
 
     public static Command fullScore(Supplier<Integer> reefSide, Supplier<Integer> position,
             Supplier<Integer> height,
-            DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem) {
+            DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+            ClawSubsystem clawSubsystem) {
 
         Pose2d pose = pathPlanToReef(reefSide, position);
 
         return new ParallelCommandGroup(
                 AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
-                new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height.get()))
-
-        // Add other commands here for automated scoring
-        );
+                new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height.get())));
     }
 
-    public static Command scoreNoPathing(int height, ElevatorSubsystem elevatorSubsystem) {
-        return new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height));
+    public static Command scoreNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+            ClawSubsystem clawSubsystem) {
+        return new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height),
+                wristSubsystem.goToScoreSetpoint(height));
     }
 }

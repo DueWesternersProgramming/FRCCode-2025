@@ -104,13 +104,12 @@ public final class RobotConstants {
 
         }
 
-        public static final class ClawConstants{
+        public static final class ClawConstants {
 
                 public static final double MAX_MOTOR_RPM = 500.0;
                 public static final double MAX_MOTOR_ACCELERATION = 500.0;
 
         }
-                
 
         public static final class WristConstants {
                 public static final double WRIST_MIN_ANGLE = 0.0;
@@ -222,7 +221,7 @@ public final class RobotConstants {
                         public static final int WRIST_MOTOR = 15;
 
                         public static final int CLAW_MOTOR = 16;
-
+                        public static final int PDH = 17;
 
                 }
 
@@ -238,6 +237,7 @@ public final class RobotConstants {
 
                         // Manual control axis for operator
                         public static final int ELEVATOR_MANUAL_CONTROL = 1;
+                        public static final int WRIST_MANUAL_CONTROL = 5;
                 }
         }
 
@@ -331,9 +331,5 @@ public final class RobotConstants {
         public static final class SubsystemEnabledConstants {
                 public static final boolean DRIVE_SUBSYSTEM_ENABLED = true;
                 public static final boolean VISION_SUBSYSTEM_ENABLED = false;
-        }
-
-        public static final class OperationModes {
-                public static final boolean isAutomationEnabled = true;
         }
 }
