@@ -112,7 +112,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (RobotBase.isReal()) {
-
+            SmartDashboard.putNumber("elevator encoder", elevatorMotor1.getEncoder().getPosition());
         } else {
             ElevatorWristSim.update();
         }

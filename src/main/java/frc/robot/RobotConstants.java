@@ -104,6 +104,14 @@ public final class RobotConstants {
 
         }
 
+        public static final class ClawConstants{
+
+                public static final double MAX_MOTOR_RPM = 500.0;
+                public static final double MAX_MOTOR_ACCELERATION = 500.0;
+
+        }
+                
+
         public static final class WristConstants {
                 public static final double WRIST_MIN_ANGLE = 0.0;
                 public static final double ELEVATOR_MIN_HEIGHT = 30.0;
@@ -212,6 +220,9 @@ public final class RobotConstants {
                         public static final int ELEVATOR_MOTOR_2 = 14;
 
                         public static final int WRIST_MOTOR = 15;
+
+                        public static final int CLAW_MOTOR = 16;
+
 
                 }
 
