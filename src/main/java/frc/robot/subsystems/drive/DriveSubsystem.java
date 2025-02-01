@@ -127,7 +127,7 @@ public class DriveSubsystem extends SubsystemBase {
                                 swerveModules[1].getPosition(),
                                 swerveModules[2].getPosition(),
                                 swerveModules[3].getPosition()
-                        }, new Pose2d());
+                        }, new Pose2d(0, 0, new Rotation2d()));
 
             }
         }
@@ -253,7 +253,7 @@ public class DriveSubsystem extends SubsystemBase {
             fakeGyro = m_trackedRotation.getDegrees();
 
             m_odometry.update(
-                    Rotation2d.fromDegrees(fakeGyro),
+                    Rotation2d.fromDegrees(fakeGyro + (CowboyUtils.isRedAlliance() ? 180 : 0)),
                     new SwerveModulePosition[] {
                             swerveModuleSims[0].getPosition(),
                             swerveModuleSims[1].getPosition(),
@@ -406,9 +406,7 @@ public class DriveSubsystem extends SubsystemBase {
 
             ChassisSpeeds speeds = new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
 
-            Rotation2d rotation = Rotation2d.fromDegrees(
-                    getGyroAngle()
-                            + (CowboyUtils.isRedAlliance() ? 180 : 0));
+            Rotation2d rotation = Rotation2d.fromDegrees(getGyroAngle());
 
             var swerveModuleStates = DrivetrainConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
                     fieldRelative
@@ -434,10 +432,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void runChassisSpeeds(ChassisSpeeds speeds, Boolean fieldRelative) {
-        Rotation2d rotation = RobotBase.isSimulation() ? Rotation2d.fromDegrees(
-                getGyroAngle()
-                        + (CowboyUtils.isRedAlliance() ? 180 : 0))
-                : Rotation2d.fromDegrees(0);
+        Rotation2d rotation = Rotation2d.fromDegrees(getGyroAngle());
 
         var swerveModuleStates = DrivetrainConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
                 fieldRelative

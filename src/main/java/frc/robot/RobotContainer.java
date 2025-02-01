@@ -95,12 +95,16 @@ public class RobotContainer {
         new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
         new JoystickButton(driveJoystick, 2).whileTrue(
-                new SequentialCommandGroup(
-                        new InstantCommand(() -> AutomatedScoring.fullScore(
-                                automationSelector::getReefSide,
-                                automationSelector::getPosition,
-                                automationSelector::getHeight,
-                                driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem))));
+                new InstantCommand(() -> {
+                    // Create a new command instance at the time of button press,
+                    // ensuring that the latest values are used.
+                    Command cmd = AutomatedScoring.fullScore(
+                            automationSelector.getReefSide(),
+                            automationSelector.getPosition(),
+                            automationSelector.getHeight(),
+                            driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
+                    cmd.schedule();
+                }));
 
         // Above = DriveJoystick, Below = OperatorJoystick
     }

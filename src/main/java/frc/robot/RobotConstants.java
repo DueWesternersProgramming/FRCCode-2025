@@ -96,16 +96,14 @@ public final class RobotConstants {
                 public static final double MAX_MOTOR_ACCELERATION = 500.0;
 
                 public static final class SimConstants {
-                        public static final double MIN_LIGMENT_LENGTH = 0.043885;
-                        public static final double L1 = 0.65;
-                        public static final double L2 = 0.85;
-                        public static final double L3 = 1.4;
+                        public static final double L1 = 0.2;
+                        public static final double L2 = 0.3;
+                        public static final double L3 = 0.475;
                 }
 
         }
 
         public static final class ClawConstants {
-
                 public static final double MAX_MOTOR_RPM = 500.0;
                 public static final double MAX_MOTOR_ACCELERATION = 500.0;
 
@@ -124,11 +122,11 @@ public final class RobotConstants {
                 public static final double MAX_MOTOR_RPM = 500.0;
                 public static final double MAX_MOTOR_ACCELERATION = 500.0;
 
-                public static final class SimConstants {
-                        public static final double L1 = 85;
-                        public static final double L2 = 87.5;
-                        public static final double L3 = 120;
-                }
+                // public static final class SimConstants {
+                // public static final double L1 = 85;
+                // public static final double L2 = 87.5;
+                // public static final double L3 = 120;
+                // }
 
         }
 

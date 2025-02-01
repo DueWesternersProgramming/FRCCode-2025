@@ -24,27 +24,28 @@ import com.pathplanner.lib.util.FlippingUtil;
 
 public class AutomatedScoring {
     static Pose2d targetPose;
-    static double xOffset = .175;
-    static double yOffset = .05;
+    static double xOffset = .2;
+    static double yOffset = .0;
     static Field2d field = new Field2d();
 
-    public static Pose2d pathPlanToReef(Supplier<Integer> reefSide, Supplier<Integer> position) {
+    public static Pose2d pathPlanToReef(int reefSide, int position) {
         // System.out.println("Reef Side: " + reefSide.get());
-        targetPose = ScoringConstants.BlueAlliance.poses.get(reefSide.get() - 1);
+        targetPose = ScoringConstants.BlueAlliance.poses.get(reefSide - 1);
 
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
-
+            System.out.println("Flipping pose");
             targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-                    new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 90))); // Not sure what to do
-                                                                                                 // about this
+                    new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 90)));
+            // // Not sure what to do
+            // // about this
         }
 
         // Determine the correct x & y offset(s) based on the position
         double adjustedXOffset = xOffset;
-        if (position.get() == 0) {
+        if (position == 0) {
             adjustedXOffset = xOffset;
-        } else if (position.get() == 1) {
+        } else if (position == 1) {
             adjustedXOffset = 0;
         } else {
             adjustedXOffset = -xOffset;
@@ -60,8 +61,8 @@ public class AutomatedScoring {
 
     }
 
-    public static Command fullScore(Supplier<Integer> reefSide, Supplier<Integer> position,
-            Supplier<Integer> height,
+    public static Command fullScore(int reefSide, int position,
+            int height,
             DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
 
@@ -69,7 +70,7 @@ public class AutomatedScoring {
 
         return new ParallelCommandGroup(
                 AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
-                new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height.get())));
+                elevatorSubsystem.goToScoreSetpoint(height));
     }
 
     public static Command scoreNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,

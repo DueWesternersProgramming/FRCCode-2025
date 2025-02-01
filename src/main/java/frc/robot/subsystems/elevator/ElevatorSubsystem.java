@@ -34,31 +34,31 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public ElevatorSubsystem() {
 
-        if (RobotBase.isReal()) {
-            elevatorMotor1 = new SparkMax(CAN.ELEVATOR_MOTOR_1, MotorType.kBrushless);
-            elevatorMotor2 = new SparkMax(CAN.ELEVATOR_MOTOR_2, MotorType.kBrushless);
+        // if (RobotBase.isReal()) {
+        elevatorMotor1 = new SparkMax(CAN.ELEVATOR_MOTOR_1, MotorType.kBrushless);
+        elevatorMotor2 = new SparkMax(CAN.ELEVATOR_MOTOR_2, MotorType.kBrushless);
 
-            elevatorMotor1Controller = elevatorMotor1.getClosedLoopController();
+        elevatorMotor1Controller = elevatorMotor1.getClosedLoopController();
 
-            elevatorMotor1Config = new SparkMaxConfig();
-            elevatorMotor2Config = new SparkMaxConfig();
+        elevatorMotor1Config = new SparkMaxConfig();
+        elevatorMotor2Config = new SparkMaxConfig();
 
-            elevatorMotor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-            elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(ElevatorConstants.MAX_MOTOR_RPM);
-            elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.MAX_MOTOR_ACCELERATION);
+        elevatorMotor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+        elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(ElevatorConstants.MAX_MOTOR_RPM);
+        elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.MAX_MOTOR_ACCELERATION);
 
-            elevatorMotor1Config.closedLoop.pid(0.1, 0.0, 0.0);
+        elevatorMotor1Config.closedLoop.pid(0.1, 0.0, 0.0);
 
-            elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1, true);
+        elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1, true);
 
-            elevatorMotor1.configure(elevatorMotor1Config, ResetMode.kResetSafeParameters,
-                    PersistMode.kPersistParameters);
+        elevatorMotor1.configure(elevatorMotor1Config, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
 
-            elevatorMotor2.configure(elevatorMotor2Config, ResetMode.kResetSafeParameters,
-                    PersistMode.kPersistParameters);
-        } else {
-            new ElevatorWristSim();
-        }
+        elevatorMotor2.configure(elevatorMotor2Config, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
+        // } else {
+        new ElevatorWristSim();
+        // }
 
     }
 
@@ -90,7 +90,7 @@ public class ElevatorSubsystem extends SubsystemBase {
                 }
                 goToSetpoint(setpoint);
             } else {
-                ElevatorWristSim.setElevatorSimSetpoint(level); // Passes in the L1-L3 in value to the sim logic
+                ElevatorWristSim.goToScoreSetpoint(level);// Passes in the L1-L3 into the sim logic
             }
         }, this);
 
@@ -112,9 +112,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (RobotBase.isReal()) {
-            SmartDashboard.putNumber("elevator encoder", elevatorMotor1.getEncoder().getPosition());
+            SmartDashboard.putNumber("elevator encoder pos", elevatorMotor1.getEncoder().getPosition());
         } else {
-            ElevatorWristSim.update();
         }
     }
 

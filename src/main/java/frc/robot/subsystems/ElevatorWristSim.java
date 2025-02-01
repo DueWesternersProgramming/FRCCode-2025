@@ -1,71 +1,77 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
-import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.util.Color;
-import edu.wpi.first.wpilibj.util.Color8Bit;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import frc.robot.RobotConstants.ElevatorConstants;
-import frc.robot.RobotConstants.WristConstants;
 
 public class ElevatorWristSim {
 
-    private static MechanismLigament2d m_elevator;
-    private static MechanismLigament2d m_wrist;
-    static double ElevatorLength = ElevatorConstants.SimConstants.MIN_LIGMENT_LENGTH;
-    static double WristAngle = 90;
+    // Get the default NetworkTable instance and a table (choose a table name of
+    // your choice).
+    private final static NetworkTable networkTable = NetworkTableInstance.getDefault().getTable("3dSimulation");
+    static StructPublisher<Pose3d> firstStagePublisher = networkTable.getStructTopic("FirstStage", Pose3d.struct)
+            .publish();
+    static StructPublisher<Pose3d> secondStagePublisher = networkTable.getStructTopic("SecondStage", Pose3d.struct)
+            .publish();
+
+    static Pose3d firstStage = new Pose3d(0, 0, 0,
+            new Rotation3d(Units.degreesToRadians(90), Units.degreesToRadians(0), Units.degreesToRadians(90)));
+
+    static Pose3d secondStage = new Pose3d(0, 0, 0,
+            new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(0), Units.degreesToRadians(0)));
 
     public ElevatorWristSim() {
+        // Ensure the table name is consistent; here we use "3dSimulation".
 
-        Mechanism2d mech = new Mechanism2d(3, 6);
-        // the mechanism root node
-        MechanismRoot2d root = mech.getRoot("climber", (1.5 - Units.inchesToMeters(5)), 0);
+        firstStagePublisher.set(getFirstStagePositioning(0, firstStage));
 
-        // MechanismLigament2d objects represent each "section"/"stage" of the
-        // mechanism, and are based
-        // off the root node or another ligament object
-        m_elevator = root
-                .append(new MechanismLigament2d("elevator", ElevatorConstants.SimConstants.MIN_LIGMENT_LENGTH, 85, 6,
-                        new Color8Bit(Color.kRed)));
+        StructPublisher<Pose3d> secondStagePublisher = networkTable.getStructTopic("SecondStage", Pose3d.struct)
+                .publish();
+        secondStagePublisher.set(getSecondStagePositioning(0, secondStage));
 
-        m_wrist = m_elevator.append(
-                new MechanismLigament2d("wrist", Units.inchesToMeters(14.5), -90, 6, new Color8Bit(Color.kBlue)));
-        SmartDashboard.putData("mech2d", mech);
+        // Test:
+        setElevatorToHeight(.25);
+    }
+    // public static void setElevatorHeightMeters(double lengthMeters) {
+
+    // }
+    private static Pose3d getFirstStagePositioning(double lengthMeters, Pose3d currentPose3d) {
+        double x = Math.cos(Units.degreesToRadians(85)) * lengthMeters;
+        double z = Math.sin(Units.degreesToRadians(85)) * lengthMeters;
+        return new Pose3d(x, 0, z, currentPose3d.getRotation());
     }
 
-    public static void update() {
-        m_elevator.setLength(ElevatorLength);
-        m_wrist.setAngle(-WristAngle);
+    private static Pose3d getSecondStagePositioning(double lengthMeters, Pose3d currentPose3d) {
+        double x = Math.cos(Units.degreesToRadians(85)) * (2 * lengthMeters);
+        double z = Math.sin(Units.degreesToRadians(85)) * (2 * lengthMeters); // 2:1 stage ratio
+        return new Pose3d(x, 0, z, currentPose3d.getRotation());
     }
 
-    public static void setElevatorSimSetpoint(int level) {
+    private static void setElevatorToHeight(double lengthMeters) {
+        firstStage = getFirstStagePositioning(lengthMeters, firstStage);
+        firstStagePublisher.set(firstStage);
+
+        secondStage = getSecondStagePositioning(lengthMeters, secondStage);
+        secondStagePublisher.set(secondStage);
+    }
+
+    public static void goToScoreSetpoint(int level) {
         if (level == 1) {
-            ElevatorLength = ElevatorConstants.SimConstants.L1;
-        } else if (level == 2) {
-            ElevatorLength = ElevatorConstants.SimConstants.L2;
-        } else if (level == 3) {
-            ElevatorLength = ElevatorConstants.SimConstants.L3;
-        } else {
-            ElevatorLength = ElevatorConstants.SimConstants.L1;
+            setElevatorToHeight(ElevatorConstants.SimConstants.L1);
         }
-
-    }
-
-    public static void setWristSimSetpoint(int level) {
-        if (level == 1) {
-            WristAngle = WristConstants.SimConstants.L1;
-        } else if (level == 2) {
-            WristAngle = WristConstants.SimConstants.L2;
-        } else if (level == 3) {
-            WristAngle = WristConstants.SimConstants.L3;
-        } else {
-            WristAngle = WristConstants.SimConstants.L1;
+        if (level == 2) {
+            setElevatorToHeight(ElevatorConstants.SimConstants.L2);
+        }
+        if (level == 3) {
+            setElevatorToHeight(ElevatorConstants.SimConstants.L3);
+        }
+        if (level == 0) {
+            setElevatorToHeight(0);
         }
     }
 
-    private static void setWristAngle(double angle) {
-        WristAngle = angle;
-    }
 }

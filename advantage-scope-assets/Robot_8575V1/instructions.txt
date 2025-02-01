@@ -1,0 +1,1 @@
+Paste the other files in the user assets folder of advantage scope, which can be located by pressing help->open user assets.

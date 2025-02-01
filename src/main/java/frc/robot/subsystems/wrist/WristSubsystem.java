@@ -31,23 +31,23 @@ public class WristSubsystem extends SubsystemBase {
 
     public WristSubsystem() {
 
-        if (RobotBase.isReal()) {
-            wristMotor = new SparkMax(CAN.WRIST_MOTOR, MotorType.kBrushless);
+        // if (RobotBase.isReal()) {
+        wristMotor = new SparkMax(CAN.WRIST_MOTOR, MotorType.kBrushless);
 
-            wristMotorController = wristMotor.getClosedLoopController();
+        wristMotorController = wristMotor.getClosedLoopController();
 
-            wristMotorConfig = new SparkMaxConfig();
+        wristMotorConfig = new SparkMaxConfig();
 
-            wristMotorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-            wristMotorConfig.closedLoop.maxMotion.maxVelocity(WristConstants.MAX_MOTOR_RPM);
-            wristMotorConfig.closedLoop.maxMotion.maxAcceleration(WristConstants.MAX_MOTOR_ACCELERATION);
+        wristMotorConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+        wristMotorConfig.closedLoop.maxMotion.maxVelocity(WristConstants.MAX_MOTOR_RPM);
+        wristMotorConfig.closedLoop.maxMotion.maxAcceleration(WristConstants.MAX_MOTOR_ACCELERATION);
 
-            wristMotorConfig.closedLoop.pid(0.1, 0.0, 0.0);
+        wristMotorConfig.closedLoop.pid(0.1, 0.0, 0.0);
 
-            wristMotor.configure(wristMotorConfig, ResetMode.kResetSafeParameters,
-                    PersistMode.kPersistParameters);
+        wristMotor.configure(wristMotorConfig, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
 
-        }
+        // }
         // The sim combination of wrist and elevator init is done in the RobotContainer
     }
 
@@ -77,7 +77,8 @@ public class WristSubsystem extends SubsystemBase {
                 }
                 goToSetpoint(setpoint);
             }
-            ElevatorWristSim.setWristSimSetpoint(level); // Passes in the L1-L3 in value to the sim logic
+            // ElevatorWristSim.setWristSimSetpoint(level); // Passes in the L1-L3 in value
+            // to the sim logic
 
         }, this);
     }
@@ -87,7 +88,7 @@ public class WristSubsystem extends SubsystemBase {
         if (RobotBase.isReal()) {
 
         } else {
-            ElevatorWristSim.update();
+
         }
     }
 
