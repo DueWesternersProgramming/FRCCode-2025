@@ -77,8 +77,6 @@ public class WristSubsystem extends SubsystemBase {
                 }
                 goToSetpoint(setpoint);
             }
-            // ElevatorWristSim.setWristSimSetpoint(level); // Passes in the L1-L3 in value
-            // to the sim logic
 
         }, this);
     }

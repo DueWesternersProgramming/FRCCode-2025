@@ -87,8 +87,8 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        new JoystickButton(driveJoystick, 0).onTrue(RobotState.setCanRotate(true))
-                .onFalse(RobotState.setCanRotate(false));
+        // new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
+        // .onFalse(RobotState.setCanRotate(false));
 
         new JoystickButton(driveJoystick, 3).onChange(driveSubsystem.xCommand()); // Needs to be while true so the
                                                                                   // command ends
@@ -102,6 +102,15 @@ public class RobotContainer {
                             automationSelector.getReefSide(),
                             automationSelector.getPosition(),
                             automationSelector.getHeight(),
+                            driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
+                    cmd.schedule();
+                }));
+
+        new JoystickButton(driveJoystick, 6).whileTrue(
+                new InstantCommand(() -> {
+                    // Create a new command instance at the time of button press,
+                    // ensuring that the latest values are used.
+                    Command cmd = AutomatedScoring.humanPlayerPickup(automationSelector.getHumanPlayerStation(),
                             driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
                     cmd.schedule();
                 }));

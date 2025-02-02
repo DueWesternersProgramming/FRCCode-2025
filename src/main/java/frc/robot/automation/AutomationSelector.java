@@ -1,22 +1,15 @@
 package frc.robot.automation;
 
-import edu.wpi.first.networktables.BooleanPublisher;
-import edu.wpi.first.networktables.IntegerPublisher;
-import edu.wpi.first.networktables.IntegerSubscriber;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.wpilibj.RobotBase;
-import frc.robot.utils.CowboyUtils;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutomationSelector {
 
     public AutomationSelector() {
         // Publish initial values to SmartDashboard
-        SmartDashboard.putNumber("Reef Side", 1);
-        SmartDashboard.putNumber("Position", 1);
-        SmartDashboard.putNumber("Level", 1);
+        SmartDashboard.putNumber("Reef Side", 1); // 1-6 counter clockwise. see strategy docs.
+        SmartDashboard.putNumber("Position", 1); // 0 for left, 1 for middle, 2 for right
+        SmartDashboard.putNumber("Level", 1); // L1-L3, 1-3
+        SmartDashboard.putNumber("HumanPlayer", 0); // 0 for left, 1 for right
     }
 
     public int getReefSide() {
@@ -39,4 +32,12 @@ public class AutomationSelector {
         System.out.println("Retrieved Level: " + value);
         return value;
     }
+
+    public int getHumanPlayerStation() {
+        // Retrieve value from SmartDashboard
+        int value = (int) SmartDashboard.getNumber("HumanPlayer", 0);
+        System.out.println("Retrieved HP: " + value);
+        return value;
+    }
+
 }

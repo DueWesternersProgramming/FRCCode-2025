@@ -1,18 +1,12 @@
 package frc.robot.automation;
 
-import java.util.function.Supplier;
-
-import org.opencv.core.Mat;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.claw.ClawSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -24,17 +18,26 @@ import com.pathplanner.lib.util.FlippingUtil;
 
 public class AutomatedScoring {
     static Pose2d targetPose;
-    static double xOffset = .2;
-    static double yOffset = .0;
-    static Field2d field = new Field2d();
+    static double xOffset = .2;// left and right
+    static double yOffset = -.25;// forward and back
 
-    public static Pose2d pathPlanToReef(int reefSide, int position) {
+    private static Pose2d pathPlanToHP(int humanPlayerSide) {
+        targetPose = ScoringConstants.BlueAlliance.HP_POSES.get(humanPlayerSide); // no -1 since 0 is left and 1 is
+                                                                                  // right
+                                                                                  // and indexing starts at 0'
+        if (CowboyUtils.isRedAlliance()) {
+            targetPose = FlippingUtil.flipFieldPose(targetPose);
+        }
+        return targetPose;
+    }
+
+    private static Pose2d pathPlanToReef(int reefSide, int position) {
         // System.out.println("Reef Side: " + reefSide.get());
-        targetPose = ScoringConstants.BlueAlliance.poses.get(reefSide - 1);
+        targetPose = ScoringConstants.BlueAlliance.REEF_SIDE_POSES.get(reefSide - 1);
 
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
-            System.out.println("Flipping pose");
+            // System.out.println("Flipping pose");
             targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
                     new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 90)));
             // // Not sure what to do
@@ -52,13 +55,12 @@ public class AutomatedScoring {
         }
 
         // Create a translation for the offsets
-        Translation2d translation = new Translation2d(yOffset, adjustedXOffset);
+        Translation2d translation = new Translation2d(adjustedXOffset, yOffset);
 
         // Apply the translation to the target pose
         targetPose = targetPose.transformBy(new Transform2d(translation, targetPose.getRotation()));
 
         return targetPose;
-
     }
 
     public static Command fullScore(int reefSide, int position,
@@ -70,12 +72,22 @@ public class AutomatedScoring {
 
         return new ParallelCommandGroup(
                 AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
-                elevatorSubsystem.goToScoreSetpoint(height));
+                new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height),
+                        wristSubsystem.goToScoreSetpoint(height)));
     }
 
     public static Command scoreNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
         return new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height),
                 wristSubsystem.goToScoreSetpoint(height));
+    }
+
+    public static Command humanPlayerPickup(int humanPlayerSide, DriveSubsystem drivesubsystem,
+            ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+            ClawSubsystem clawSubsystem) {
+
+        return new SequentialCommandGroup(
+                AlignWithPose.pathToPoseCommand(pathPlanToHP(humanPlayerSide), drivesubsystem));
+
     }
 }

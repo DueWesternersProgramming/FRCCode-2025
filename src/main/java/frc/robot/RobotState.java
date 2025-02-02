@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 public class RobotState {
 
     public static boolean isManualControl = true;
-    public static boolean canRotate = false;
+    public static boolean canRotate = true;
     public static boolean xLocked = false;
     public static Pose2d robotPose = new Pose2d();
 
