@@ -41,7 +41,7 @@ public class AutomatedScoring {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
             // System.out.println("Flipping pose");
             // targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-            // new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 90)));
+            // new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() - 270)));
             // // Not sure what to do
             // // about this
         }
@@ -60,7 +60,7 @@ public class AutomatedScoring {
         }
 
         // Create a translation for the offsets
-        Translation2d translation = new Translation2d(adjustedXOffset, yOffset);
+        Translation2d translation = new Translation2d(yOffset, adjustedXOffset);
 
         // Apply the translation to the target pose
         targetPose = targetPose.transformBy(new Transform2d(translation, targetPose.getRotation()));
