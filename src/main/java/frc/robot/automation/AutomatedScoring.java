@@ -14,6 +14,8 @@ import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.RobotConstants.ScoringConstants;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.pathplanner.lib.util.FlippingUtil;
 
 public class AutomatedScoring {
@@ -38,11 +40,14 @@ public class AutomatedScoring {
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
             // System.out.println("Flipping pose");
-            targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-                    new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 90)));
+            // targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
+            // new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 90)));
             // // Not sure what to do
             // // about this
         }
+        // Field2d field = new Field2d();
+        // field.setRobotPose(targetPose);
+        // SmartDashboard.putData("e", field);
 
         // Determine the correct x & y offset(s) based on the position
         double adjustedXOffset = xOffset;

@@ -14,10 +14,11 @@ import java.util.Optional;
 import org.photonvision.simulation.VisionSystemSim;
 
 public class VisionSubsystem extends SubsystemBase {
-    private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera", "backCamera" };
+    private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera", "backLeftCamera",
+            "backRightCamera" };
     public static Camera[] cameras = new Camera[cameraNames.length];
     public static CameraSim[] cameraSims = new CameraSim[cameraNames.length];
-    
+
     public static VisionSystemSim visionSim;
 
     public VisionSubsystem() {
@@ -48,15 +49,14 @@ public class VisionSubsystem extends SubsystemBase {
         Pose2d[] list = {};
 
         for (int i = 0; i < cameraNames.length; i++) {
-            try{
+            try {
                 if (RobotBase.isSimulation()) {
-                list[i] = cameraSims[i].getEstimatedGlobalPose(RobotState.robotPose).get().estimatedPose.toPose2d();
+                    list[i] = cameraSims[i].getEstimatedGlobalPose(RobotState.robotPose).get().estimatedPose.toPose2d();
                 } else {
                     list[i] = cameras[i].getEstimatedGlobalPose(RobotState.robotPose).get().estimatedPose.toPose2d();
                 }
-        
-            }
-            catch(Exception e){
+
+            } catch (Exception e) {
                 list[i] = null;
             }
         }

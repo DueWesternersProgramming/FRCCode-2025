@@ -22,7 +22,7 @@ public final class RobotConstants {
                                         new Pose2d(2.961, 4, new Rotation2d(Math.toRadians(0))),
                                         new Pose2d(3.712, 2.723, new Rotation2d(Math.toRadians(30))),
                                         new Pose2d(5.253, 2.656, new Rotation2d(Math.toRadians(-120))),
-                                        new Pose2d(6, 4, new Rotation2d(Math.toRadians(180))),
+                                        new Pose2d(6, 4, new Rotation2d(Math.toRadians(0))),
                                         new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))),
                                         new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))));
                         public static final List<Pose2d> HP_POSES = List.of(
@@ -235,7 +235,8 @@ public final class RobotConstants {
                         // Joystick Axis
                         public static final int DRIVE_COMMAND_X_AXIS = 0;
                         public static final int DRIVE_COMMAND_Y_AXIS = 1;
-                        public static final int DRIVE_COMMAND_ROT_AXIS = 2; // 2 for the flight controller, 4 for xbox/gamepad
+                        public static final int DRIVE_COMMAND_ROT_AXIS = 2; // 2 for the flight controller, 4 for
+                                                                            // xbox/gamepad
 
                         // Manual control axis for operator
                         public static final int ELEVATOR_MANUAL_CONTROL = 1;
@@ -292,11 +293,12 @@ public final class RobotConstants {
                                                 new Translation3d(
                                                                 Units.inchesToMeters(5.56), // forward+
                                                                 Units.inchesToMeters(7.99), // left+
-                                                                Units.inchesToMeters(9.67)), // up+
+                                                                Units.inchesToMeters(11.638107)), // up+
                                                 new Rotation3d(
                                                                 Units.degreesToRadians(0),
                                                                 Units.degreesToRadians(-20), // Note, these are all
-                                                                                             // counter clockwise so to
+                                                                                             // counter clockwise
+                                                                                             // so to
                                                                                              // face up we
                                                                                              // need
                                                                                              // - ;)
@@ -313,26 +315,42 @@ public final class RobotConstants {
                                                                 Units.degreesToRadians(-20), // Note, these are all
                                                                                              // counter clockwise so to
                                                                                              // face up we
-                                                                                             // need -40 ;)
+                                                                                             // need - ;)
                                                                 Units.degreesToRadians(-15))),
-                                // Back
+                                // Back left
                                 new Transform3d(
                                                 new Translation3d(
-                                                                Units.inchesToMeters(13.5), // forward+
-                                                                Units.inchesToMeters(12.75), // left+
-                                                                Units.inchesToMeters(9)), // up+
+                                                                Units.inchesToMeters(-4), // forward+
+                                                                Units.inchesToMeters(10.2), // left+
+                                                                Units.inchesToMeters(11.1)), // up+
                                                 new Rotation3d(
                                                                 Units.degreesToRadians(0),
-                                                                Units.degreesToRadians(-40), // Note, these are all
-                                                                                             // counter clockwise so to
-                                                                                             // face up we
-                                                                                             // need -40 ;)
-                                                                Units.degreesToRadians(-15))) };
+                                                                Units.degreesToRadians(-20.5), // Note, these are all
+                                                                                               // counter clockwise so
+                                                                                               // to
+                                                                                               // face up we
+                                                                                               // need - ;)
+                                                                Units.degreesToRadians(180 - 25))),
+
+                                // Back right
+                                new Transform3d(
+                                                new Translation3d(
+                                                                Units.inchesToMeters(-4), // forward+
+                                                                Units.inchesToMeters(-10.2), // left+
+                                                                Units.inchesToMeters(11.1)), // up+
+                                                new Rotation3d(
+                                                                Units.degreesToRadians(0),
+                                                                Units.degreesToRadians(-20.5), // Note, these are all
+                                                                                               // counter clockwise so
+                                                                                               // to
+                                                                                               // face up we
+                                                                                               // need - ;)
+                                                                Units.degreesToRadians(180 + 25))) };
         }
 
         public static final class SubsystemEnabledConstants {
                 public static final boolean DRIVE_SUBSYSTEM_ENABLED = true;
 
-                public static final boolean VISION_SUBSYSTEM_ENABLED = false;
+                public static final boolean VISION_SUBSYSTEM_ENABLED = true;
         }
 }
