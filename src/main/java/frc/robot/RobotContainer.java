@@ -55,7 +55,7 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
-        elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
+        //elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
         wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem, operatorJoystick));
 
         createNamedCommands();
@@ -87,8 +87,8 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        // new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
-        // .onFalse(RobotState.setCanRotate(false));
+        new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
+        .onFalse(RobotState.setCanRotate(false));
 
         new JoystickButton(driveJoystick, 3).onChange(driveSubsystem.xCommand()); // Needs to be while true so the
                                                                                   // command ends
@@ -116,6 +116,9 @@ public class RobotContainer {
                 }));
 
         // Above = DriveJoystick, Below = OperatorJoystick
+
+        new JoystickButton(operatorJoystick, 6).whileTrue(elevatorSubsystem.goToScoreSetpoint(1));
+        new JoystickButton(operatorJoystick, 5).whileTrue(elevatorSubsystem.goToScoreSetpoint(0));
     }
 
     public Command getAutonomousCommand() {
