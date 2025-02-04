@@ -40,8 +40,8 @@ public class AutomatedScoring {
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
             // System.out.println("Flipping pose");
-            // targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-            // new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() - 270)));
+            targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
+            new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() - 90)));
             // // Not sure what to do
             // // about this
         }
