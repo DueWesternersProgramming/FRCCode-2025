@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RobotSystemsCheckCommand;
+import frc.robot.commands.claw.SetClawSpeed;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.elevator.MoveElevatorManual;
 import frc.robot.commands.wrist.MoveWristManual;
@@ -116,6 +117,10 @@ public class RobotContainer {
                 }));
 
         // Above = DriveJoystick, Below = OperatorJoystick
+
+
+        new JoystickButton(operatorJoystick, 4).whileTrue(new SetClawSpeed(wristSubsystem, 0.2));
+        new JoystickButton(operatorJoystick, 2).whileTrue(new SetClawSpeed(wristSubsystem, -.2));
     }
 
     public Command getAutonomousCommand() {

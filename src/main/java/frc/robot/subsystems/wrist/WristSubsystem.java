@@ -59,7 +59,7 @@ public class WristSubsystem extends SubsystemBase {
     }
 
     public void moveAtSpeed(double speed) {
-        wristMotor.set(speed * .75);
+        wristMotor.set(speed * .5);
     }
 
     public Command goToScoreSetpoint(int level) {
@@ -80,13 +80,15 @@ public class WristSubsystem extends SubsystemBase {
 
         }, this);
     }
+    public double getEncoderValue(){
+        return wristMotor.getEncoder().getPosition();
+    }
 
     @Override
     public void periodic() {
-        if (RobotBase.isReal()) {
-
-        } else {
-
+        if (RobotBase.isReal()){
+            SmartDashboard.putNumber("Wrist Encoder val", getEncoderValue());
+            //System.out.println("EA SPORTSSS");
         }
     }
 
