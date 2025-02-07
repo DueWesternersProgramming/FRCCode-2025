@@ -39,6 +39,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor2 = new SparkMax(CAN.ELEVATOR_MOTOR_2, MotorType.kBrushless);
 
         elevatorMotor1Controller = elevatorMotor1.getClosedLoopController();
+        
 
         elevatorMotor1Config = new SparkMaxConfig();
         elevatorMotor2Config = new SparkMaxConfig();
@@ -66,6 +67,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         // Add code here to move the elevator to the scoring height
         if (RobotBase.isReal()) {
             elevatorMotor1Controller.setReference(setpoint, ControlType.kMAXMotionPositionControl);
+            
         }
 
     }
@@ -86,7 +88,7 @@ public class ElevatorSubsystem extends SubsystemBase {
                 } else if (level == 3) {
                     setpoint = ElevatorConstants.HeightSetpoints.L3;
                 } else {
-                    setpoint = ElevatorConstants.HeightSetpoints.L1;
+                    setpoint = -4;
                 }
                 goToSetpoint(setpoint);
             } else {
@@ -100,10 +102,10 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor1.set(speed * .5);
     }
 
-    public Command homeElevator() {
-        return this.run(() -> elevatorMotor1.setVoltage(1)).until(() -> getCurrentDraw() > 30.0)
-                .finallyDo(() -> setEncoderValue(0));
-    }
+    // public Command homeElevator() {
+    //     return this.run(() -> elevatorMotor1.setVoltage(1)).until(() -> getCurrentDraw() > 30.0)
+    //             .finallyDo(() -> setEncoderValue(0));
+    // }
 
     public double getCurrentDraw() {
         return elevatorMotor1.getOutputCurrent();
@@ -113,8 +115,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void periodic() {
         if (RobotBase.isReal()) {
             SmartDashboard.putNumber("elevator encoder pos", elevatorMotor1.getEncoder().getPosition());
+            //SmartDashboard.putNumber("elevator motor current draw", getCurrentDraw());
         } else {
         }
     }
+
+    
 
 }

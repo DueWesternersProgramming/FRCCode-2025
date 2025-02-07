@@ -87,17 +87,17 @@ public final class RobotConstants {
         }
 
         public static final class ElevatorConstants {
-                public static final double ELEVATOR_MAX_HEIGHT = 0.0;
+                public static final double ELEVATOR_MAX_HEIGHT = -71;
                 public static final double ELEVATOR_MIN_HEIGHT = 0.0;
 
                 public static final class HeightSetpoints {
-                        public static final double L1 = 0;
+                        public static final double L1 = -50;
                         public static final double L2 = 0;
                         public static final double L3 = 0;
                 }
 
-                public static final double MAX_MOTOR_RPM = 500.0;
-                public static final double MAX_MOTOR_ACCELERATION = 500.0;
+                public static final double MAX_MOTOR_RPM = 5000.0;
+                public static final double MAX_MOTOR_ACCELERATION = 3000.0;
 
                 public static final class SimConstants {
                         public static final double L1 = 0.2;
@@ -242,7 +242,7 @@ public final class RobotConstants {
 
                         // Manual control axis for operator
                         public static final int ELEVATOR_MANUAL_CONTROL = 1;
-                        public static final int WRIST_MANUAL_CONTROL = 5;
+                        public static final int WRIST_MANUAL_CONTROL = 3;
                 }
         }
 
