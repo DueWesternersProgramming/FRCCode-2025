@@ -45,7 +45,7 @@ public class ClawSubsystem extends SubsystemBase {
 
     public void moveAtSpeed(double speed) {
         clawMotor1.set(speed);
-        clawMotor1.set(speed);
+        clawMotor2.set(speed);
     }
 
 

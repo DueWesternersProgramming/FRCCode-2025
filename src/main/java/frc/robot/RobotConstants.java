@@ -19,12 +19,12 @@ public final class RobotConstants {
         public static final class ScoringConstants {
                 public static final class BlueAlliance {
                         public static final List<Pose2d> REEF_SIDE_POSES = List.of(
-                                        new Pose2d(2.961, 4, new Rotation2d(Math.toRadians(0))),
-                                        new Pose2d(3.712, 2.723, new Rotation2d(Math.toRadians(30))),
-                                        new Pose2d(5.253, 2.656, new Rotation2d(Math.toRadians(60))),
-                                        new Pose2d(6, 4, new Rotation2d(Math.toRadians(90))),
-                                        new Pose2d(0, 0, new Rotation2d(Math.toRadians(120))),
-                                        new Pose2d(0, 0, new Rotation2d(Math.toRadians(0))));
+                                        new Pose2d(3.153, 4.025, new Rotation2d(Math.toRadians(0))),
+                                        new Pose2d(3.712, 2.874, new Rotation2d(Math.toRadians(30))),
+                                        new Pose2d(5.131, 2.850, new Rotation2d(Math.toRadians(60))),
+                                        new Pose2d(5.766, 4.001, new Rotation2d(Math.toRadians(90))),
+                                        new Pose2d(5.203, 5.152, new Rotation2d(Math.toRadians(120))),
+                                        new Pose2d(3.800, 5.164, new Rotation2d(Math.toRadians(0))));
                         public static final List<Pose2d> HP_POSES = List.of(
                                         new Pose2d(1.2, 7, new Rotation2d(Units.degreesToRadians(125))),
                                         new Pose2d(1.2, 1, new Rotation2d(Units.degreesToRadians(-125))));
@@ -91,7 +91,7 @@ public final class RobotConstants {
                 public static final double ELEVATOR_MIN_HEIGHT = 0.0;
 
                 public static final class HeightSetpoints {
-                        public static final double L1 = -50;
+                        public static final double L1 = -68;
                         public static final double L2 = 0;
                         public static final double L3 = 0;
                 }

@@ -21,7 +21,7 @@ import com.pathplanner.lib.util.FlippingUtil;
 public class AutomatedScoring {
     static Pose2d targetPose;
     static double xOffset = .2;// left and right
-    static double yOffset = -.25;// forward and back
+    // double yOffset = -.25;// forward and back
 
     private static Pose2d pathPlanToHP(int humanPlayerSide) {
         targetPose = ScoringConstants.BlueAlliance.HP_POSES.get(humanPlayerSide); // no -1 since 0 is left and 1 is
@@ -60,7 +60,7 @@ public class AutomatedScoring {
         }
 
         // Create a translation for the offsets
-        Translation2d translation = new Translation2d(yOffset, adjustedXOffset);
+        Translation2d translation = new Translation2d(0, adjustedXOffset);
 
         // Apply the translation to the target pose
         targetPose = targetPose.transformBy(new Transform2d(translation, targetPose.getRotation()));

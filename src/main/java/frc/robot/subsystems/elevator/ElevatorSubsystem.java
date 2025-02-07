@@ -47,6 +47,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
         elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(ElevatorConstants.MAX_MOTOR_RPM);
         elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.MAX_MOTOR_ACCELERATION);
+        elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(2);
 
         elevatorMotor1Config.closedLoop.pid(0.15, 0.0, 1.5);
 

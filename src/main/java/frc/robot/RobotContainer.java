@@ -56,7 +56,7 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
-        //elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
+        elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
         wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem, operatorJoystick));
 
         createNamedCommands();
@@ -95,32 +95,35 @@ public class RobotContainer {
                                                                                   // command ends
         new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
-        new JoystickButton(driveJoystick, 2).whileTrue(
-                new InstantCommand(() -> {
-                    // Create a new command instance at the time of button press,
-                    // ensuring that the latest values are used.
-                    Command cmd = AutomatedScoring.fullScore(
-                            automationSelector.getReefSide(),
-                            automationSelector.getPosition(),
-                            automationSelector.getHeight(),
-                            driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
-                    cmd.schedule();
-                }));
+        // new JoystickButton(driveJoystick, 2).whileTrue(
+        //         new InstantCommand(() -> {
+        //             // Create a new command instance at the time of button press,
+        //             // ensuring that the latest values are used.
+        //             Command cmd = AutomatedScoring.fullScore(
+        //                     automationSelector.getReefSide(),
+        //                     automationSelector.getPosition(),
+        //                     automationSelector.getHeight(),
+        //                     driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
+        //             cmd.schedule();
+        //         }));
 
-        new JoystickButton(driveJoystick, 6).whileTrue(
-                new InstantCommand(() -> {
-                    // Create a new command instance at the time of button press,
-                    // ensuring that the latest values are used.
-                    Command cmd = AutomatedScoring.humanPlayerPickup(automationSelector.getHumanPlayerStation(),
-                            driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
-                    cmd.schedule();
-                }));
+        // new JoystickButton(driveJoystick, 6).whileTrue(
+        //         new InstantCommand(() -> {
+        //             // Create a new command instance at the time of button press,
+        //             // ensuring that the latest values are used.
+        //             Command cmd = AutomatedScoring.humanPlayerPickup(automationSelector.getHumanPlayerStation(),
+        //                     driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
+        //             cmd.schedule();
+        //         }));
 
         // Above = DriveJoystick, Below = OperatorJoystick
 
 
-        new JoystickButton(operatorJoystick, 4).whileTrue(new SetClawSpeed(wristSubsystem, 0.2));
-        new JoystickButton(operatorJoystick, 2).whileTrue(new SetClawSpeed(wristSubsystem, -.2));
+        new JoystickButton(operatorJoystick, 4).whileTrue(new SetClawSpeed(clawSubsystem, 0.75));
+        new JoystickButton(operatorJoystick, 2).whileTrue(new SetClawSpeed(clawSubsystem, -.75));
+
+        new JoystickButton(operatorJoystick, 5).whileTrue(elevatorSubsystem.goToScoreSetpoint(0));
+        new JoystickButton(operatorJoystick, 6).whileTrue(elevatorSubsystem.goToScoreSetpoint(1));
     }
 
     public Command getAutonomousCommand() {
