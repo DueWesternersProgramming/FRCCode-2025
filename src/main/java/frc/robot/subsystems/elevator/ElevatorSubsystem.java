@@ -56,7 +56,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.MAX_MOTOR_ACCELERATION);
         elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(2);
 
-        elevatorMotor1Config.closedLoop.pid(0.15, 0.0, 1.5);
+        elevatorMotor1Config.closedLoop.pid(0.15, 0.0, 4.5);
 
         elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1, true);
 
@@ -75,6 +75,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         TrapezoidProfile.State state = new TrapezoidProfile.State(getEncoder().getPosition(), getEncoder().getVelocity());
         TrapezoidProfile.State goal = new TrapezoidProfile.State(setpoint, 0);
         profile = new TrapezoidProfile(ElevatorConstants.CONSTRAINTS);
+        timer.reset();
 
     }
     public void goToSetpoint(double setpoint) {

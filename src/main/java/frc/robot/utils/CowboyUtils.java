@@ -14,8 +14,8 @@ public class CowboyUtils {
 
     static {
         try {
-            aprilTagFieldLayout = new AprilTagFieldLayout("src\\main\\resources\\Bedroom2025AprilTags.json");
-        } catch (IOException e) {
+            AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+        } catch (Exception e) {
             e.printStackTrace();
             aprilTagFieldLayout = null;
         }

@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.Unit;
 
@@ -98,6 +99,7 @@ public final class RobotConstants {
 
                 public static final double MAX_MOTOR_RPM = 5000.0;
                 public static final double MAX_MOTOR_ACCELERATION = 3000.0;
+                public static final Constraints CONSTRAINTS = new Constraints(MAX_MOTOR_RPM, MAX_MOTOR_ACCELERATION);
 
                 public static final class SimConstants {
                         public static final double L1 = 0.2;

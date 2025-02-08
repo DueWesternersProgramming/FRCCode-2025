@@ -66,9 +66,12 @@ public class DriveSubsystem extends SubsystemBase {
     private double fakeGyro = 0;
     Field2d field = new Field2d();
 
-    // temp:
+
     StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
             .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
+
+            StructArrayPublisher<Pose2d> tempVisionPoses = NetworkTableInstance.getDefault()
+            .getStructArrayTopic("tempVisionPoses", Pose2d.struct).publish();
 
     /** Creates a new Drivetrain. */
     public DriveSubsystem() {
@@ -277,11 +280,17 @@ public class DriveSubsystem extends SubsystemBase {
 
     private void updateVisionMeasurements() {
         if (RobotBase.isReal()) {
+
             for (int i = 0; i < VisionSubsystem.getLengthOfCameraList(); i++) {
-                Pose2d camPose = VisionSubsystem.getVisionPoses()[i];
-                if (camPose != null) {
+
+                System.out.println(i + "   " + VisionSubsystem.getVisionPoses()[i]);
+
+                if (VisionSubsystem.getVisionPoses()[i] != null) {
+                    Pose2d camPose = VisionSubsystem.getVisionPoses()[i];
                     m_odometry.addVisionMeasurement(camPose, Timer.getFPGATimestamp());
+                    System.out.println("added pose");
                 }
+                
             }
         }
     }
