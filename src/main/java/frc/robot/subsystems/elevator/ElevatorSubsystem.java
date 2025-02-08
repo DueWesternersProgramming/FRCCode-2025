@@ -2,6 +2,7 @@ package frc.robot.subsystems.elevator;
 
 import java.util.function.Supplier;
 
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -10,7 +11,10 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.trajectory.ExponentialProfile.Constraints;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
@@ -31,6 +35,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     SparkMaxConfig elevatorMotor1Config;
     SparkMaxConfig elevatorMotor2Config;
     static SparkClosedLoopController elevatorMotor1Controller;
+
+    private TrapezoidProfile profile;
+    private Timer timer;
 
     public ElevatorSubsystem() {
 
@@ -64,11 +71,17 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     }
 
-    public static void goToSetpoint(double setpoint) {
+    public void updateMotionProfile(double setpoint) {
+        TrapezoidProfile.State state = new TrapezoidProfile.State(getEncoder().getPosition(), getEncoder().getVelocity());
+        TrapezoidProfile.State goal = new TrapezoidProfile.State(setpoint, 0);
+        profile = new TrapezoidProfile(ElevatorConstants.CONSTRAINTS);
+
+    }
+    public void goToSetpoint(double setpoint) {
         // Add code here to move the elevator to the scoring height
         if (RobotBase.isReal()) {
+            updateMotionProfile(setpoint);
             elevatorMotor1Controller.setReference(setpoint, ControlType.kMAXMotionPositionControl);
-            
         }
 
     }
@@ -110,6 +123,10 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public double getCurrentDraw() {
         return elevatorMotor1.getOutputCurrent();
+    }
+
+    public RelativeEncoder getEncoder(){
+        return elevatorMotor1.getEncoder();
     }
 
     @Override
