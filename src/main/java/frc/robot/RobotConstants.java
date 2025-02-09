@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
 
 public final class RobotConstants {
 
@@ -90,6 +89,8 @@ public final class RobotConstants {
         public static final class ElevatorConstants {
                 public static final double ELEVATOR_MAX_HEIGHT = -71;
                 public static final double ELEVATOR_MIN_HEIGHT = 0.0;
+                
+                public static final double FEEDFORWARD = 0.15;
 
                 public static final class HeightSetpoints {
                         public static final double HOME = 1;
@@ -135,7 +136,7 @@ public final class RobotConstants {
                 public static final class AngleSetpoints {
                         public static final double HOME = 0.0;
                         public static final double HP = 0.0;
-                        
+
                         public static final class Coral {
                                 public static final double L1 = 0;
                                 public static final double L2 = 0;
@@ -150,13 +151,6 @@ public final class RobotConstants {
 
                 public static final double MAX_MOTOR_RPM = 500.0;
                 public static final double MAX_MOTOR_ACCELERATION = 500.0;
-
-                // public static final class SimConstants {
-                // public static final double L1 = 85;
-                // public static final double L2 = 87.5;
-                // public static final double L3 = 120;
-                // }
-
         }
 
         public static final class SwerveModuleConstants {

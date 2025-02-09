@@ -49,11 +49,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         if (RobotBase.isReal()) {
             double output = pidController.calculate(getEncoder().getPosition(), setpoint);
-            elevatorMotor1.set(output + .1);
+            elevatorMotor1.set(output + ElevatorConstants.FEEDFORWARD);
         }
-
     }
-
     public void setEncoderValue(double value) {
         // In rotations
         elevatorMotor1.getEncoder().setPosition(value);
