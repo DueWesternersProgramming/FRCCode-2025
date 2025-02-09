@@ -76,17 +76,17 @@ public class Camera {
 
     public Pose2d getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
+
             photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
             try {
                 if (photonPoseEstimator.update(getResult()).isPresent()){
                     return photonPoseEstimator.update(getResult()).get().estimatedPose.toPose2d();
                 }
                 else{
-                    //System.err.println("Oh null");
-                    return new Pose2d();
+                    return null;
                 }
             } catch (Exception e) {
-                System.out.println("pose 2d    "+e);
+                System.out.println("This error should NOT happen?????");
                 return null;
             }
             

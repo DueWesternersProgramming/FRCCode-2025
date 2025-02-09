@@ -35,9 +35,8 @@ import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.automation.AutomatedScoring;
 
 public class RobotContainer {
-
-    public final DriveSubsystem driveSubsystem = new DriveSubsystem();
     public final VisionSubsystem visionSubsystem = new VisionSubsystem();
+    public final DriveSubsystem driveSubsystem = new DriveSubsystem();
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     public final WristSubsystem wristSubsystem = new WristSubsystem();
     public final ClawSubsystem clawSubsystem = new ClawSubsystem();
