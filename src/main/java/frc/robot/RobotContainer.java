@@ -95,7 +95,7 @@ public class RobotContainer {
                                                                                   // command ends
         new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
-        new JoystickButton(driveJoystick, 2).whileTrue(AutomatedScoring.scoreCoralNoPathing(1, elevatorSubsystem, wristSubsystem, clawSubsystem));
+        new JoystickButton(driveJoystick, 2).whileTrue(AutomatedScoring.scoreCoralNoPathing(2, elevatorSubsystem, wristSubsystem, clawSubsystem));
 
         // new JoystickButton(driveJoystick, 2).whileTrue(
         //         new InstantCommand(() -> {
