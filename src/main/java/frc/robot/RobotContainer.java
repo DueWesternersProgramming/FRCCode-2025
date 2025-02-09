@@ -80,11 +80,11 @@ public class RobotContainer {
             System.out.println("Running...");
         }));
         NamedCommands.registerCommand("Score L1",
-                AutomatedScoring.scoreNoPathing(1, elevatorSubsystem, wristSubsystem, clawSubsystem));
+                AutomatedScoring.scoreCoralNoPathing(1, elevatorSubsystem, wristSubsystem, clawSubsystem));
         NamedCommands.registerCommand("Score L2",
-                AutomatedScoring.scoreNoPathing(2, elevatorSubsystem, wristSubsystem, clawSubsystem));
+                AutomatedScoring.scoreCoralNoPathing(2, elevatorSubsystem, wristSubsystem, clawSubsystem));
         NamedCommands.registerCommand("Score L3",
-                AutomatedScoring.scoreNoPathing(3, elevatorSubsystem, wristSubsystem, clawSubsystem));
+                AutomatedScoring.scoreCoralNoPathing(3,  elevatorSubsystem, wristSubsystem, clawSubsystem));
     }
 
     private void configureButtonBindings() {
@@ -95,11 +95,13 @@ public class RobotContainer {
                                                                                   // command ends
         new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
+        new JoystickButton(driveJoystick, 2).whileTrue(AutomatedScoring.scoreCoralNoPathing(1, elevatorSubsystem, wristSubsystem, clawSubsystem));
+
         // new JoystickButton(driveJoystick, 2).whileTrue(
         //         new InstantCommand(() -> {
         //             // Create a new command instance at the time of button press,
         //             // ensuring that the latest values are used.
-        //             Command cmd = AutomatedScoring.fullScore(
+        //             Command cmd = AutomatedScoring.fullCoralScore(
         //                     automationSelector.getReefSide(),
         //                     automationSelector.getPosition(),
         //                     automationSelector.getHeight(),
@@ -122,8 +124,8 @@ public class RobotContainer {
         new JoystickButton(operatorJoystick, 4).whileTrue(new SetClawSpeed(clawSubsystem, 1));
         new JoystickButton(operatorJoystick, 2).whileTrue(new SetClawSpeed(clawSubsystem, -1));
 
-        new JoystickButton(operatorJoystick, 5).whileTrue(elevatorSubsystem.goToScoreSetpoint(0));
-        new JoystickButton(operatorJoystick, 6).whileTrue(elevatorSubsystem.goToScoreSetpoint(1));
+        new JoystickButton(operatorJoystick, 5).whileTrue(elevatorSubsystem.goToCoralScoreSetpoint(0)); //Home
+        new JoystickButton(operatorJoystick, 6).whileTrue(elevatorSubsystem.goToCoralScoreSetpoint(2)); //L2
     }
 
     public Command getAutonomousCommand() {

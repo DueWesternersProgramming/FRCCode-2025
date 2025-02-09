@@ -24,6 +24,8 @@ public class ElevatorWristSim {
     static Pose3d secondStage = new Pose3d(0, 0, 0,
             new Rotation3d(Units.degreesToRadians(0), Units.degreesToRadians(0), Units.degreesToRadians(0)));
 
+    static double elevatorLength = 0;
+
     public ElevatorWristSim() {
         // Ensure the table name is consistent; here we use "3dSimulation".
 
@@ -36,9 +38,7 @@ public class ElevatorWristSim {
         // Test:
         setElevatorToHeight(.25);
     }
-    // public static void setElevatorHeightMeters(double lengthMeters) {
-
-    // }
+    
     private static Pose3d getFirstStagePositioning(double lengthMeters, Pose3d currentPose3d) {
         double x = Math.cos(Units.degreesToRadians(85)) * lengthMeters;
         double z = Math.sin(Units.degreesToRadians(85)) * lengthMeters;
@@ -51,12 +51,14 @@ public class ElevatorWristSim {
         return new Pose3d(x, 0, z, currentPose3d.getRotation());
     }
 
-    private static void setElevatorToHeight(double lengthMeters) {
+    public static void setElevatorToHeight(double lengthMeters) {
         firstStage = getFirstStagePositioning(lengthMeters, firstStage);
         firstStagePublisher.set(firstStage);
 
         secondStage = getSecondStagePositioning(lengthMeters, secondStage);
         secondStagePublisher.set(secondStage);
+
+        elevatorLength = lengthMeters;
     }
 
     public static void goToScoreSetpoint(int level) {
@@ -72,6 +74,10 @@ public class ElevatorWristSim {
         if (level == 0) {
             setElevatorToHeight(0);
         }
+    }
+
+    public static double getElevatorSimLength(){
+        return elevatorLength;
     }
 
 }

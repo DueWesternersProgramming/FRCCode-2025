@@ -62,24 +62,52 @@ public class WristSubsystem extends SubsystemBase {
         wristMotor.set(speed * .5);
     }
 
-    public Command goToScoreSetpoint(int level) {
+    public Command goToCoralScoreSetpoint(int level) {
         return new InstantCommand(() -> {
             double setpoint;
             if (RobotBase.isReal()) {
                 if (level == 1) {
-                    setpoint = WristConstants.AngleSetpoints.L1;
+                    setpoint = WristConstants.AngleSetpoints.Coral.L1;
                 } else if (level == 2) {
-                    setpoint = WristConstants.AngleSetpoints.L2;
+                    setpoint = WristConstants.AngleSetpoints.Coral.L2;
                 } else if (level == 3) {
-                    setpoint = WristConstants.AngleSetpoints.L3;
+                    setpoint = WristConstants.AngleSetpoints.Coral.L3;
                 } else {
-                    setpoint = WristConstants.AngleSetpoints.L1;
+                    setpoint = WristConstants.AngleSetpoints.Coral.L1;
                 }
                 goToSetpoint(setpoint);
             }
 
         }, this);
     }
+
+    public Command goToAlgaeScoreSetpoint(int level) {
+        return new InstantCommand(() -> {
+            double setpoint;
+            if (RobotBase.isReal()) {
+                if (level == 2) {
+                    setpoint = WristConstants.AngleSetpoints.Algae.L2;
+                } else if (level == 3) {
+                    setpoint = WristConstants.AngleSetpoints.Algae.L3;
+                } else {
+                    setpoint = WristConstants.AngleSetpoints.HOME;
+                }
+                goToSetpoint(setpoint);
+            }
+
+        }, this);
+    }
+
+    public Command goToHumanPlayerSetpoint() {
+        return new InstantCommand(() -> {
+            if (RobotBase.isReal()) {
+                goToSetpoint(WristConstants.AngleSetpoints.HP);
+            }
+
+        }, this);
+    }
+
+
     public double getEncoderValue(){
         return wristMotor.getEncoder().getPosition();
     }

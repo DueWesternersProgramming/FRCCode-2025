@@ -5,8 +5,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.claw.ClawSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -68,7 +70,7 @@ public class AutomatedScoring {
         return targetPose;
     }
 
-    public static Command fullScore(int reefSide, int position,
+    public static Command fullCoralScore(int reefSide, int position,
             int height,
             DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
@@ -77,22 +79,27 @@ public class AutomatedScoring {
 
         return new ParallelCommandGroup(
                 AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
-                new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height),
-                        wristSubsystem.goToScoreSetpoint(height)));
+                new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
+                        wristSubsystem.goToCoralScoreSetpoint(height)));
     }
 
-    public static Command scoreNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+    public static Command scoreCoralNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
-        return new SequentialCommandGroup(elevatorSubsystem.goToScoreSetpoint(height),
-                wristSubsystem.goToScoreSetpoint(height));
+        return new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
+                wristSubsystem.goToCoralScoreSetpoint(height), clawSubsystem.outtakeCoral());
+    }
+
+    public static Command grabAlgaeNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+            ClawSubsystem clawSubsystem) {
+        return new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
+                wristSubsystem.goToAlgaeScoreSetpoint(height), clawSubsystem.intakeAlgae());
     }
 
     public static Command humanPlayerPickup(int humanPlayerSide, DriveSubsystem drivesubsystem,
             ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
-
         return new SequentialCommandGroup(
-                AlignWithPose.pathToPoseCommand(pathPlanToHP(humanPlayerSide), drivesubsystem));
+                AlignWithPose.pathToPoseCommand(pathPlanToHP(humanPlayerSide), drivesubsystem), elevatorSubsystem.goToHumanPlayerPickup(),wristSubsystem.goToHumanPlayerSetpoint(), clawSubsystem.intakeCoral());
 
     }
 }
