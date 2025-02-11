@@ -52,6 +52,11 @@ def includeDesktopSupport = true
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 5.
 dependencies {
+
+    implementation 'edu.wpi.first.epilogue:epilogue-runtime-java:+'
+    annotationProcessor 'edu.wpi.first.epilogue:epilogue-processor-java:+'
+    annotationProcessor 'edu.wpi.first.epilogue:epilogue-runtime-java:+'
+
     annotationProcessor wpi.java.deps.wpilibAnnotations()
     implementation wpi.java.deps.wpilib()
     implementation wpi.java.vendor.java()

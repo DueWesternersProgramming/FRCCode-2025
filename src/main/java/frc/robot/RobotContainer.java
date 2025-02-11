@@ -8,6 +8,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.epilogue.EpilogueConfiguration;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.epilogue.logging.EpilogueBackend;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -34,6 +35,7 @@ import frc.robot.automation.AutomationSelector;
 import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.automation.AutomatedScoring;
 
+@Logged(name = "RobotContainer")
 public class RobotContainer {
     public final VisionSubsystem visionSubsystem = new VisionSubsystem();
     public final DriveSubsystem driveSubsystem = new DriveSubsystem();
