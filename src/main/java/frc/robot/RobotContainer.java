@@ -55,8 +55,8 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
-        elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
-        wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem, operatorJoystick));
+        //elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
+        //wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem, operatorJoystick));
 
         createNamedCommands();
 
@@ -120,11 +120,11 @@ public class RobotContainer {
         // Above = DriveJoystick, Below = OperatorJoystick
 
 
-        new JoystickButton(operatorJoystick, 4).whileTrue(new SetClawSpeed(clawSubsystem, 1));
-        new JoystickButton(operatorJoystick, 2).whileTrue(new SetClawSpeed(clawSubsystem, -1));
+        // new JoystickButton(operatorJoystick, 4).whileTrue(new SetClawSpeed(clawSubsystem, 1));
+        // new JoystickButton(operatorJoystick, 2).whileTrue(new SetClawSpeed(clawSubsystem, -1));
 
-        new JoystickButton(operatorJoystick, 5).whileTrue(elevatorSubsystem.goToCoralScoreSetpoint(0)); //Home
-        new JoystickButton(operatorJoystick, 6).whileTrue(elevatorSubsystem.goToCoralScoreSetpoint(2)); //L2
+        new JoystickButton(operatorJoystick, 5).whileTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem,wristSubsystem)); //Home
+        new JoystickButton(operatorJoystick, 6).whileTrue(AutomatedScoring.grabAlgaeNoPathing(2,elevatorSubsystem,wristSubsystem,clawSubsystem)).whileFalse(AutomatedScoring.stopClaw(clawSubsystem)); //L2
     }
 
     public Command getAutonomousCommand() {

@@ -88,28 +88,26 @@ public final class RobotConstants {
 
         public static final class ElevatorConstants {
                 public static final double ELEVATOR_MAX_HEIGHT = -71;
-                public static final double ELEVATOR_MIN_HEIGHT = 0.0;
-                
-                public static final double FEEDFORWARD = 0.15;
+                public static final double ELEVATOR_MIN_HEIGHT = -2;
 
                 public static final class HeightSetpoints {
-                        public static final double HOME = 1;
+                        public static final double HOME = -3;
                         public static final double HP = -60;
 
                         public static final class Coral {
-                                public static final double L1 = 0;
+                                public static final double L1 = -20;
                                 public static final double L2 = -50;
                                 public static final double L3 = -70;
                         }
 
                         public static final class Algae {
-                                public static final double L2 = 0;
+                                public static final double L2 = -40;
                                 public static final double L3 = 0;
                         }
                 }
 
                 public static final double MAX_MOTOR_RPM = 5000.0;
-                public static final double MAX_MOTOR_ACCELERATION = 3000.0;
+                public static final double MAX_MOTOR_ACCELERATION = 6000.0;
                 public static final Constraints CONSTRAINTS = new Constraints(MAX_MOTOR_RPM, MAX_MOTOR_ACCELERATION);
 
                 public static final double P = 1;
@@ -144,7 +142,7 @@ public final class RobotConstants {
                         }
 
                         public static final class Algae {
-                                public static final double L2 = 0;
+                                public static final double L2 = 12;
                                 public static final double L3 = 0;
                         }
                 }

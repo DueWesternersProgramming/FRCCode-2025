@@ -14,7 +14,9 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.utils.CowboyUtils;
+import frc.robot.RobotConstants.ElevatorConstants;
 import frc.robot.RobotConstants.ScoringConstants;
+import frc.robot.RobotConstants.WristConstants;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -93,6 +95,14 @@ public class AutomatedScoring {
             ClawSubsystem clawSubsystem) {
         return new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                 wristSubsystem.goToAlgaeScoreSetpoint(height), clawSubsystem.intakeAlgae());
+    }
+    public static Command stopClaw(ClawSubsystem clawSubsystem){
+        return new InstantCommand(()->{clawSubsystem.moveAtSpeed(0);}, clawSubsystem);
+    }
+
+    public static Command homeSubsystems(ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem){
+        return new InstantCommand(()->{elevatorSubsystem.goToSetpoint(ElevatorConstants.HeightSetpoints.HOME);
+        wristSubsystem.goToSetpoint(WristConstants.AngleSetpoints.HOME);});
     }
 
     public static Command humanPlayerPickup(int humanPlayerSide, DriveSubsystem drivesubsystem,
