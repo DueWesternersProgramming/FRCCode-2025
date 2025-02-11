@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class CowboyUtils {
 
     public static final AprilTagFieldLayout aprilTagFieldLayout =
-      AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+    AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
+
 
       
 

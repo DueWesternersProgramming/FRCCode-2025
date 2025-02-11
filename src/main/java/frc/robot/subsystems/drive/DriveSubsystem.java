@@ -282,14 +282,17 @@ public class DriveSubsystem extends SubsystemBase {
         if (RobotBase.isReal()) {
 
             for (int i = 0; i < VisionSubsystem.getLengthOfCameraList(); i++) {
+                Pose2d camPose = VisionSubsystem.getVisionPoses()[i];
+                //System.out.println(i + "   " + camPose);
+                double time = Timer.getFPGATimestamp();
 
-                System.out.println(i + "   " + VisionSubsystem.getVisionPoses()[i]);
-
-                if (VisionSubsystem.getVisionPoses()[i] != null) {
-                    Pose2d camPose = VisionSubsystem.getVisionPoses()[i];
-                    m_odometry.addVisionMeasurement(camPose, Timer.getFPGATimestamp());
-                    System.out.println("added pose");
+                try {
+                    m_odometry.addVisionMeasurement(camPose, time);
+                } catch (Exception e) {
                 }
+                //if (VisionSubsystem.getVisionPoses()[i] != null) {
+                    
+                //}
                 
             }
         }

@@ -50,16 +50,16 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     public Command intakeCoral(){
-        return new InstantCommand(()->{moveAtSpeed(-.5);});
+        return new InstantCommand(()->{moveAtSpeed(.5);});
     }
     public Command outtakeCoral(){
-        return new InstantCommand(()->{moveAtSpeed(1);});
+        return new InstantCommand(()->{moveAtSpeed(-1);});
     }
     public Command intakeAlgae(){
-        return new InstantCommand(()->{moveAtSpeed(.75);});
+        return new InstantCommand(()->{moveAtSpeed(-.75);});
     }
     public Command outtakeAlgae(){
-        return new InstantCommand(()->{moveAtSpeed(-1);});
+        return new InstantCommand(()->{moveAtSpeed(1);});
     }
 
 
