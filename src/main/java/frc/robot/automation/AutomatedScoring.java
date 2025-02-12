@@ -88,7 +88,7 @@ public class AutomatedScoring {
     public static Command scoreCoralNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
         return new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
-                wristSubsystem.goToCoralScoreSetpoint(height), clawSubsystem.outtakeCoral());
+                wristSubsystem.goToCoralScoreSetpoint(height));
     }
 
     public static Command grabAlgaeNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,

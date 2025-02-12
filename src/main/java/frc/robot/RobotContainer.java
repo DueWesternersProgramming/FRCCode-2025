@@ -55,8 +55,8 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
-        //elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
-        //wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem, operatorJoystick));
+        // elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
+        // wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem, operatorJoystick));
 
         createNamedCommands();
 
@@ -120,11 +120,18 @@ public class RobotContainer {
         // Above = DriveJoystick, Below = OperatorJoystick
 
 
-        // new JoystickButton(operatorJoystick, 4).whileTrue(new SetClawSpeed(clawSubsystem, 1));
-        // new JoystickButton(operatorJoystick, 2).whileTrue(new SetClawSpeed(clawSubsystem, -1));
+        new JoystickButton(operatorJoystick, 4).whileTrue(new SetClawSpeed(clawSubsystem, 0.25));
+        new JoystickButton(operatorJoystick, 2).whileTrue(new SetClawSpeed(clawSubsystem, -.25));
 
-        new JoystickButton(operatorJoystick, 5).whileTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem,wristSubsystem)); //Home
-        new JoystickButton(operatorJoystick, 6).whileTrue(AutomatedScoring.grabAlgaeNoPathing(2,elevatorSubsystem,wristSubsystem,clawSubsystem)).whileFalse(AutomatedScoring.stopClaw(clawSubsystem)); //L2
+        //new JoystickButton(operatorJoystick, 5).whileTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem,wristSubsystem)); //Home
+        
+        new JoystickButton(operatorJoystick, 5).whileTrue(AutomatedScoring.scoreCoralNoPathing(2,elevatorSubsystem,wristSubsystem,clawSubsystem));
+
+        new JoystickButton(operatorJoystick, 6).whileTrue(AutomatedScoring.scoreCoralNoPathing(3,elevatorSubsystem,wristSubsystem,clawSubsystem));
+        
+        
+        new JoystickButton(operatorJoystick, 9).whileTrue(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
+        new JoystickButton(operatorJoystick, 9).whileTrue(new MoveWristManual(wristSubsystem, operatorJoystick));
     }
 
     public Command getAutonomousCommand() {

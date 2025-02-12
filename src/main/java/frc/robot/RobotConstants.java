@@ -96,13 +96,13 @@ public final class RobotConstants {
 
                         public static final class Coral {
                                 public static final double L1 = -20;
-                                public static final double L2 = -50;
-                                public static final double L3 = -70;
+                                public static final double L2 = -45;
+                                public static final double L3 = -70.5;
                         }
 
                         public static final class Algae {
                                 public static final double L2 = -40;
-                                public static final double L3 = 0;
+                                public static final double L3 = -70;
                         }
                 }
 
@@ -137,17 +137,17 @@ public final class RobotConstants {
 
                         public static final class Coral {
                                 public static final double L1 = 0;
-                                public static final double L2 = 0;
-                                public static final double L3 = 0;
+                                public static final double L2 = -3;
+                                public static final double L3 = -5;
                         }
 
                         public static final class Algae {
                                 public static final double L2 = 12;
-                                public static final double L3 = 0;
+                                public static final double L3 = 12;
                         }
                 }
 
-                public static final double MAX_MOTOR_RPM = 500.0;
+                public static final double MAX_MOTOR_RPM = 1000.0;
                 public static final double MAX_MOTOR_ACCELERATION = 500.0;
         }
 
