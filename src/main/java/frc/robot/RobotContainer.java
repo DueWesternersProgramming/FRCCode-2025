@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.claw.SetClawSpeed;
 import frc.robot.commands.drive.TeleopDriveCommand;
@@ -55,8 +56,10 @@ public class RobotContainer {
     public RobotContainer() {
         driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
-        // elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
-        // wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem, operatorJoystick));
+        // elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem,
+        // operatorJoystick));
+        // wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem,
+        // operatorJoystick));
 
         createNamedCommands();
 
@@ -83,53 +86,59 @@ public class RobotContainer {
         NamedCommands.registerCommand("Score L2",
                 AutomatedScoring.scoreCoralNoPathing(2, elevatorSubsystem, wristSubsystem, clawSubsystem));
         NamedCommands.registerCommand("Score L3",
-                AutomatedScoring.scoreCoralNoPathing(3,  elevatorSubsystem, wristSubsystem, clawSubsystem));
+                AutomatedScoring.scoreCoralNoPathing(3, elevatorSubsystem, wristSubsystem, clawSubsystem));
     }
 
     private void configureButtonBindings() {
         new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
-        .onFalse(RobotState.setCanRotate(false));
+                .onFalse(RobotState.setCanRotate(false));
 
         new JoystickButton(driveJoystick, 3).onChange(driveSubsystem.xCommand()); // Needs to be while true so the
                                                                                   // command ends
         new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
-        new JoystickButton(driveJoystick, 2).whileTrue(AutomatedScoring.scoreCoralNoPathing(2, elevatorSubsystem, wristSubsystem, clawSubsystem));
+        // new JoystickButton(driveJoystick, 2)
+        // .whileTrue(AutomatedScoring.scoreCoralNoPathing(2, elevatorSubsystem,
+        // wristSubsystem, clawSubsystem));
 
         // new JoystickButton(driveJoystick, 2).whileTrue(
-        //         new InstantCommand(() -> {
-        //             // Create a new command instance at the time of button press,
-        //             // ensuring that the latest values are used.
-        //             Command cmd = AutomatedScoring.fullCoralScore(
-        //                     automationSelector.getReefSide(),
-        //                     automationSelector.getPosition(),
-        //                     automationSelector.getHeight(),
-        //                     driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
-        //             cmd.schedule();
-        //         }));
+        // new InstantCommand(() -> {
+        // // Create a new command instance at the time of button press,
+        // // ensuring that the latest values are used.
+        // Command cmd = AutomatedScoring.fullCoralScore(
+        // automationSelector.getReefSide(),
+        // automationSelector.getPosition(),
+        // automationSelector.getHeight(),
+        // driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
+        // cmd.schedule();
+        // }));
 
         // new JoystickButton(driveJoystick, 6).whileTrue(
-        //         new InstantCommand(() -> {
-        //             // Create a new command instance at the time of button press,
-        //             // ensuring that the latest values are used.
-        //             Command cmd = AutomatedScoring.humanPlayerPickup(automationSelector.getHumanPlayerStation(),
-        //                     driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
-        //             cmd.schedule();
-        //         }));
+        // new InstantCommand(() -> {
+        // // Create a new command instance at the time of button press,
+        // // ensuring that the latest values are used.
+        // Command cmd =
+        // AutomatedScoring.humanPlayerPickup(automationSelector.getHumanPlayerStation(),
+        // driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
+        // cmd.schedule();
+        // }));
 
         // Above = DriveJoystick, Below = OperatorJoystick
 
+        // Manual claw controls. Buttons Y and A.
+        new JoystickButton(operatorJoystick, 4).whileTrue(clawSubsystem.intakeCoral())
+                .onFalse(clawSubsystem.stopClaw());
+        new JoystickButton(operatorJoystick, 2).whileTrue(clawSubsystem.outtakeCoral())
+                .onFalse(clawSubsystem.stopClaw());
 
-        new JoystickButton(operatorJoystick, 4).whileTrue(new SetClawSpeed(clawSubsystem, 0.25));
-        new JoystickButton(operatorJoystick, 2).whileTrue(new SetClawSpeed(clawSubsystem, -.25));
+        // Human Player, LEFT POV BUTTON
+        new POVButton(operatorJoystick, 270)
+                .whileTrue(AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem, elevatorSubsystem,
+                        wristSubsystem, clawSubsystem));
 
-        //new JoystickButton(operatorJoystick, 5).whileTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem,wristSubsystem)); //Home
-        
-        new JoystickButton(operatorJoystick, 5).whileTrue(AutomatedScoring.scoreCoralNoPathing(2,elevatorSubsystem,wristSubsystem,clawSubsystem));
+        new POVButton(operatorJoystick, 180)
+                .whileTrue(AutomatedScoring.scoreCoralNoPathing(1, elevatorSubsystem, wristSubsystem, clawSubsystem));
 
-        new JoystickButton(operatorJoystick, 6).whileTrue(AutomatedScoring.scoreCoralNoPathing(3,elevatorSubsystem,wristSubsystem,clawSubsystem));
-        
-        
         new JoystickButton(operatorJoystick, 9).whileTrue(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
         new JoystickButton(operatorJoystick, 9).whileTrue(new MoveWristManual(wristSubsystem, operatorJoystick));
     }

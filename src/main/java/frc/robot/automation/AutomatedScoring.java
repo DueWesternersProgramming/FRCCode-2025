@@ -45,7 +45,7 @@ public class AutomatedScoring {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
             // System.out.println("Flipping pose");
             targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-            new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() - 90)));
+                    new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() - 90)));
             // // Not sure what to do
             // // about this
         }
@@ -85,31 +85,48 @@ public class AutomatedScoring {
                         wristSubsystem.goToCoralScoreSetpoint(height)));
     }
 
-    public static Command scoreCoralNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+    public static Command scoreCoralNoPathing(int height, ElevatorSubsystem elevatorSubsystem,
+            WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
         return new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
                 wristSubsystem.goToCoralScoreSetpoint(height));
     }
 
-    public static Command grabAlgaeNoPathing(int height, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+    public static Command grabAlgaeNoPathing(int height, ElevatorSubsystem elevatorSubsystem,
+            WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
         return new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                 wristSubsystem.goToAlgaeScoreSetpoint(height), clawSubsystem.intakeAlgae());
     }
-    public static Command stopClaw(ClawSubsystem clawSubsystem){
-        return new InstantCommand(()->{clawSubsystem.moveAtSpeed(0);}, clawSubsystem);
+
+    public static Command stopClaw(ClawSubsystem clawSubsystem) {
+        return new InstantCommand(() -> {
+            clawSubsystem.moveAtSpeed(0);
+        }, clawSubsystem);
     }
 
-    public static Command homeSubsystems(ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem){
-        return new InstantCommand(()->{elevatorSubsystem.goToSetpoint(ElevatorConstants.HeightSetpoints.HOME);
-        wristSubsystem.goToSetpoint(WristConstants.AngleSetpoints.HOME);});
+    public static Command homeSubsystems(ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem) {
+        return new InstantCommand(() -> {
+            elevatorSubsystem.goToSetpoint(ElevatorConstants.HeightSetpoints.HOME);
+            wristSubsystem.goToSetpoint(WristConstants.AngleSetpoints.HOME);
+        });
     }
 
     public static Command humanPlayerPickup(int humanPlayerSide, DriveSubsystem drivesubsystem,
             ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
-        return new SequentialCommandGroup(
-                AlignWithPose.pathToPoseCommand(pathPlanToHP(humanPlayerSide), drivesubsystem), elevatorSubsystem.goToHumanPlayerPickup(),wristSubsystem.goToHumanPlayerSetpoint(), clawSubsystem.intakeCoral());
+        return new ParallelCommandGroup(
+                AlignWithPose.pathToPoseCommand(pathPlanToHP(humanPlayerSide), drivesubsystem),
+                elevatorSubsystem.goToHumanPlayerPickup(), wristSubsystem.goToHumanPlayerSetpoint(),
+                clawSubsystem.intakeCoral());
+    }
+
+    public static Command humanPlayerPickupNoPathing(DriveSubsystem drivesubsystem,
+            ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+            ClawSubsystem clawSubsystem) {
+        return new ParallelCommandGroup(elevatorSubsystem.goToHumanPlayerPickup(),
+                wristSubsystem.goToHumanPlayerSetpoint(),
+                clawSubsystem.intakeCoral());
 
     }
 }

@@ -22,7 +22,6 @@ public class ClawSubsystem extends SubsystemBase {
     SparkMaxConfig clawMotorConfig1;
     SparkMaxConfig clawMotorConfig2;
 
-
     public ClawSubsystem() {
 
         if (RobotBase.isReal()) {
@@ -36,11 +35,10 @@ public class ClawSubsystem extends SubsystemBase {
 
             clawMotor1.configure(clawMotorConfig1, ResetMode.kResetSafeParameters,
                     PersistMode.kPersistParameters);
-                
-            clawMotor2.configure(clawMotorConfig2, ResetMode.kResetSafeParameters,
-                PersistMode.kPersistParameters);
 
-            
+            clawMotor2.configure(clawMotorConfig2, ResetMode.kResetSafeParameters,
+                    PersistMode.kPersistParameters);
+
         }
     }
 
@@ -49,24 +47,40 @@ public class ClawSubsystem extends SubsystemBase {
         clawMotor2.set(speed);
     }
 
-    public Command intakeCoral(){
-        return new InstantCommand(()->{moveAtSpeed(.5);});
-    }
-    public Command outtakeCoral(){
-        return new InstantCommand(()->{moveAtSpeed(-1);});
-    }
-    public Command intakeAlgae(){
-        return new InstantCommand(()->{moveAtSpeed(-.75);});
-    }
-    public Command outtakeAlgae(){
-        return new InstantCommand(()->{moveAtSpeed(1);});
+    public Command intakeCoral() {
+        return new InstantCommand(() -> {
+            moveAtSpeed(.5);
+        });
     }
 
+    public Command outtakeCoral() {
+        return new InstantCommand(() -> {
+            moveAtSpeed(-1);
+        });
+    }
+
+    public Command intakeAlgae() {
+        return new InstantCommand(() -> {
+            moveAtSpeed(-.75);
+        });
+    }
+
+    public Command outtakeAlgae() {
+        return new InstantCommand(() -> {
+            moveAtSpeed(1);
+        });
+    }
+
+    public Command stopClaw() {
+        return new InstantCommand(() -> {
+            moveAtSpeed(0);
+        });
+    }
 
     @Override
     public void periodic() {
         if (RobotBase.isReal()) {
-            
+
         }
     }
 
