@@ -10,6 +10,7 @@ public class RobotState {
     public static boolean canRotate = false;
     public static boolean xLocked = false;
     public static Pose2d robotPose = new Pose2d();
+    public static boolean isAlgaeMode = false;
 
     public static void updatePose(Pose2d pose) {
         robotPose = pose;

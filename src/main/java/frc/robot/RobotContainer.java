@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.claw.SetClawSpeed;
 import frc.robot.commands.drive.TeleopDriveCommand;
@@ -97,15 +98,11 @@ public class RobotContainer {
                                                                                   // command ends
         new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
-        // new JoystickButton(driveJoystick, 2)
-        // .whileTrue(AutomatedScoring.scoreCoralNoPathing(2, elevatorSubsystem,
-        // wristSubsystem, clawSubsystem));
-
         // new JoystickButton(driveJoystick, 2).whileTrue(
         // new InstantCommand(() -> {
         // // Create a new command instance at the time of button press,
         // // ensuring that the latest values are used.
-        // Command cmd = AutomatedScoring.fullCoralScore(
+        // Command cmd = AutomatedScoring.fullReefAutomation(
         // automationSelector.getReefSide(),
         // automationSelector.getPosition(),
         // automationSelector.getHeight(),
@@ -125,19 +122,38 @@ public class RobotContainer {
 
         // Above = DriveJoystick, Below = OperatorJoystick
 
-        // Manual claw controls. Buttons Y and A.
-        new JoystickButton(operatorJoystick, 4).whileTrue(clawSubsystem.intakeCoral())
+        // Manual claw controls. Triggers. Left is always intake regardless of game
+        // peice.
+        new Trigger(() -> operatorJoystick.getRawAxis(2) > .2).whileTrue(clawSubsystem.intakeCoral())
                 .onFalse(clawSubsystem.stopClaw());
-        new JoystickButton(operatorJoystick, 2).whileTrue(clawSubsystem.outtakeCoral())
+        new Trigger(() -> operatorJoystick.getRawAxis(2) > .2).whileTrue(clawSubsystem.outtakeCoral())
                 .onFalse(clawSubsystem.stopClaw());
+
+        // Algae bottom (L2 algae), A button
+        new JoystickButton(operatorJoystick, 1)
+                .whileTrue(AutomatedScoring.grabAlgaeNoPathing(2, elevatorSubsystem, wristSubsystem, clawSubsystem))
+                .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
+        // Algae top (L3 algae), Y button
+        new JoystickButton(operatorJoystick, 4)
+                .whileTrue(AutomatedScoring.grabAlgaeNoPathing(3, elevatorSubsystem, wristSubsystem, clawSubsystem))
+                .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
 
         // Human Player, LEFT POV BUTTON
         new POVButton(operatorJoystick, 270)
                 .whileTrue(AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem, elevatorSubsystem,
                         wristSubsystem, clawSubsystem));
 
+        // L1, DOWN POV BUTTON
         new POVButton(operatorJoystick, 180)
                 .whileTrue(AutomatedScoring.scoreCoralNoPathing(1, elevatorSubsystem, wristSubsystem, clawSubsystem));
+
+        // L2, RIGHT POV BUTTON
+        new POVButton(operatorJoystick, 90)
+                .whileTrue(AutomatedScoring.scoreCoralNoPathing(2, elevatorSubsystem, wristSubsystem, clawSubsystem));
+
+        // L3, RIGHT POV BUTTON
+        new POVButton(operatorJoystick, 0)
+                .whileTrue(AutomatedScoring.scoreCoralNoPathing(3, elevatorSubsystem, wristSubsystem, clawSubsystem));
 
         new JoystickButton(operatorJoystick, 9).whileTrue(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
         new JoystickButton(operatorJoystick, 9).whileTrue(new MoveWristManual(wristSubsystem, operatorJoystick));
@@ -152,7 +168,7 @@ public class RobotContainer {
     }
 
     public Command getTestingCommand() {
-        return new RobotSystemsCheckCommand(driveSubsystem);
+        return new RobotSystemsCheckCommand(driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
     }
 
     public Field2d getField() {

@@ -14,6 +14,7 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.utils.CowboyUtils;
+import frc.robot.RobotState;
 import frc.robot.RobotConstants.ElevatorConstants;
 import frc.robot.RobotConstants.ScoringConstants;
 import frc.robot.RobotConstants.WristConstants;
@@ -72,13 +73,17 @@ public class AutomatedScoring {
         return targetPose;
     }
 
-    public static Command fullCoralScore(int reefSide, int position,
+    public static Command fullReefAutomation(int reefSide, int position,
             int height,
             DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
 
         Pose2d pose = pathPlanToReef(reefSide, position);
-
+        if (position == 2) {
+            RobotState.isAlgaeMode = true;
+        } else {
+            RobotState.isAlgaeMode = false;
+        }
         return new ParallelCommandGroup(
                 AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
                 new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
@@ -88,6 +93,7 @@ public class AutomatedScoring {
     public static Command scoreCoralNoPathing(int height, ElevatorSubsystem elevatorSubsystem,
             WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
+        RobotState.isAlgaeMode = false;
         return new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
                 wristSubsystem.goToCoralScoreSetpoint(height));
     }
@@ -95,6 +101,7 @@ public class AutomatedScoring {
     public static Command grabAlgaeNoPathing(int height, ElevatorSubsystem elevatorSubsystem,
             WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
+        RobotState.isAlgaeMode = true;
         return new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                 wristSubsystem.goToAlgaeScoreSetpoint(height), clawSubsystem.intakeAlgae());
     }
@@ -115,6 +122,7 @@ public class AutomatedScoring {
     public static Command humanPlayerPickup(int humanPlayerSide, DriveSubsystem drivesubsystem,
             ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
+        RobotState.isAlgaeMode = false;
         return new ParallelCommandGroup(
                 AlignWithPose.pathToPoseCommand(pathPlanToHP(humanPlayerSide), drivesubsystem),
                 elevatorSubsystem.goToHumanPlayerPickup(), wristSubsystem.goToHumanPlayerSetpoint(),
@@ -124,6 +132,7 @@ public class AutomatedScoring {
     public static Command humanPlayerPickupNoPathing(DriveSubsystem drivesubsystem,
             ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
+        RobotState.isAlgaeMode = false;
         return new ParallelCommandGroup(elevatorSubsystem.goToHumanPlayerPickup(),
                 wristSubsystem.goToHumanPlayerSetpoint(),
                 clawSubsystem.intakeCoral());

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotState;
 import frc.robot.RobotConstants.ClawConstants;
 import frc.robot.RobotConstants.PortConstants.CAN;
 
@@ -50,31 +51,47 @@ public class ClawSubsystem extends SubsystemBase {
     public Command intakeCoral() {
         return new InstantCommand(() -> {
             moveAtSpeed(.5);
-        });
+        }, this);
     }
 
     public Command outtakeCoral() {
         return new InstantCommand(() -> {
             moveAtSpeed(-1);
-        });
+        }, this);
     }
 
     public Command intakeAlgae() {
         return new InstantCommand(() -> {
             moveAtSpeed(-.75);
-        });
+        }, this);
     }
 
     public Command outtakeAlgae() {
         return new InstantCommand(() -> {
             moveAtSpeed(1);
-        });
+        }, this);
     }
 
     public Command stopClaw() {
         return new InstantCommand(() -> {
             moveAtSpeed(0);
-        });
+        }, this);
+    }
+
+    public Command generalIntakeGamepeice() {
+        if (RobotState.isAlgaeMode) {
+            return intakeAlgae();
+        } else {
+            return intakeCoral();
+        }
+    }
+
+    public Command generalOuttakeGamepeice() {
+        if (RobotState.isAlgaeMode) {
+            return outtakeAlgae();
+        } else {
+            return outtakeCoral();
+        }
     }
 
     @Override

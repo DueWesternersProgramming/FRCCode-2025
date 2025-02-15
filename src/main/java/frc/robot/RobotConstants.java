@@ -294,8 +294,8 @@ public final class RobotConstants {
                 public static final double kMaxAccelerationMetersPerSecondSquared = 3.00;
 
                 public static final PathConstraints DEFAULT_PATH_CONSTRAINTS = new PathConstraints(
-                                DrivetrainConstants.MAX_SPEED_METERS_PER_SECOND,
-                                PathPlannerConstants.kMaxAccelerationMetersPerSecondSquared,
+                                1,
+                                1,
                                 DrivetrainConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
                                 5 * Math.PI);
 
