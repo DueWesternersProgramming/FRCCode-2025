@@ -15,10 +15,10 @@ import java.util.Optional;
 import org.photonvision.simulation.VisionSystemSim;
 
 public class VisionSubsystem extends SubsystemBase {
-    private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera"}; //"backLeftCamera",
-            //"backRightCamera" };
-    public static Camera[] cameras = new Camera[2];
-    public static CameraSim[] cameraSims = new CameraSim[2];
+    private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera", "backLeftCamera",
+            "backRightCamera" };
+    public static Camera[] cameras = new Camera[4];
+    public static CameraSim[] cameraSims = new CameraSim[4];
 
     public static VisionSystemSim visionSim;
 
@@ -55,7 +55,7 @@ public class VisionSubsystem extends SubsystemBase {
                 } else {
 
                     list[i] = cameras[i].getEstimatedGlobalPose(RobotState.robotPose);
-                    //System.out.println("get vision pose WORKS!!!");
+                    // System.out.println("get vision pose WORKS!!!");
                 }
 
             } catch (Exception e) {
@@ -63,7 +63,7 @@ public class VisionSubsystem extends SubsystemBase {
                 list[i] = new Pose2d();
             }
         }
-        //System.out.println(list);
+        // System.out.println(list);
         return list;
 
     }
@@ -78,8 +78,8 @@ public class VisionSubsystem extends SubsystemBase {
             if (RobotBase.isSimulation()) {
                 visionSim.update(RobotState.robotPose);
             }
-            if (RobotBase.isReal()){
-                SmartDashboard.putBoolean("FL has result",cameras[0].hasResults());
+            if (RobotBase.isReal()) {
+                // SmartDashboard.putBoolean("FL has result", cameras[0].hasResults());
             }
         }
     }
