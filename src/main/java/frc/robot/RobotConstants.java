@@ -92,7 +92,7 @@ public final class RobotConstants {
 
                 public static final class HeightSetpoints {
                         public static final double HOME = -3;
-                        public static final double HP = -60;
+                        public static final double HP = -50;
 
                         public static final class Coral {
                                 public static final double L1 = -20;
@@ -101,7 +101,7 @@ public final class RobotConstants {
                         }
 
                         public static final class Algae {
-                                public static final double L2 = -40;
+                                public static final double L2 = -42;
                                 public static final double L3 = -70;
                         }
                 }
@@ -133,7 +133,7 @@ public final class RobotConstants {
 
                 public static final class AngleSetpoints {
                         public static final double HOME = 0.0;
-                        public static final double HP = 0.0;
+                        public static final double HP = -7.0;
 
                         public static final class Coral {
                                 public static final double L1 = 0;
@@ -143,7 +143,7 @@ public final class RobotConstants {
 
                         public static final class Algae {
                                 public static final double L2 = 12;
-                                public static final double L3 = 12;
+                                public static final double L3 = 1;
                         }
                 }
 
@@ -259,7 +259,7 @@ public final class RobotConstants {
 
                         // Manual control axis for operator
                         public static final int ELEVATOR_MANUAL_CONTROL = 1;
-                        public static final int WRIST_MANUAL_CONTROL = 3;
+                        public static final int WRIST_MANUAL_CONTROL = 5;
                 }
         }
 
@@ -294,10 +294,10 @@ public final class RobotConstants {
                 public static final double kMaxAccelerationMetersPerSecondSquared = 3.00;
 
                 public static final PathConstraints DEFAULT_PATH_CONSTRAINTS = new PathConstraints(
-                                1,
-                                1,
-                                DrivetrainConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND,
-                                5 * Math.PI);
+                                .3,
+                                .3,
+                                .2,
+                                2 * Math.PI);
 
                 public static final double MAX_VELOCITY = 6.0; // Meters per second
                 public static final double MAX_ACCELERATION = 6.0; // Meters per second squared

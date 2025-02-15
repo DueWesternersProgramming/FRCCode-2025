@@ -83,6 +83,10 @@ public class WristSubsystem extends SubsystemBase {
         }, this);
     }
 
+    public void setEncoderValue(double value){
+        wristMotor.getEncoder().setPosition(value);
+    }
+
     public Command goToAlgaeGrabSetpoint(int level) {
         return new InstantCommand(() -> {
             double setpoint;

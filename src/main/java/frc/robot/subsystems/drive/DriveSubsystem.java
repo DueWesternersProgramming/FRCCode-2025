@@ -70,9 +70,6 @@ public class DriveSubsystem extends SubsystemBase {
     StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
             .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
-            StructArrayPublisher<Pose2d> tempVisionPoses = NetworkTableInstance.getDefault()
-            .getStructArrayTopic("tempVisionPoses", Pose2d.struct).publish();
-
     /** Creates a new Drivetrain. */
     public DriveSubsystem() {
         if (SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED) {
@@ -264,7 +261,7 @@ public class DriveSubsystem extends SubsystemBase {
                             swerveModuleSims[3].getPosition()
                     });
         } else {
-            m_trackedRotation = new Rotation2d(getGyroAngle());
+            //m_trackedRotation = new Rotation2d(getGyroAngle());
             m_odometry.update(
                     Rotation2d.fromDegrees(DrivetrainConstants.GYRO_ORIENTATION * m_gyro.getAngle()),
                     new SwerveModulePosition[] {
@@ -285,9 +282,9 @@ public class DriveSubsystem extends SubsystemBase {
                 Pose2d camPose = VisionSubsystem.getVisionPoses()[i];
                 //System.out.println(i + "   " + camPose);
                 double time = Timer.getFPGATimestamp();
-
                 try {
                     m_odometry.addVisionMeasurement(camPose, time);
+                    //System.out.println("Added vision pose!");
                 } catch (Exception e) {
                 }
                 //if (VisionSubsystem.getVisionPoses()[i] != null) {

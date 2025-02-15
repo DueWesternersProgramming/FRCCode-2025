@@ -57,15 +57,15 @@ public class AutomatedScoring {
         // Determine the correct x & y offset(s) based on the position
         double adjustedXOffset = xOffset;
         if (position == 0) {
-            adjustedXOffset = xOffset;
+            adjustedXOffset = -xOffset;
         } else if (position == 1) {
             adjustedXOffset = 0;
         } else {
-            adjustedXOffset = -xOffset;
+            adjustedXOffset = xOffset;
         }
 
         // Create a translation for the offsets
-        Translation2d translation = new Translation2d(0, adjustedXOffset);
+        Translation2d translation = new Translation2d(adjustedXOffset, 0);
 
         // Apply the translation to the target pose
         targetPose = targetPose.transformBy(new Transform2d(translation, targetPose.getRotation()));
@@ -79,7 +79,7 @@ public class AutomatedScoring {
             ClawSubsystem clawSubsystem) {
 
         Pose2d pose = pathPlanToReef(reefSide, position);
-        if (position == 2) {
+        if (position == 1) {
             RobotState.isAlgaeMode = true;
             return new ParallelCommandGroup(
                     AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
@@ -108,7 +108,7 @@ public class AutomatedScoring {
             ClawSubsystem clawSubsystem) {
         RobotState.isAlgaeMode = true;
         return new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
-                wristSubsystem.goToAlgaeGrabSetpoint(height), clawSubsystem.intakeAlgae());
+                wristSubsystem.goToAlgaeGrabSetpoint(height)); //clawSubsystem.intakeAlgae());
     }
 
     public static Command stopClaw(ClawSubsystem clawSubsystem) {
