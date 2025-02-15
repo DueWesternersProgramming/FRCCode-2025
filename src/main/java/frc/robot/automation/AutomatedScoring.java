@@ -81,13 +81,18 @@ public class AutomatedScoring {
         Pose2d pose = pathPlanToReef(reefSide, position);
         if (position == 2) {
             RobotState.isAlgaeMode = true;
+            return new ParallelCommandGroup(
+                    AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
+                    new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
+                            wristSubsystem.goToAlgaeGrabSetpoint(height)));
         } else {
             RobotState.isAlgaeMode = false;
+            return new ParallelCommandGroup(
+                    AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
+                    new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
+                            wristSubsystem.goToCoralScoreSetpoint(height)));
         }
-        return new ParallelCommandGroup(
-                AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
-                new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
-                        wristSubsystem.goToCoralScoreSetpoint(height)));
+
     }
 
     public static Command scoreCoralNoPathing(int height, ElevatorSubsystem elevatorSubsystem,
@@ -103,7 +108,7 @@ public class AutomatedScoring {
             ClawSubsystem clawSubsystem) {
         RobotState.isAlgaeMode = true;
         return new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
-                wristSubsystem.goToAlgaeScoreSetpoint(height), clawSubsystem.intakeAlgae());
+                wristSubsystem.goToAlgaeGrabSetpoint(height), clawSubsystem.intakeAlgae());
     }
 
     public static Command stopClaw(ClawSubsystem clawSubsystem) {
