@@ -66,7 +66,6 @@ public class DriveSubsystem extends SubsystemBase {
     private double fakeGyro = 0;
     Field2d field = new Field2d();
 
-
     StructArrayPublisher<SwerveModuleState> publisher = NetworkTableInstance.getDefault()
             .getStructArrayTopic("MyStates", SwerveModuleState.struct).publish();
 
@@ -141,7 +140,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         // Configure AutoBuilder last
         AutoBuilder.configure(
-                DriveSubsystem::getPose, // Robot pose supplier
+                this::getPose, // Robot pose supplier
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 (speeds) -> runChassisSpeeds(speeds, false), // Method that will drive the robot given ROBOT RELATIVE
@@ -253,7 +252,7 @@ public class DriveSubsystem extends SubsystemBase {
             fakeGyro = m_trackedRotation.getDegrees();
 
             m_odometry.update(
-                    Rotation2d.fromDegrees(fakeGyro + (CowboyUtils.isRedAlliance() ? 180 : 0)),
+                    Rotation2d.fromDegrees(fakeGyro),
                     new SwerveModulePosition[] {
                             swerveModuleSims[0].getPosition(),
                             swerveModuleSims[1].getPosition(),
@@ -261,7 +260,7 @@ public class DriveSubsystem extends SubsystemBase {
                             swerveModuleSims[3].getPosition()
                     });
         } else {
-            //m_trackedRotation = new Rotation2d(getGyroAngle());
+            // m_trackedRotation = new Rotation2d(getGyroAngle());
             m_odometry.update(
                     Rotation2d.fromDegrees(DrivetrainConstants.GYRO_ORIENTATION * m_gyro.getAngle()),
                     new SwerveModulePosition[] {
@@ -280,17 +279,17 @@ public class DriveSubsystem extends SubsystemBase {
 
             for (int i = 0; i < VisionSubsystem.getLengthOfCameraList(); i++) {
                 Pose2d camPose = VisionSubsystem.getVisionPoses()[i];
-                //System.out.println(i + "   " + camPose);
+                // System.out.println(i + " " + camPose);
                 double time = Timer.getFPGATimestamp();
                 try {
                     m_odometry.addVisionMeasurement(camPose, time);
-                    //System.out.println("Added vision pose!");
+                    // System.out.println("Added vision pose!");
                 } catch (Exception e) {
                 }
-                //if (VisionSubsystem.getVisionPoses()[i] != null) {
-                    
-                //}
-                
+                // if (VisionSubsystem.getVisionPoses()[i] != null) {
+
+                // }
+
             }
         }
     }
@@ -308,7 +307,7 @@ public class DriveSubsystem extends SubsystemBase {
         }
     }
 
-    public static Pose2d getPose() {
+    public Pose2d getPose() {
         return SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED ? m_odometry.getEstimatedPosition() : new Pose2d();
     }
 
@@ -526,8 +525,7 @@ public class DriveSubsystem extends SubsystemBase {
             double rotDelivered = m_currentRotation * DrivetrainConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
 
             Rotation2d rotation = Rotation2d.fromDegrees(
-                    getGyroAngle()
-                            + (CowboyUtils.isRedAlliance() ? 180 : 0));
+                    getGyroAngle());
 
             return !fieldRelative
                     ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,

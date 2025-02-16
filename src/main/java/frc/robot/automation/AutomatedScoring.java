@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.claw.ClawSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -18,9 +17,6 @@ import frc.robot.RobotState;
 import frc.robot.RobotConstants.ElevatorConstants;
 import frc.robot.RobotConstants.ScoringConstants;
 import frc.robot.RobotConstants.WristConstants;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import com.pathplanner.lib.util.FlippingUtil;
 
 public class AutomatedScoring {
@@ -42,7 +38,7 @@ public class AutomatedScoring {
         // System.out.println("Reef Side: " + reefSide.get());
         targetPose = ScoringConstants.BlueAlliance.REEF_SIDE_POSES.get(reefSide - 1);
 
-        if (CowboyUtils.isRedAlliance()) {
+        if (!CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
             // System.out.println("Flipping pose");
             targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
@@ -82,13 +78,15 @@ public class AutomatedScoring {
         if (position == 1) {
             RobotState.isAlgaeMode = true;
             return new ParallelCommandGroup(
-                    AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
+                    clawSubsystem.stopClaw(),
+                    new AlignWithPose(drivesubsystem, pose),
                     new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                             wristSubsystem.goToAlgaeGrabSetpoint(height)));
         } else {
             RobotState.isAlgaeMode = false;
             return new ParallelCommandGroup(
-                    AlignWithPose.pathToPoseCommand(pose, drivesubsystem),
+                    clawSubsystem.stopClaw(),
+                    new AlignWithPose(drivesubsystem, pose),
                     new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
                             wristSubsystem.goToCoralScoreSetpoint(height)));
         }
@@ -108,7 +106,7 @@ public class AutomatedScoring {
             ClawSubsystem clawSubsystem) {
         RobotState.isAlgaeMode = true;
         return new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
-                wristSubsystem.goToAlgaeGrabSetpoint(height)); //clawSubsystem.intakeAlgae());
+                wristSubsystem.goToAlgaeGrabSetpoint(height)); // clawSubsystem.intakeAlgae());
     }
 
     public static Command stopClaw(ClawSubsystem clawSubsystem) {
@@ -129,7 +127,7 @@ public class AutomatedScoring {
             ClawSubsystem clawSubsystem) {
         RobotState.isAlgaeMode = false;
         return new ParallelCommandGroup(
-                AlignWithPose.pathToPoseCommand(pathPlanToHP(humanPlayerSide), drivesubsystem),
+                new AlignWithPose(drivesubsystem, pathPlanToHP(humanPlayerSide)),
                 elevatorSubsystem.goToHumanPlayerPickup(), wristSubsystem.goToHumanPlayerSetpoint(),
                 clawSubsystem.intakeCoral());
     }
