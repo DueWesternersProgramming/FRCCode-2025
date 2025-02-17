@@ -22,10 +22,10 @@ public class Camera {
 
         photonPoseEstimator = new PhotonPoseEstimator(
                 CowboyUtils.aprilTagFieldLayout,
-                PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+                PoseStrategy.LOWEST_AMBIGUITY,
                 positionTransform3d);
                 
-        photonPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
+        photonPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT);
     }
 
     public void setPipeline(int index) {
@@ -79,14 +79,16 @@ public class Camera {
 
             photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
             try {
-                if (photonPoseEstimator.update(getResult()).isPresent()){
-                    return photonPoseEstimator.update(getResult()).get().estimatedPose.toPose2d();
+                if (true){
+                    Optional<EstimatedRobotPose> estimate =  photonPoseEstimator.update(photonCamera.getLatestResult());
+                    //System.out.println(estimate.isPresent());
+                    return estimate.isPresent() ? estimate.get().estimatedPose.toPose2d() : null;
                 }
                 else{
                     return null;
                 }
             } catch (Exception e) {
-                System.out.println("This error should NOT happen?????");
+                System.out.println(e);
                 return null;
             }
             

@@ -17,12 +17,13 @@ public class MoveElevatorManual extends Command {
 
     @Override
     public void end(boolean interrupted) {
-
+        elevatorSubsystem.moveAtSpeed(0); // Makes sure it does not keep on moving.
     }
 
     @Override
     public void execute() {
         elevatorSubsystem.moveAtSpeed(joystick.getRawAxis(Controller.ELEVATOR_MANUAL_CONTROL));
+        // elevatorSubsystem.setMotorVoltage(-.2);
     }
 
     @Override

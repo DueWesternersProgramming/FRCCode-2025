@@ -3,11 +3,16 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.automation.AutomatedScoring;
 import frc.robot.commands.drive.RunAtVelocity;
+import frc.robot.subsystems.claw.ClawSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.wrist.WristSubsystem;
 
 public class RobotSystemsCheckCommand extends SequentialCommandGroup {
-    public RobotSystemsCheckCommand(DriveSubsystem drivesubsystem) {
+    public RobotSystemsCheckCommand(DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem,
+            WristSubsystem wristSubsystem, ClawSubsystem clawSubsystem) {
         addCommands(
                 new PrintCommand("Starting Robot Systems Checks!"),
                 new PrintCommand("Make Sure The Robot Is Not On The Ground And Motors Are Clear..."),
@@ -17,16 +22,24 @@ public class RobotSystemsCheckCommand extends SequentialCommandGroup {
                 new RunAtVelocity(drivesubsystem, 0, -0.5, 0),
                 new WaitCommand(1),
                 new RunAtVelocity(drivesubsystem, 0.5, 0, 0),
+                AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem),
+                clawSubsystem.intakeCoral(),
                 new WaitCommand(1),
                 new RunAtVelocity(drivesubsystem, 0, 0.5, 0),
                 new WaitCommand(1),
                 new RunAtVelocity(drivesubsystem, -0.5, 0, 0),
                 new WaitCommand(1),
+                clawSubsystem.stopClaw(),
+                AutomatedScoring.scoreCoralNoPathing(3, elevatorSubsystem, wristSubsystem, clawSubsystem),
                 new RunAtVelocity(drivesubsystem, 0, 0, 0.5),
                 new WaitCommand(1),
                 new RunAtVelocity(drivesubsystem, 0, 0, -0.5),
                 new WaitCommand(1),
+                AutomatedScoring.grabAlgaeNoPathing(1, elevatorSubsystem, wristSubsystem, clawSubsystem),
+                new WaitCommand(2),
+                AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem),
                 new RunAtVelocity(drivesubsystem, 0, 0, 0),
+
                 new PrintCommand("Testing Complete!"));
     }
 }

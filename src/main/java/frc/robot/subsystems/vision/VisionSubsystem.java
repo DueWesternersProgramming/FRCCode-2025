@@ -15,10 +15,10 @@ import java.util.Optional;
 import org.photonvision.simulation.VisionSystemSim;
 
 public class VisionSubsystem extends SubsystemBase {
-    private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera"}; //"backLeftCamera",
+    private static String[] cameraNames = { "frontLeftCamera"}; //"frontRightCamera"};//, "backLeftCamera",
             //"backRightCamera" };
-    public static Camera[] cameras = new Camera[getLengthOfCameraList()];
-    public static CameraSim[] cameraSims = new CameraSim[getLengthOfCameraList()];
+    public static Camera[] cameras = new Camera[1];
+    public static CameraSim[] cameraSims = new CameraSim[1];
 
     public static VisionSystemSim visionSim;
 
@@ -55,15 +55,15 @@ public class VisionSubsystem extends SubsystemBase {
                 } else {
 
                     list[i] = cameras[i].getEstimatedGlobalPose(RobotState.robotPose);
-                    //System.out.println("get vision pose WORKS!!!");
+                    // System.out.println("get vision pose WORKS!!!");
                 }
 
             } catch (Exception e) {
-                System.out.println(e);
-                list[i] = new Pose2d();
+                
+                list[i] = null;
             }
         }
-        //System.out.println(list);
+        // System.out.println(list);
         return list;
 
     }
@@ -78,8 +78,11 @@ public class VisionSubsystem extends SubsystemBase {
             if (RobotBase.isSimulation()) {
                 visionSim.update(RobotState.robotPose);
             }
-            if (RobotBase.isReal()){
-                SmartDashboard.putBoolean("FL has result",cameras[0].hasResults());
+            if (RobotBase.isReal()) {
+                if (cameras[0].hasResults()){
+                SmartDashboard.putNumber("X offset", VisionSubsystem.cameras[0].getTargetYaw());
+                }
+                // SmartDashboard.putBoolean("FL has result", cameras[0].hasResults());
             }
         }
     }

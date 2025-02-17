@@ -1,43 +1,71 @@
 package frc.robot.automation;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-
-import edu.wpi.first.math.controller.HolonomicDriveController;
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.FunctionalCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.RobotConstants.DrivetrainConstants;
-import frc.robot.RobotConstants.PathPlannerConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.utils.CowboyUtils;
 
-public class AlignWithPose {
+public class AlignWithPose extends Command {
+    DriveSubsystem driveSubsystem;
+    Pose2d pose;
+    ProfiledPIDController xController;
+    ProfiledPIDController yController;
+    ProfiledPIDController rotController;
 
-    public AlignWithPose() {
+    public AlignWithPose(DriveSubsystem driveSubsystem, Pose2d pose) {
+        this.driveSubsystem = driveSubsystem;
+        this.pose = pose;
+        addRequirements(driveSubsystem);
 
+        xController = new ProfiledPIDController(0.075, 0, 0, new Constraints(.75, 1.5));
+        yController = new ProfiledPIDController(0.075, 0, 0, new Constraints(.75, 1));
+        rotController = new ProfiledPIDController(0.05, 0, 0, new Constraints(20, 12));
+
+        xController.setTolerance(.05);
+        yController.setTolerance(.05);
+        rotController.setTolerance(1);
+        rotController.enableContinuousInput(-180, 180);
     }
 
-    public static Command pathToPoseCommand(Pose2d target, DriveSubsystem driveSubsystem) {
-
-        // HolonomicDriveController holonomicDriveController = new
-        // HolonomicDriveController(
-        // new PIDController(3, 0, 0),
-        // new PIDController(3, 0, 0), new ProfiledPIDController(3, 0, 0, new
-        // Constraints(3, 3)));
-        // holonomicDriveController.setTolerance(new Pose2d(0.01, 0.01, new
-        // Rotation2d(Math.toRadians(5))));
-
-        Command roughAlignmentCommand = AutoBuilder.pathfindToPose(
-                target,
-                PathPlannerConstants.DEFAULT_PATH_CONSTRAINTS,
-                0.0);
-
-        return roughAlignmentCommand;
+    @Override
+    public void end(boolean interrupted) {
+        driveSubsystem.drive(0, 0, 0, true, true);
     }
+
+    @Override
+    public void execute() {
+        double xSpeed = MathUtil.clamp((xController.calculate(driveSubsystem.getPose().getX(), pose.getX())), -1,
+                1);
+        double ySpeed = MathUtil.clamp((yController.calculate(driveSubsystem.getPose().getY(), pose.getY())), -1,
+                1);
+        double rotSpeed = MathUtil.clamp(
+                (rotController.calculate(driveSubsystem.getPose().getRotation().getDegrees(),
+                        pose.getRotation().getDegrees())),
+                -1,
+                1);
+        driveSubsystem.drive(xSpeed, ySpeed, rotSpeed, true, true);
+    }
+
+    @Override
+    public void initialize() {
+        // Reset each controller using the current sensor readings
+        xController.reset(driveSubsystem.getPose().getX());
+        yController.reset(driveSubsystem.getPose().getY());
+        rotController.reset(driveSubsystem.getPose().getRotation().getDegrees());
+
+        // Optionally, stop the drive before starting
+        driveSubsystem.drive(0, 0, 0, true, true);
+    }
+
+    @Override
+    public boolean isFinished() {
+        if (xController.atGoal() && yController.atGoal() && rotController.atGoal()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
