@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -18,12 +19,19 @@ import frc.robot.automation.AutomationSelector;
  * each mode, as described in the TimedRobot documentation. If you change the
  * name of this class or
  * the package after creating this project, you must also update the
+ *
  * build.gradle file in the
  * project.
  */
+//@Logged
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
+
+    public Robot() {
+        DataLogManager.start();
+        //Epilogue.bind(this)
+    }
 
     @Override
     public void robotInit() {
