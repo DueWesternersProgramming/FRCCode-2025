@@ -132,7 +132,7 @@ public final class RobotConstants {
                 public static final double ELEVATOR_MAX_ANGLE = 30.0;
 
                 public static final class AngleSetpoints {
-                        public static final double HOME = 0.0;
+                        public static final double HOME = -5;
                         public static final double HP = -7.0;
 
                         public static final class Coral {

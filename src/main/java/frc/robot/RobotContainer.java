@@ -34,7 +34,6 @@ import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.automation.AutomationSelector;
 import frc.robot.RobotConstants.PortConstants.CAN;
-import frc.robot.automation.AlignWithTag;
 import frc.robot.automation.AutomatedScoring;
 
 public class RobotContainer {

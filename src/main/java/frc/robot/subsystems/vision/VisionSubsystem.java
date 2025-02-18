@@ -79,10 +79,7 @@ public class VisionSubsystem extends SubsystemBase {
                 visionSim.update(RobotState.robotPose);
             }
             if (RobotBase.isReal()) {
-                if (cameras[0].hasResults()){
-                SmartDashboard.putNumber("X offset", VisionSubsystem.cameras[0].getTargetYaw());
-                }
-                // SmartDashboard.putBoolean("FL has result", cameras[0].hasResults());
+                
             }
         }
     }

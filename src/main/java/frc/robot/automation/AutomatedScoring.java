@@ -38,7 +38,7 @@ public class AutomatedScoring {
         // System.out.println("Reef Side: " + reefSide.get());
         targetPose = ScoringConstants.BlueAlliance.REEF_SIDE_POSES.get(reefSide - 1);
 
-        if (!CowboyUtils.isRedAlliance()) {
+        if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
             // System.out.println("Flipping pose");
             targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),

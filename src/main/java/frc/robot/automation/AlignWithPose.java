@@ -19,13 +19,13 @@ public class AlignWithPose extends Command {
         this.pose = pose;
         addRequirements(driveSubsystem);
 
-        xController = new ProfiledPIDController(0.075, 0, 0, new Constraints(.75, 1.5));
-        yController = new ProfiledPIDController(0.075, 0, 0, new Constraints(.75, 1));
-        rotController = new ProfiledPIDController(0.05, 0, 0, new Constraints(20, 12));
+        xController = new ProfiledPIDController(0.125, 0, 0, new Constraints(1.5, 1.5));
+        yController = new ProfiledPIDController(0.125, 0, 0, new Constraints(1.5, 1));
+        rotController = new ProfiledPIDController(0.061, 0, 0, new Constraints(8, 12));
 
-        xController.setTolerance(.05);
-        yController.setTolerance(.05);
-        rotController.setTolerance(1);
+        xController.setTolerance(.01);
+        yController.setTolerance(.01);
+        rotController.setTolerance(0);
         rotController.enableContinuousInput(-180, 180);
     }
 
@@ -45,7 +45,7 @@ public class AlignWithPose extends Command {
                         pose.getRotation().getDegrees())),
                 -1,
                 1);
-        driveSubsystem.drive(xSpeed, ySpeed, rotSpeed, true, true);
+        driveSubsystem.drive(-xSpeed, -ySpeed, rotSpeed, true, true);
     }
 
     @Override
