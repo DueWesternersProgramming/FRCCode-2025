@@ -6,6 +6,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -17,6 +18,7 @@ import frc.robot.subsystems.ElevatorWristSim;
 import frc.robot.RobotConstants.ElevatorConstants;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+@Logged
 public class ElevatorSubsystem extends SubsystemBase {
     SparkMax elevatorMotor1;
     SparkMax elevatorMotor2;

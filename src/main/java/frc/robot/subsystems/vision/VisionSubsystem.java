@@ -1,5 +1,6 @@
 package frc.robot.subsystems.vision;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 import org.photonvision.simulation.VisionSystemSim;
 
+@Logged
 public class VisionSubsystem extends SubsystemBase {
     private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera"}; //"backLeftCamera",
             //"backRightCamera" };

@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.studica.frc.AHRS;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -46,6 +47,7 @@ import edu.wpi.first.wpilibj.Timer;
  * function of the drivetrain.
  * 
  */
+@Logged
 public class DriveSubsystem extends SubsystemBase {
     private SwerveModuleSim[] swerveModuleSims = new SwerveModuleSim[4];
     private SwerveModule[] swerveModules = new SwerveModule[4];
