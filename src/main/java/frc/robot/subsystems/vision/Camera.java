@@ -22,10 +22,10 @@ public class Camera {
 
         photonPoseEstimator = new PhotonPoseEstimator(
                 CowboyUtils.aprilTagFieldLayout,
-                PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+                PoseStrategy.LOWEST_AMBIGUITY,
                 positionTransform3d);
                 
-        photonPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
+        photonPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT);
     }
 
     public void setPipeline(int index) {

@@ -44,6 +44,8 @@ public class WristSubsystem extends SubsystemBase {
         wristMotorConfig.closedLoop.maxMotion.maxVelocity(WristConstants.MAX_MOTOR_RPM);
         wristMotorConfig.closedLoop.maxMotion.maxAcceleration(WristConstants.MAX_MOTOR_ACCELERATION);
 
+        wristMotorConfig.closedLoop.maxMotion.allowedClosedLoopError(.5);
+
         wristMotorConfig.closedLoop.pid(0.1, 0.0, 0.0);
 
         wristMotor.configure(wristMotorConfig, ResetMode.kResetSafeParameters,
@@ -53,7 +55,7 @@ public class WristSubsystem extends SubsystemBase {
         // The sim combination of wrist and elevator init is done in the RobotContainer
     }
 
-    public static void goToSetpoint(double setpoint) {
+    public void goToSetpoint(double setpoint) {
         if (RobotBase.isReal()) {
             wristMotorController.setReference(setpoint, ControlType.kMAXMotionPositionControl);
         }
@@ -83,7 +85,11 @@ public class WristSubsystem extends SubsystemBase {
         }, this);
     }
 
-    public Command goToAlgaeScoreSetpoint(int level) {
+    public void setEncoderValue(double value){
+        wristMotor.getEncoder().setPosition(value);
+    }
+
+    public Command goToAlgaeGrabSetpoint(int level) {
         return new InstantCommand(() -> {
             double setpoint;
             if (RobotBase.isReal()) {
@@ -109,16 +115,15 @@ public class WristSubsystem extends SubsystemBase {
         }, this);
     }
 
-
-    public double getEncoderValue(){
+    public double getEncoderValue() {
         return wristMotor.getEncoder().getPosition();
     }
 
     @Override
     public void periodic() {
-        if (RobotBase.isReal()){
+        if (RobotBase.isReal()) {
             SmartDashboard.putNumber("Wrist Encoder val", getEncoderValue());
-            //System.out.println("EA SPORTSSS");
+            // System.out.println("EA SPORTSSS");
         }
     }
 

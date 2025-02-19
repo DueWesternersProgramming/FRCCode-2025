@@ -2,7 +2,9 @@ package frc.robot.subsystems.elevator;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
@@ -17,6 +19,8 @@ import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.subsystems.ElevatorWristSim;
 import frc.robot.RobotConstants.ElevatorConstants;
 import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkClosedLoopController;
 
 @Logged
 public class ElevatorSubsystem extends SubsystemBase {
@@ -24,15 +28,25 @@ public class ElevatorSubsystem extends SubsystemBase {
     SparkMax elevatorMotor2;
     SparkMaxConfig elevatorMotor1Config;
     SparkMaxConfig elevatorMotor2Config;
-    ProfiledPIDController pidController;
+    static SparkClosedLoopController elevatorMotor1Controller;
 
     public ElevatorSubsystem() {
 
         elevatorMotor1 = new SparkMax(CAN.ELEVATOR_MOTOR_1, MotorType.kBrushless);
         elevatorMotor2 = new SparkMax(CAN.ELEVATOR_MOTOR_2, MotorType.kBrushless);
 
+        elevatorMotor1Controller = elevatorMotor1.getClosedLoopController();
+        
+
         elevatorMotor1Config = new SparkMaxConfig();
         elevatorMotor2Config = new SparkMaxConfig();
+
+        elevatorMotor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+        elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(.5);
+        elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(ElevatorConstants.MAX_MOTOR_RPM);
+        elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.MAX_MOTOR_ACCELERATION);
+
+        elevatorMotor1Config.closedLoop.pid(0.2, 0.0,1.5);
 
         elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1, true);
 
@@ -41,22 +55,23 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         elevatorMotor2.configure(elevatorMotor2Config, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
-
-        pidController = new ProfiledPIDController(ElevatorConstants.P, ElevatorConstants.I, ElevatorConstants.D, ElevatorConstants.CONSTRAINTS);
-
+        // } else {
         new ElevatorWristSim();
     }
 
     public void goToSetpoint(double setpoint) {
-
+        // Add code here to move the elevator to the scoring height
         if (RobotBase.isReal()) {
-            double output = pidController.calculate(getEncoder().getPosition(), setpoint);
-            elevatorMotor1.set(output + ElevatorConstants.FEEDFORWARD);
+            elevatorMotor1Controller.setReference(setpoint, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, -.2);
         }
     }
+
     public void setEncoderValue(double value) {
         // In rotations
         elevatorMotor1.getEncoder().setPosition(value);
+    }
+    public void setMotorVoltage(double volts){
+        elevatorMotor1.setVoltage(volts);
     }
 
     public Command goToCoralScoreSetpoint(int level) {
@@ -110,6 +125,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void moveAtSpeed(double speed) {
         elevatorMotor1.set(speed * .5);
     }
+    
 
     // public Command homeElevator() {
     // return this.run(() -> elevatorMotor1.setVoltage(1)).until(() ->
@@ -124,6 +140,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     public RelativeEncoder getEncoder() {
         return elevatorMotor1.getEncoder();
     }
+
+    
 
     @Override
     public void periodic() {
