@@ -27,7 +27,7 @@ public class ClawSubsystem extends SubsystemBase {
 
     public ClawSubsystem() {
 
-        if (RobotBase.isReal()) {
+         
             clawMotor1 = new SparkMax(CAN.CLAW_MOTOR_1, MotorType.kBrushless);
             clawMotor2 = new SparkMax(CAN.CLAW_MOTOR_2, MotorType.kBrushless);
 
@@ -43,7 +43,7 @@ public class ClawSubsystem extends SubsystemBase {
                 PersistMode.kPersistParameters);
 
             
-        }
+        
     }
 
     public void moveAtSpeed(double speed) {

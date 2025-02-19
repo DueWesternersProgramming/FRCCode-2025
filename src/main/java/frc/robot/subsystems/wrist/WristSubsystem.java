@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -24,6 +25,7 @@ import frc.robot.subsystems.ElevatorWristSim;
 import frc.robot.Robot;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
+@Logged
 public class WristSubsystem extends SubsystemBase {
     SparkMax wristMotor;
     SparkMaxConfig wristMotorConfig;
