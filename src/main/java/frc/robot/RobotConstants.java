@@ -136,19 +136,19 @@ public final class RobotConstants {
                         public static final double HP = -7.0;
 
                         public static final class Coral {
-                                public static final double L1 = 0;
+                                public static final double L1 = -10;
                                 public static final double L2 = -3;
                                 public static final double L3 = -5;
                         }
 
                         public static final class Algae {
                                 public static final double L2 = 12;
-                                public static final double L3 = 1;
+                                public static final double L3 = 13.5;
                         }
                 }
 
-                public static final double MAX_MOTOR_RPM = 1000.0;
-                public static final double MAX_MOTOR_ACCELERATION = 500.0;
+                public static final double MAX_MOTOR_RPM = 1500.0;
+                public static final double MAX_MOTOR_ACCELERATION = 1000.0;
         }
 
         public static final class SwerveModuleConstants {
@@ -372,6 +372,6 @@ public final class RobotConstants {
         public static final class SubsystemEnabledConstants {
                 public static final boolean DRIVE_SUBSYSTEM_ENABLED = true;
 
-                public static final boolean VISION_SUBSYSTEM_ENABLED = false;
+                public static final boolean VISION_SUBSYSTEM_ENABLED = true;
         }
 }

@@ -46,7 +46,7 @@ public class WristSubsystem extends SubsystemBase {
 
         wristMotorConfig.closedLoop.maxMotion.allowedClosedLoopError(.5);
 
-        wristMotorConfig.closedLoop.pid(0.1, 0.0, 0.0);
+        wristMotorConfig.closedLoop.pid(0.15, 0.0, 0.0);
 
         wristMotor.configure(wristMotorConfig, ResetMode.kResetSafeParameters,
                 PersistMode.kPersistParameters);
