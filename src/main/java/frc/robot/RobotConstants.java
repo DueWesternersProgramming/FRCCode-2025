@@ -371,6 +371,7 @@ public final class RobotConstants {
 
         public static final class SubsystemEnabledConstants {
                 public static final boolean DRIVE_SUBSYSTEM_ENABLED = true;
-                public static final boolean VISION_SUBSYSTEM_ENABLED = true;
+
+                public static final boolean VISION_SUBSYSTEM_ENABLED = false;
         }
 }

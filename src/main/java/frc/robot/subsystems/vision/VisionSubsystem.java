@@ -17,8 +17,8 @@ import org.photonvision.simulation.VisionSystemSim;
 
 @Logged
 public class VisionSubsystem extends SubsystemBase {
-    private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera" };// , "backLeftCamera",
-    // "backRightCamera" };
+    private static String[] cameraNames = { "frontLeftCamera"}; //"frontRightCamera"};//, "backLeftCamera",
+            //"backRightCamera" };
     public static Camera[] cameras = new Camera[1];
     public static CameraSim[] cameraSims = new CameraSim[1];
 
@@ -61,7 +61,7 @@ public class VisionSubsystem extends SubsystemBase {
                 }
 
             } catch (Exception e) {
-
+                
                 list[i] = null;
             }
         }
@@ -81,7 +81,7 @@ public class VisionSubsystem extends SubsystemBase {
                 visionSim.update(RobotState.robotPose);
             }
             if (RobotBase.isReal()) {
-
+                
             }
         }
     }
