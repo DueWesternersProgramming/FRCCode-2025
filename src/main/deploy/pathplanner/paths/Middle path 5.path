@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.846926229501427,
-        "y": 4.984016393449526
+        "x": 5.82075,
+        "y": 0.6807499999999993
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.846926229501435,
-        "y": 4.984016393449526
+        "x": 4.82625,
+        "y": 0.9927499999999996
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.8,
-        "y": 5.151844262295082
+        "x": 1.51125,
+        "y": 0.515
       },
       "prevControl": {
-        "x": 4.123668032786886,
-        "y": 4.648360655737705
+        "x": 2.0865,
+        "y": 1.529
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,14 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "CoralIn",
+      "waypointRelativePos": 0.6560794044664991,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +49,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 122.0053832080835
+    "rotation": -127.99873244250465
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Middle Auto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -125.00000000000001
+    "rotation": -91.10170611520621
   },
   "useDefaultConstraints": true
 }

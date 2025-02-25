@@ -94,6 +94,30 @@ public class RobotContainer {
                 NamedCommands.registerCommand("Score L3",
                                 AutomatedScoring.scoreCoralNoPathing(3, elevatorSubsystem, wristSubsystem,
                                                 clawSubsystem));
+
+                NamedCommands.registerCommand("HumanPlayer",
+                                AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem));
+
+                NamedCommands.registerCommand("GrabLowAlgae",
+                                AutomatedScoring.grabAlgaeNoPathing(2, elevatorSubsystem, wristSubsystem,
+                                                clawSubsystem));
+
+                NamedCommands.registerCommand("GrabHighAlgae",
+                                AutomatedScoring.grabAlgaeNoPathing(3, elevatorSubsystem, wristSubsystem,
+                                                clawSubsystem));
+
+                NamedCommands.registerCommand("CoralIn", clawSubsystem.intakeCoral());
+                NamedCommands.registerCommand("CoralOut", clawSubsystem.outtakeCoral());
+                NamedCommands.registerCommand("AlgaeIn", clawSubsystem.intakeAlgae());
+                NamedCommands.registerCommand("AlgaeOut", clawSubsystem.outtakeAlgae());
+
+                NamedCommands.registerCommand("AlgaeIn", clawSubsystem.intakeAlgae());
+
+                NamedCommands.registerCommand("StopClaw", clawSubsystem.stopClaw());
+
+                NamedCommands.registerCommand("ProcessorHome",
+                                AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
+
         }
 
         private void configureButtonBindings() {

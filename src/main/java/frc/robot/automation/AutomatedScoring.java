@@ -61,7 +61,7 @@ public class AutomatedScoring {
         }
 
         // Create a translation for the offsets
-        Translation2d translation = new Translation2d(adjustedXOffset, 0);
+        Translation2d translation = new Translation2d(adjustedXOffset, 0.2);
 
         // Apply the translation to the target pose
         targetPose = targetPose.transformBy(new Transform2d(translation, targetPose.getRotation()));

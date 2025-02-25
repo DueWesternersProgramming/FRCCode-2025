@@ -17,10 +17,10 @@ import org.photonvision.simulation.VisionSystemSim;
 
 @Logged
 public class VisionSubsystem extends SubsystemBase {
-    private static String[] cameraNames = { "frontLeftCamera"}; //"frontRightCamera"};//, "backLeftCamera",
+    private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera"};//, "backLeftCamera",
             //"backRightCamera" };
-    public static Camera[] cameras = new Camera[1];
-    public static CameraSim[] cameraSims = new CameraSim[1];
+    public static Camera[] cameras = new Camera[2];
+    public static CameraSim[] cameraSims = new CameraSim[2];
 
     public static VisionSystemSim visionSim;
 

@@ -92,7 +92,7 @@ public final class RobotConstants {
 
                 public static final class HeightSetpoints {
                         public static final double HOME = -3;
-                        public static final double HP = -50;
+                        public static final double HP = -51.5;
 
                         public static final class Coral {
                                 public static final double L1 = -20;
@@ -133,7 +133,7 @@ public final class RobotConstants {
 
                 public static final class AngleSetpoints {
                         public static final double HOME = -5;
-                        public static final double HP = -7.0;
+                        public static final double HP = -10.0;
 
                         public static final class Coral {
                                 public static final double L1 = -10;
@@ -147,7 +147,7 @@ public final class RobotConstants {
                         }
                 }
 
-                public static final double MAX_MOTOR_RPM = 1500.0;
+                public static final double MAX_MOTOR_RPM = 3000.0;
                 public static final double MAX_MOTOR_ACCELERATION = 1000.0;
         }
 
