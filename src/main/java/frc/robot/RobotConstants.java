@@ -106,13 +106,13 @@ public final class RobotConstants {
                         }
                 }
 
-                public static final double MAX_MOTOR_RPM = 5000.0;
-                public static final double MAX_MOTOR_ACCELERATION = 6000.0;
+                public static final double MAX_MOTOR_RPM = 8000.0;
+                public static final double MAX_MOTOR_ACCELERATION = 10000.0;
                 public static final Constraints CONSTRAINTS = new Constraints(MAX_MOTOR_RPM, MAX_MOTOR_ACCELERATION);
 
-                public static final double P = 1;
-                public static final double I = 0;
-                public static final double D = 0;
+                // public static final double P = 1;
+                // public static final double I = 0;
+                // public static final double D = 0;
 
                 public static final class SimConstants {
                         public static final double HP = .4;
@@ -138,7 +138,7 @@ public final class RobotConstants {
                         public static final class Coral {
                                 public static final double L1 = -10;
                                 public static final double L2 = -3;
-                                public static final double L3 = -5;
+                                public static final double L3 = -10;
                         }
 
                         public static final class Algae {
