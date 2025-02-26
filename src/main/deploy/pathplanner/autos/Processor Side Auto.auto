@@ -7,13 +7,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Score L3"
+            "name": "Score L2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Path 1"
+            "pathName": "Processor Side Path 1"
           }
         },
         {
@@ -43,43 +43,19 @@
         {
           "type": "named",
           "data": {
-            "name": "GrabLowAlgae"
+            "name": "CoralIn"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AlgaeIn"
+            "name": "HumanPlayer"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Path 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Path 3"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.25
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AlgaeOut"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Path 4"
+            "pathName": "Processor Side Path 2"
           }
         },
         {
@@ -89,15 +65,9 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "StopClaw"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Middle Path 5"
+            "pathName": "Processor Side Path 3"
           }
         },
         {
