@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.89875,
-        "y": 4.1907499999999995
+        "x": 5.778073770491804,
+        "y": 4.132889344262295
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.63,
-        "y": 4.1225
+        "x": 5.543991476099542,
+        "y": 4.045108483865198
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Reef 1R"
     },
     {
       "anchor": {
-        "x": 5.791500000000001,
-        "y": 4.0
+        "x": 5.778073770491804,
+        "y": 4.001024590163935
       },
       "prevControl": {
-        "x": 6.093750000000002,
-        "y": 3.9610000000000003
+        "x": 6.0803237704918045,
+        "y": 3.962024590163935
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Reef 1 Algae"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Middle Path",
+  "folder": "Barge Middle Path",
   "idealStartingState": {
     "velocity": 0.0,
     "rotation": 180.0

@@ -1,0 +1,77 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.5943647540983608,
+        "y": 0.670999999999999
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.9941147540983606,
+        "y": 1.2950000000000004
+      },
+      "isLocked": false,
+      "linkedName": "Hp2 "
+    },
+    {
+      "anchor": {
+        "x": 6.005999999999999,
+        "y": 0.7002499999999998
+      },
+      "prevControl": {
+        "x": 5.005999999999999,
+        "y": 0.7002499999999999
+      },
+      "nextControl": {
+        "x": 7.0059999999999985,
+        "y": 0.7002499999999998
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.78175,
+        "y": 3.8202499999999993
+      },
+      "prevControl": {
+        "x": 6.46425,
+        "y": 3.8689999999999993
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Reef 1L"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "Score L3",
+      "waypointRelativePos": 1.5741935483870877,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -178.75463573323162
+  },
+  "reversed": false,
+  "folder": "Barge Middle Path",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -127.99873244250465
+  },
+  "useDefaultConstraints": true
+}
