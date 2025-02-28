@@ -8,11 +8,11 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.439492634457807,
-        "y": 6.5814369276156555
+        "x": 6.988831967213113,
+        "y": 5.775204918032787
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Barge Middle Blue"
     },
     {
       "anchor": {
@@ -20,12 +20,12 @@
         "y": 5.247745901639345
       },
       "prevControl": {
-        "x": 5.706147540983607,
-        "y": 5.679303278688525
+        "x": 5.4304303278688515,
+        "y": 5.511475409836065
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Reef 2 R"
     }
   ],
   "rotationTargets": [],
@@ -45,10 +45,10 @@
     "rotation": -121.70142966950579
   },
   "reversed": false,
-  "folder": "Barge Side Path",
+  "folder": "Barge 2 Path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 179.26547896574522
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

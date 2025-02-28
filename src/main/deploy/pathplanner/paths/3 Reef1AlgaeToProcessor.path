@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.82075,
-        "y": 0.6807499999999993
+        "x": 5.778073770491804,
+        "y": 4.001024590163935
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.82625,
-        "y": 0.9927499999999996
+        "x": 6.778073770491804,
+        "y": 4.001024590163935
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Reef 1 Algae"
     },
     {
       "anchor": {
-        "x": 5.78175,
-        "y": 3.8202499999999993
+        "x": 5.9475,
+        "y": 0.670999999999999
       },
       "prevControl": {
-        "x": 6.46425,
-        "y": 3.8689999999999993
+        "x": 6.113250000000001,
+        "y": 1.34375
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Processor"
     }
   ],
   "rotationTargets": [],
@@ -33,29 +33,35 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Score L3",
-      "waypointRelativePos": 1.5741935483870877,
+      "name": "StopClaw",
+      "waypointRelativePos": 0.5,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "ProcessorHome",
+      "waypointRelativePos": 0.501240694789086,
       "endWaypointRelativePos": null,
       "command": null
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
+    "maxVelocity": 2.0,
     "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
+    "maxAngularVelocity": 400.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -178.75463573323162
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Middle Path",
+  "folder": "Barge Middle Path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -128.65980825409014
+    "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

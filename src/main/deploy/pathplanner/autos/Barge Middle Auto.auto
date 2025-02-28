@@ -7,13 +7,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Score L2"
+            "name": "Score L3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Barge Side Path 1"
+            "pathName": "1 BargeMiddleToReef1R"
           }
         },
         {
@@ -43,7 +43,55 @@
         {
           "type": "named",
           "data": {
-            "name": "CoralIn"
+            "name": "GrabLowAlgae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeIn"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 Reef1RToReef1Algae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Reef1AlgaeToProcessor"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeOut"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopClaw"
           }
         },
         {
@@ -55,7 +103,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Barge Side Path 2"
+            "pathName": "4 ProcessorToHp2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralIn"
           }
         },
         {
@@ -65,9 +119,21 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "StopClaw"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L3"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Barge Side Path 3"
+            "pathName": "5 Hp2ToReef1L"
           }
         },
         {

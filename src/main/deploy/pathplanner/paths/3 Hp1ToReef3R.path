@@ -17,12 +17,12 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2536885245901637,
+        "x": 2.3376024590163933,
         "y": 6.638319672131147
 >>>>>>> 935d396ff49f85505bd1a3f4a0e1290c1458627b:src/main/deploy/pathplanner/paths/Barge Side Path 3.path
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Human Player from 2"
     },
     {
       "anchor": {
@@ -86,11 +86,10 @@
     "rotation": -62.90444750624816
   },
   "reversed": false,
-  "folder": "Barge Side Path",
+  "folder": "Barge 2 Path",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 127.99873244250465
->>>>>>> 935d396ff49f85505bd1a3f4a0e1290c1458627b:src/main/deploy/pathplanner/paths/Barge Side Path 3.path
   },
   "useDefaultConstraints": true
 }

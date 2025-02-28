@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.985250000000001,
-        "y": 4.0055
+        "x": 5.070799180327868,
+        "y": 5.247745901639345
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.668017253698382,
-        "y": 4.026510424248749
+        "x": 4.711168032786885,
+        "y": 6.206762295081967
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Reef 2 R"
     },
     {
       "anchor": {
-        "x": 5.8305,
-        "y": 4.161499999999999
+        "x": 1.2107581967213117,
+        "y": 6.985963114754099
       },
       "prevControl": {
-        "x": 6.254370248804209,
-        "y": 4.1303827236670045
+        "x": 2.2536885245901654,
+        "y": 6.374590163932507
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Human Player from 2"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 126.11934084947983
   },
   "reversed": false,
-  "folder": "Middle Path",
+  "folder": "Barge 2 Path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -121.70142966950579
   },
   "useDefaultConstraints": true
 }

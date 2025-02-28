@@ -3,42 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.82075,
-        "y": 0.6807499999999993
+        "x": 7.985250000000001,
+        "y": 4.0055
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.82625,
-        "y": 0.9927499999999996
+        "x": 7.668017253698382,
+        "y": 4.026510424248749
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.51125,
-        "y": 0.515
+        "x": 5.838012295087761,
+        "y": 4.168852459012532
       },
       "prevControl": {
-        "x": 2.0865,
-        "y": 1.529
+        "x": 6.1402123560728885,
+        "y": 5.279196401498406
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Barge Middle "
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "CoralIn",
-      "waypointRelativePos": 0.6560794044664991,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -49,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -127.99873244250465
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Middle Path",
+  "folder": "Barge Middle Path",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -91.10170611520621
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

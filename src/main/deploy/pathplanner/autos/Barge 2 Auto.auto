@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle Path 1"
+            "pathName": "1 Barge2ToReef2R"
           }
         },
         {
@@ -43,43 +43,19 @@
         {
           "type": "named",
           "data": {
-            "name": "GrabLowAlgae"
+            "name": "HumanPlayer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 Reef2RToHp1"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AlgaeIn"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Path 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Path 3"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.25
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AlgaeOut"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Middle Path 4"
+            "name": "CoralIn"
           }
         },
         {
@@ -95,9 +71,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Score L3"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Middle Path 5"
+            "pathName": "3 Hp1ToReef3R"
           }
         },
         {
