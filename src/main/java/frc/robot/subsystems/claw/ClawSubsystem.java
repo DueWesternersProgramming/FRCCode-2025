@@ -34,7 +34,7 @@ public class ClawSubsystem extends SubsystemBase {
             clawMotorConfig1 = new SparkMaxConfig();
             clawMotorConfig2 = new SparkMaxConfig();
 
-            clawMotorConfig2.inverted(true);
+            clawMotorConfig2.inverted(false);
 
             clawMotor1.configure(clawMotorConfig1, ResetMode.kResetSafeParameters,
                     PersistMode.kPersistParameters);
