@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.9475,
-        "y": 0.670999999999999
+        "x": 6.017827868852459,
+        "y": 0.6324795081967204
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.9725,
-        "y": 1.2267499999999996
+        "x": 6.435799180327869,
+        "y": 1.4930368852459015
       },
       "isLocked": false,
       "linkedName": "Processor"
     },
     {
       "anchor": {
-        "x": 1.54,
-        "y": 0.73
+        "x": 1.0788934426229508,
+        "y": 0.9921106557377039
       },
       "prevControl": {
-        "x": 1.9053852459016396,
-        "y": 1.2370000000000005
+        "x": 1.7502049180327868,
+        "y": 1.5914959016393437
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "HP2"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5,
+      "rotationDegrees": -123.87763807437943
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
@@ -40,8 +45,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -55,7 +60,7 @@
   "folder": "Barge Middle Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": -92.6025622024998
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

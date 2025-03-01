@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.54,
-        "y": 0.73
+        "x": 1.0788934426229508,
+        "y": 0.9921106557377039
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9397499999999999,
-        "y": 1.3540000000000014
+        "x": 1.8645081967213115,
+        "y": 2.2252254098360655
       },
       "isLocked": false,
       "linkedName": "HP2"
     },
     {
       "anchor": {
-        "x": 6.015749999997882,
-        "y": 0.9440000000035457
+        "x": 6.257581967213115,
+        "y": 1.3397540983606564
       },
       "prevControl": {
-        "x": 5.157206730931059,
-        "y": 0.4312588809775254
+        "x": 5.897506373161594,
+        "y": 0.40683096831807875
       },
       "nextControl": {
-        "x": 6.7177499999978805,
-        "y": 1.3632500000035452
+        "x": 7.048770491803278,
+        "y": 3.3896516393442626
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 3.86
       },
       "prevControl": {
-        "x": 6.46425,
-        "y": 3.90875
+        "x": 7.252561475409835,
+        "y": 4.072950819672131
       },
       "nextControl": null,
       "isLocked": false,
@@ -56,8 +56,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 1.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -73,5 +73,5 @@
     "velocity": 0,
     "rotation": -126.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

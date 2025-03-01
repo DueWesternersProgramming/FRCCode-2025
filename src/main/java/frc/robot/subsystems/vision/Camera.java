@@ -7,8 +7,10 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.utils.CowboyUtils;
 import java.util.Optional;
@@ -22,10 +24,10 @@ public class Camera {
 
         photonPoseEstimator = new PhotonPoseEstimator(
                 CowboyUtils.aprilTagFieldLayout,
-                PoseStrategy.LOWEST_AMBIGUITY,
+                PoseStrategy.AVERAGE_BEST_TARGETS,
                 positionTransform3d);
                 
-        photonPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.CLOSEST_TO_CAMERA_HEIGHT);
+        photonPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
     }
 
     public void setPipeline(int index) {
@@ -37,6 +39,7 @@ public class Camera {
     public PhotonPipelineResult getResult() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
             return photonCamera.getLatestResult();
+            
         } else {
             return null;
         }
@@ -79,14 +82,14 @@ public class Camera {
 
             photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
             try {
-                if (true){
+
+                //System.out.println((photonCamera.getLatestResult().getBestTarget().fiducialId));
+
                     Optional<EstimatedRobotPose> estimate =  photonPoseEstimator.update(photonCamera.getLatestResult());
                     //System.out.println(estimate.isPresent());
                     return estimate.isPresent() ? estimate.get().estimatedPose.toPose2d() : null;
-                }
-                else{
-                    return null;
-                }
+                
+                
             } catch (Exception e) {
                 System.out.println(e);
                 return null;

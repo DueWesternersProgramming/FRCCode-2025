@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6232014792843286,
-        "y": 7.316605152277399
+        "x": 1.0429303278688524,
+        "y": 7.08186475409836
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7500457415794104,
-        "y": 6.968961709654447
+        "x": 2.169774590163934,
+        "y": 6.734221311475409
       },
       "isLocked": false,
       "linkedName": "HP1"
@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "StopClaw",
-      "waypointRelativePos": 0.5,
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": null
     },
@@ -46,10 +46,10 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 2.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 400.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
@@ -63,5 +63,5 @@
     "velocity": 0,
     "rotation": 126.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

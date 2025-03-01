@@ -205,6 +205,9 @@ public class RobotContainer {
                 new JoystickButton(operatorJoystick, 8).onTrue(new InstantCommand(() -> {
                         elevatorSubsystem.setEncoderValue(0);
                         wristSubsystem.setEncoderValue(0);
+
+                new JoystickButton(operatorJoystick, 6).whileTrue(clawSubsystem.yeetAlgae());
+
                 }));
         }
 

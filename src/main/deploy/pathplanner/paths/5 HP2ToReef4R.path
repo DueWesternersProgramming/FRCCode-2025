@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.54,
-        "y": 0.73
+        "x": 1.0788934426229508,
+        "y": 0.9921106557377039
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5935,
-        "y": 2.9524999999999992
+        "x": 2.0738729508196716,
+        "y": 3.2457991803278694
       },
       "isLocked": false,
       "linkedName": "HP2"
@@ -20,8 +20,8 @@
         "y": 3.8666
       },
       "prevControl": {
-        "x": 2.3985000000000003,
-        "y": 3.722749999999999
+        "x": 1.9180327868852458,
+        "y": 3.9890368852459024
       },
       "nextControl": null,
       "isLocked": false,
@@ -38,8 +38,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 0.5,
+    "maxAcceleration": 0.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

@@ -27,20 +27,21 @@ public class ClawSubsystem extends SubsystemBase {
 
     public ClawSubsystem() {
 
-         
-            clawMotor1 = new SparkMax(CAN.CLAW_MOTOR_1, MotorType.kBrushless);
-            clawMotor2 = new SparkMax(CAN.CLAW_MOTOR_2, MotorType.kBrushless);
+        clawMotor1 = new SparkMax(CAN.CLAW_MOTOR_1, MotorType.kBrushless);
+        clawMotor2 = new SparkMax(CAN.CLAW_MOTOR_2, MotorType.kBrushless);
 
-            clawMotorConfig1 = new SparkMaxConfig();
-            clawMotorConfig2 = new SparkMaxConfig();
+        clawMotorConfig1 = new SparkMaxConfig();
+        clawMotorConfig2 = new SparkMaxConfig();
 
-            clawMotorConfig2.inverted(false);
+        clawMotorConfig2.inverted(false);
+        clawMotorConfig1.inverted(false);
 
-            clawMotor1.configure(clawMotorConfig1, ResetMode.kResetSafeParameters,
-                    PersistMode.kPersistParameters);
+        clawMotor1.configure(clawMotorConfig1, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
 
-            
-        
+        clawMotor2.configure(clawMotorConfig2, ResetMode.kResetSafeParameters,
+                PersistMode.kPersistParameters);
+
     }
 
     public void moveAtSpeed(double speed) {
@@ -64,6 +65,12 @@ public class ClawSubsystem extends SubsystemBase {
         return new InstantCommand(() -> {
             moveAtSpeed(-.75);
         }, this);
+    }
+
+    public Command yeetAlgae(){
+        return new InstantCommand(()->{
+            moveAtSpeed(-.75);
+        },this);
     }
 
     public Command outtakeAlgae() {

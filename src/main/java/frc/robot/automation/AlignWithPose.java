@@ -4,8 +4,11 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.utils.CowboyUtils;
 
 public class AlignWithPose extends Command {
     DriveSubsystem driveSubsystem;
@@ -45,7 +48,15 @@ public class AlignWithPose extends Command {
                         pose.getRotation().getDegrees())),
                 -1,
                 1);
-        driveSubsystem.drive(-xSpeed, -ySpeed, rotSpeed, true, true);
+
+        if (CowboyUtils.isRedAlliance()){
+            driveSubsystem.drive(-xSpeed, -ySpeed, rotSpeed, true, true);
+        }
+        else{
+            driveSubsystem.drive(xSpeed, ySpeed, rotSpeed, true, true);
+        }
+        
+        
     }
 
     @Override

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.985250000000001,
-        "y": 4.0055
+        "x": 7.18063524590164,
+        "y": 4.001024590163935
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.668017253698382,
-        "y": 4.026510424248749
+        "x": 6.863402499600022,
+        "y": 4.022035014412684
       },
       "isLocked": false,
       "linkedName": "Barge Middle"
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 0.5,
+    "maxAcceleration": 0.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
