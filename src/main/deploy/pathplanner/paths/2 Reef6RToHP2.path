@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3539999999999996,
-        "y": 5.155999999999999
+        "x": 5.295,
+        "y": 2.953
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.7379141426730307,
-        "y": 4.838441083462266
+        "x": 5.8215,
+        "y": 1.3832499999999994
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Reef6R"
     },
     {
       "anchor": {
-        "x": 1.287,
-        "y": 7.008500000000001
+        "x": 1.54,
+        "y": 0.73
       },
       "prevControl": {
-        "x": 1.08124991236454,
-        "y": 7.177046336241394
+        "x": 2.5247499999999996,
+        "y": 1.227249999999999
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "HP2"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 126.41637851988614
+    "rotation": -126.0
   },
   "reversed": false,
-  "folder": "Left Auto",
+  "folder": "Barge 6 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 124.18612248637503
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

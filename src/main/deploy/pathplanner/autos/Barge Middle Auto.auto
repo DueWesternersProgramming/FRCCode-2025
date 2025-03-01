@@ -103,7 +103,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4 ProcessorToHp2"
+            "pathName": "4 ProcessorToHP2"
           }
         },
         {
@@ -133,7 +133,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "5 Hp2ToReef1L"
+            "pathName": "5 HP2ToReef1L"
           }
         },
         {

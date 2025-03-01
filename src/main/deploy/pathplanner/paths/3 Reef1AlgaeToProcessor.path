@@ -4,15 +4,15 @@
     {
       "anchor": {
         "x": 5.778073770491804,
-        "y": 4.001024590163935
+        "y": 4.02
       },
       "prevControl": null,
       "nextControl": {
         "x": 6.778073770491804,
-        "y": 4.001024590163935
+        "y": 4.02
       },
       "isLocked": false,
-      "linkedName": "Reef 1 Algae"
+      "linkedName": "Reef1Algae"
     },
     {
       "anchor": {
@@ -58,7 +58,7 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Barge Middle Path",
+  "folder": "Barge Middle Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

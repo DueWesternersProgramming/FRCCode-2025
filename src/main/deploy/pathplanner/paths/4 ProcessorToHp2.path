@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.952999999999999,
-        "y": 0.9829999999999993
+        "x": 4.9725,
+        "y": 1.2267499999999996
       },
       "isLocked": false,
       "linkedName": "Processor"
     },
     {
       "anchor": {
-        "x": 1.5943647540983608,
-        "y": 0.670999999999999
+        "x": 1.54,
+        "y": 0.73
       },
       "prevControl": {
-        "x": 2.1696147540983612,
-        "y": 1.6849999999999985
+        "x": 1.9053852459016396,
+        "y": 1.2370000000000005
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Hp2 "
+      "linkedName": "HP2"
     }
   ],
   "rotationTargets": [],
@@ -49,10 +49,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -127.99873244250465
+    "rotation": -126.0
   },
   "reversed": false,
-  "folder": "Barge Middle Path",
+  "folder": "Barge Middle Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0

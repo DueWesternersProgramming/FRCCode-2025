@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.29425,
-        "y": 2.9329999999999994
+        "x": 1.623,
+        "y": 7.316605152277399
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.82075,
-        "y": 1.3632499999999992
+        "x": 1.9300204918036352,
+        "y": 6.506454918034815
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "HP1"
     },
     {
       "anchor": {
-        "x": 1.4235000000000002,
-        "y": 0.71
+        "x": 3.152,
+        "y": 4.191
       },
       "prevControl": {
-        "x": 2.40825,
-        "y": 1.207249999999999
+        "x": 2.12182377049216,
+        "y": 4.2407786885266185
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Reef4L"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -125.00000000000001
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Processor Side Auto",
+  "folder": "Barge 1 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 126.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

@@ -3,8 +3,11 @@
   "robotLength": 0.92,
   "holonomicMode": true,
   "pathFolders": [
-    "Barge 2 Path",
-    "Barge Middle Path"
+    "Barge 2 Paths",
+    "Barge 5 Paths",
+    "Barge 6 Paths",
+    "Barge Middle Paths",
+    "Barge 1 Paths"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,

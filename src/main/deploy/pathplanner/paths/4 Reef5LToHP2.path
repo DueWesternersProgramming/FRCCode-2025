@@ -3,48 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6232014792843286,
-        "y": 7.316605152277399
+        "x": 3.673,
+        "y": 2.971
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7500457415794104,
-        "y": 6.968961709654447
+        "x": 2.8758133554656844,
+        "y": 2.1928679715009034
       },
       "isLocked": false,
-      "linkedName": "HP1"
+      "linkedName": "Reef5L"
     },
     {
       "anchor": {
-        "x": 3.9679303278688525,
-        "y": 5.254
+        "x": 1.54,
+        "y": 0.73
       },
       "prevControl": {
-        "x": 3.4884221311475407,
-        "y": 6.165065573770491
+        "x": 1.7837474771224426,
+        "y": 1.0420948051417138
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Reef3L"
+      "linkedName": "HP2"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "StopClaw",
-      "waypointRelativePos": 0.5,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "Score L3",
-      "waypointRelativePos": 0.5,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -55,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": -126.0
   },
   "reversed": false,
-  "folder": "Barge 2 Paths",
+  "folder": "Barge 5 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.0
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": true
 }

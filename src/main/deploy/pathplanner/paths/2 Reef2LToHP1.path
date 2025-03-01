@@ -3,58 +3,56 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.54,
-        "y": 0.73
+        "x": 5.312,
+        "y": 5.092
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.9397499999999999,
-        "y": 1.3540000000000014
+        "x": 4.564230681265696,
+        "y": 6.368404480600345
       },
       "isLocked": false,
-      "linkedName": "HP2"
+      "linkedName": "Reef2L"
     },
     {
       "anchor": {
-        "x": 6.015749999997882,
-        "y": 0.9440000000035457
+        "x": 3.5919232128510914,
+        "y": 5.580915787173641
       },
       "prevControl": {
-        "x": 5.157206730931059,
-        "y": 0.4312588809775254
+        "x": 4.4410457797066965,
+        "y": 5.596640279152447
       },
       "nextControl": {
-        "x": 6.7177499999978805,
-        "y": 1.3632500000035452
+        "x": 3.1580008715751506,
+        "y": 5.5728801882611245
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 5.78175,
-        "y": 3.86
+        "x": 1.6232014792843286,
+        "y": 7.316605152277399
       },
       "prevControl": {
-        "x": 6.46425,
-        "y": 3.90875
+        "x": 1.4174513916488687,
+        "y": 7.485151488518792
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Reef1L"
+      "linkedName": "HP1"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.4754797441364695,
+      "rotationDegrees": 126.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Score L3",
-      "waypointRelativePos": 1.5741935483870877,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -65,13 +63,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -178.75463573323162
+    "rotation": 126.0
   },
   "reversed": false,
-  "folder": "Barge Middle Paths",
+  "folder": "Barge 1 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -126.0
+    "rotation": -119.99999999999999
   },
   "useDefaultConstraints": true
 }

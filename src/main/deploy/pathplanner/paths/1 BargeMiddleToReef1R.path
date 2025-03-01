@@ -12,20 +12,20 @@
         "y": 4.026510424248749
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Barge Middle"
     },
     {
       "anchor": {
         "x": 5.838012295087761,
-        "y": 4.168852459012532
+        "y": 4.191
       },
       "prevControl": {
-        "x": 6.1402123560728885,
-        "y": 5.279196401498406
+        "x": 6.38625,
+        "y": 4.183647540987467
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Barge Middle "
+      "linkedName": "Reef1R"
     }
   ],
   "rotationTargets": [],
@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Barge Middle Path",
+  "folder": "Barge Middle Paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
