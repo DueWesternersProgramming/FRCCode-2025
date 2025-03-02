@@ -7,7 +7,6 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-import edu.wpi.first.epilogue.Epilogue;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,7 +25,7 @@ public class Camera {
                 CowboyUtils.aprilTagFieldLayout,
                 PoseStrategy.AVERAGE_BEST_TARGETS,
                 positionTransform3d);
-                
+
         photonPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
     }
 
@@ -39,7 +38,7 @@ public class Camera {
     public PhotonPipelineResult getResult() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
             return photonCamera.getLatestResult();
-            
+
         } else {
             return null;
         }
@@ -83,18 +82,17 @@ public class Camera {
             photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
             try {
 
-                //System.out.println((photonCamera.getLatestResult().getBestTarget().fiducialId));
+                // System.out.println((photonCamera.getLatestResult().getBestTarget().fiducialId));
 
-                    Optional<EstimatedRobotPose> estimate =  photonPoseEstimator.update(photonCamera.getLatestResult());
-                    //System.out.println(estimate.isPresent());
-                    return estimate.isPresent() ? estimate.get().estimatedPose.toPose2d() : null;
-                
-                
+                Optional<EstimatedRobotPose> estimate = photonPoseEstimator.update(photonCamera.getLatestResult());
+                // System.out.println(estimate.isPresent());
+                return estimate.isPresent() ? estimate.get().estimatedPose.toPose2d() : null;
+
             } catch (Exception e) {
                 System.out.println(e);
                 return null;
             }
-            
+
         } else {
             return null;
         }
