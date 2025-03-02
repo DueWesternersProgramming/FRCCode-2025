@@ -2,6 +2,8 @@ package frc.robot.subsystems.drive;
 
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
+
 import com.studica.frc.AHRS;
 
 import edu.wpi.first.epilogue.Logged;
@@ -277,23 +279,18 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     private void updateVisionMeasurements() {
-        if (RobotBase.isReal()) {
+        // if (RobotBase.isReal()) {
 
-            for (int i = 0; i < VisionSubsystem.getLengthOfCameraList(); i++) {
-                Pose2d camPose = VisionSubsystem.getVisionPoses()[i];
-                // System.out.println(i + " " + camPose);
-                double time = Timer.getFPGATimestamp();
-                try {
-                    m_odometry.addVisionMeasurement(camPose, time);
-                    // System.out.println("Added vision pose!");
-                } catch (Exception e) {
-                }
-                // if (VisionSubsystem.getVisionPoses()[i] != null) {
-
-                // }
-
+        for (int i = 0; i < VisionSubsystem.getLengthOfCameraList(); i++) {
+            EstimatedRobotPose estimatedRobotPose = VisionSubsystem.getVisionPoses()[i];
+            try {
+                m_odometry.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
+                        estimatedRobotPose.timestampSeconds);
+            } catch (Exception e) {
             }
         }
+
+        // }
     }
 
     @Override

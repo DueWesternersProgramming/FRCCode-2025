@@ -13,6 +13,7 @@ import frc.robot.utils.CowboyUtils;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.simulation.VisionSystemSim;
 
 //@Logged
@@ -48,12 +49,12 @@ public class VisionSubsystem extends SubsystemBase {
 
     }
 
-    public static Pose2d[] getVisionPoses() {
-        Pose2d[] list = new Pose2d[cameraNames.length];
+    public static EstimatedRobotPose[] getVisionPoses() {
+        EstimatedRobotPose[] list = new EstimatedRobotPose[2];
         for (int i = 0; i < cameraNames.length; i++) {
             try {
                 if (RobotBase.isSimulation()) {
-                    list[i] = cameraSims[i].getEstimatedGlobalPose(RobotState.robotPose).get().estimatedPose.toPose2d();
+                    list[i] = cameraSims[i].getEstimatedGlobalPose(RobotState.robotPose);
                 } else {
 
                     list[i] = cameras[i].getEstimatedGlobalPose(RobotState.robotPose);

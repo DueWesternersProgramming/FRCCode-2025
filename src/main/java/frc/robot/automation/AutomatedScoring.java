@@ -35,12 +35,11 @@ public class AutomatedScoring {
     }
 
     private static Pose2d pathPlanToReef(int reefSide, int position) {
-        // System.out.println("Reef Side: " + reefSide.get());
         targetPose = ScoringConstants.BlueAlliance.REEF_SIDE_POSES.get(reefSide - 1);
 
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
-            // System.out.println("Flipping pose");
+
             targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
                     new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() - 90)));
             // // Not sure what to do
