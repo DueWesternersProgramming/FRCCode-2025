@@ -43,7 +43,7 @@ public class CameraSim {
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
-            photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+            photonPoseEstimator.setLastPose(prevEstimatedRobotPose);
             return photonPoseEstimator.update(new PhotonPipelineResult());
         } else {
             return null;

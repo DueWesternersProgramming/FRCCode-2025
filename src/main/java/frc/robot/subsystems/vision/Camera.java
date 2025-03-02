@@ -23,10 +23,10 @@ public class Camera {
 
         photonPoseEstimator = new PhotonPoseEstimator(
                 CowboyUtils.aprilTagFieldLayout,
-                PoseStrategy.AVERAGE_BEST_TARGETS,
+                PoseStrategy.CLOSEST_TO_LAST_POSE,
                 positionTransform3d);
 
-        photonPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
+        // photonPoseEstimator.setMultiTagFallbackStrategy(PhotonPoseEstimator.PoseStrategy.LOWEST_AMBIGUITY);
     }
 
     public void setPipeline(int index) {
@@ -79,7 +79,7 @@ public class Camera {
     public Pose2d getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
 
-            photonPoseEstimator.setReferencePose(prevEstimatedRobotPose);
+            photonPoseEstimator.setLastPose(prevEstimatedRobotPose);
             try {
 
                 // System.out.println((photonCamera.getLatestResult().getBestTarget().fiducialId));
