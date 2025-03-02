@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1 Barge5ToReef6L"
+            "pathName": "1 Barge5ToReef3L"
           }
         },
         {
@@ -49,7 +49,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2 Reef6LToHP2"
+            "pathName": "2 Reef3LToHP2"
           }
         },
         {
@@ -79,7 +79,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 HP2ToReef5L"
+            "pathName": "3 HP2ToReef2L"
           }
         },
         {
@@ -115,7 +115,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "4 Reef5LToHP2"
+            "pathName": "4 Reef2LToHP2"
           }
         },
         {
@@ -139,13 +139,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Score L2"
+            "name": "Score L3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "5 HP2ToReef4R"
+            "pathName": "5 HP2ToReef2R"
           }
         },
         {

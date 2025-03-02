@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1 Barge2ToReef2R"
+            "pathName": "1 Barge2ToReef5R"
           }
         },
         {
@@ -49,7 +49,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2 Reef2RToHP1"
+            "pathName": "2 Reef5RToHP1"
           }
         },
         {
@@ -73,7 +73,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 HP1ToReef3R"
+            "pathName": "3 HP1ToReef6L"
           }
         },
         {

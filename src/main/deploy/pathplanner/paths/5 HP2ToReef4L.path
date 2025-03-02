@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.0788934426229508,
-        "y": 0.9921106557377039
+        "x": 1.3752027978096846,
+        "y": 0.8689133657707521
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8645081967213115,
-        "y": 2.2252254098360655
+        "x": 2.1608175519080453,
+        "y": 2.1020281198691135
       },
       "isLocked": false,
       "linkedName": "HP2"
@@ -41,7 +41,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Reef1L"
+      "linkedName": "Reef4L"
     }
   ],
   "rotationTargets": [],
