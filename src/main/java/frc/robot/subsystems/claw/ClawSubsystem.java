@@ -18,7 +18,7 @@ import frc.robot.RobotState;
 import frc.robot.RobotConstants.ClawConstants;
 import frc.robot.RobotConstants.PortConstants.CAN;
 
-@Logged
+//@Logged
 public class ClawSubsystem extends SubsystemBase {
     SparkMax clawMotor1;
     SparkMax clawMotor2;
@@ -67,10 +67,10 @@ public class ClawSubsystem extends SubsystemBase {
         }, this);
     }
 
-    public Command yeetAlgae(){
-        return new InstantCommand(()->{
+    public Command yeetAlgae() {
+        return new InstantCommand(() -> {
             moveAtSpeed(-.75);
-        },this);
+        }, this);
     }
 
     public Command outtakeAlgae() {

@@ -9,7 +9,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import frc.robot.RobotConstants.ElevatorConstants;
 
-@Logged
+//@Logged
 public class ElevatorWristSim {
 
     // Get the default NetworkTable instance and a table (choose a table name of
@@ -40,7 +40,7 @@ public class ElevatorWristSim {
         // Test:
         setElevatorToHeight(.25);
     }
-    
+
     private static Pose3d getFirstStagePositioning(double lengthMeters, Pose3d currentPose3d) {
         double x = Math.cos(Units.degreesToRadians(85)) * lengthMeters;
         double z = Math.sin(Units.degreesToRadians(85)) * lengthMeters;
@@ -78,7 +78,7 @@ public class ElevatorWristSim {
         }
     }
 
-    public static double getElevatorSimLength(){
+    public static double getElevatorSimLength() {
         return elevatorLength;
     }
 

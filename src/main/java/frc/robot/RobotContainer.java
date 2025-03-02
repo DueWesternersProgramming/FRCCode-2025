@@ -37,7 +37,7 @@ import frc.robot.automation.AutomationSelector;
 import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.automation.AutomatedScoring;
 
-@Logged(name = "RobotContainer")
+//@Logged(name = "RobotContainer")
 public class RobotContainer {
         public final VisionSubsystem visionSubsystem = new VisionSubsystem();
         public final DriveSubsystem driveSubsystem = new DriveSubsystem();
@@ -96,7 +96,8 @@ public class RobotContainer {
                                                 clawSubsystem));
 
                 NamedCommands.registerCommand("HumanPlayer",
-                                AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem));
+                                AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem, elevatorSubsystem,
+                                                wristSubsystem, clawSubsystem));
 
                 NamedCommands.registerCommand("GrabLowAlgae",
                                 AutomatedScoring.grabAlgaeNoPathing(2, elevatorSubsystem, wristSubsystem,
@@ -206,7 +207,7 @@ public class RobotContainer {
                         elevatorSubsystem.setEncoderValue(0);
                         wristSubsystem.setEncoderValue(0);
 
-                new JoystickButton(operatorJoystick, 6).whileTrue(clawSubsystem.yeetAlgae());
+                        new JoystickButton(operatorJoystick, 6).whileTrue(clawSubsystem.yeetAlgae());
 
                 }));
         }

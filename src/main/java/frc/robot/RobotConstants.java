@@ -4,6 +4,8 @@ import java.util.List;
 import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -11,6 +13,8 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
 
@@ -306,6 +310,18 @@ public final class RobotConstants {
         }
 
         public static final class VisionConstants {
+                public static enum PoseEstimationMethod {
+                        MULTI_TAG,
+                        SINGLE_TAG
+                }
+
+                public static final Matrix<N3, N1> singleTagStdDevs = VecBuilder.fill(4, 4, 8);
+                public static final Matrix<N3, N1> multiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+
+                public static final double SINGLE_TAG_CUTOFF_METERS = 4.0;
+
+                public static final double AMBIGUITY_CUTOFF = 0.05;
+
                 public static final Transform3d[] CAMERA_POSITIONS = {
                                 new Transform3d(
                                                 // Front Left

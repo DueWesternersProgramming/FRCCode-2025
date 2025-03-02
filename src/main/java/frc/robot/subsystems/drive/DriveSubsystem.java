@@ -47,7 +47,7 @@ import edu.wpi.first.wpilibj.Timer;
  * function of the drivetrain.
  * 
  */
-@Logged
+// @Logged
 public class DriveSubsystem extends SubsystemBase {
     private SwerveModuleSim[] swerveModuleSims = new SwerveModuleSim[4];
     private SwerveModule[] swerveModules = new SwerveModule[4];

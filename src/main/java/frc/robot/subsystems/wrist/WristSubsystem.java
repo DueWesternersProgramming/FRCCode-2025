@@ -25,7 +25,7 @@ import frc.robot.subsystems.ElevatorWristSim;
 import frc.robot.Robot;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
-@Logged
+//@Logged
 public class WristSubsystem extends SubsystemBase {
     SparkMax wristMotor;
     SparkMaxConfig wristMotorConfig;
@@ -85,7 +85,7 @@ public class WristSubsystem extends SubsystemBase {
         }, this);
     }
 
-    public void setEncoderValue(double value){
+    public void setEncoderValue(double value) {
         wristMotor.getEncoder().setPosition(value);
     }
 
