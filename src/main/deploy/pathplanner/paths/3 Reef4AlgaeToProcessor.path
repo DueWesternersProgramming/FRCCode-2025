@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.295,
-        "y": 2.953
+        "x": 5.838012295087761,
+        "y": 4.001024590163935
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.8215,
-        "y": 1.3832499999999994
+        "x": 7.564241803284482,
+        "y": 3.8981352459016403
       },
       "isLocked": false,
-      "linkedName": "Reef6R"
+      "linkedName": "Reef4Algae"
     },
     {
       "anchor": {
-        "x": 1.0788934426229508,
-        "y": 0.9921106557377039
+        "x": 6.017827868852459,
+        "y": 0.6324795081967204
       },
       "prevControl": {
-        "x": 2.06364344262295,
-        "y": 1.4893606557377028
+        "x": 6.18357786885246,
+        "y": 1.3052295081967227
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "HP2"
+      "linkedName": "Processor"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -126.0
+    "rotation": -92.6025622024998
   },
   "reversed": false,
-  "folder": "Barge 6 Paths",
+  "folder": "Barge Middle Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
