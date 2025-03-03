@@ -7,6 +7,7 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -51,23 +52,35 @@ public class CameraSim {
                 List<PhotonPipelineResult> result = camera.getAllUnreadResults(); // Only want to call this once
                                                                                   // per loop, so we do it at the start.
 
-                if (result.size() > 0) {
+                if (result.size() > 0) {// If there is a unread result
                     Optional<EstimatedRobotPose> estimate = photonPoseEstimator
                             .update(result.get(0));
 
                     if (estimate.isPresent()) {
-                        double smallestTagDistance = result.get(0).getBestTarget().bestCameraToTarget.getTranslation()
-                                .getNorm();
-                        double poseAmbaguitiy = result.get(0).getBestTarget().getPoseAmbiguity();
+                        PhotonTrackedTarget furthestTarget = result.get(0).targets.get(0);
+
+                        for (PhotonTrackedTarget target : result.get(0).targets) {
+                            if (target.bestCameraToTarget.getTranslation().getNorm() < furthestTarget.bestCameraToTarget
+                                    .getTranslation().getNorm()) {
+                                furthestTarget = target;
+                            }
+                        } // Loop through and find the target furthest away, basicly with the most
+                          // ambiguity.
+
+                        double smallestTagDistance = furthestTarget.bestCameraToTarget.getTranslation().getNorm();
+
+                        // getBestTarget().bestCameraToTarget.getTranslation().getNorm(); //OLD, here
+                        // the best target would be set to smallest in the UI
+
+                        double poseAmbaguitiy = furthestTarget.getPoseAmbiguity();
+                        // result.get(0).getBestTarget().getPoseAmbiguity(); //OLD again
+
                         if (smallestTagDistance < 5 && poseAmbaguitiy < 0.05) { // The distance will need to be tuned.
                             return estimate.get();
                         }
-                        return null;// No need for else statment
                     }
-                    return null; // No need for else statment
-
                 }
-                return null; // No need for else statment
+                return null; // No need for else statment.
 
             } catch (Exception e) {
                 System.out.println(e);

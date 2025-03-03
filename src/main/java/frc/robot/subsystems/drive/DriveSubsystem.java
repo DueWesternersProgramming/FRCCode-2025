@@ -286,7 +286,20 @@ public class DriveSubsystem extends SubsystemBase {
             try {
                 m_odometry.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
                         estimatedRobotPose.timestampSeconds);
+                if (i == 0) {
+                    SmartDashboard.putBoolean("Front Left Adding Pose?", true);
+                }
+                if (i == 1) {
+                    SmartDashboard.putBoolean("Front Right Adding Pose?", true);
+                }
+
             } catch (Exception e) {
+                if (i == 0) {
+                    SmartDashboard.putBoolean("Front Left Adding Pose?", false);
+                }
+                if (i == 1) {
+                    SmartDashboard.putBoolean("Front Right Adding Pose?", false);
+                }
             }
         }
 

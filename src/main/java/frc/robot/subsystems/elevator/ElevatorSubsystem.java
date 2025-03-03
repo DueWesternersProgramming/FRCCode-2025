@@ -129,8 +129,8 @@ public class ElevatorSubsystem extends SubsystemBase {
             if (RobotBase.isReal()) {
                 goToSetpoint(ElevatorConstants.HeightSetpoints.HP);
             } else {
-                ElevatorWristSim.setElevatorToHeight(ElevatorConstants.SimConstants.HP);// Passes in the L1-L3 into the
-                                                                                        // sim logic
+                ElevatorWristSim.goToHumanPlayerSetpoint();// Passes in the L1-L3 into the
+                                                           // sim logic
             }
         }, this);
     }

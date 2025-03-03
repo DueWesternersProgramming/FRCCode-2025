@@ -63,6 +63,10 @@ public class ElevatorWristSim {
         elevatorLength = lengthMeters;
     }
 
+    public static void goToHumanPlayerSetpoint() {
+        setElevatorToHeight(ElevatorConstants.SimConstants.HP);
+    }
+
     public static void goToScoreSetpoint(int level) {
         if (level == 1) {
             setElevatorToHeight(ElevatorConstants.SimConstants.L1);

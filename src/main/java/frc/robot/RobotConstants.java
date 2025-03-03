@@ -119,7 +119,7 @@ public final class RobotConstants {
                 // public static final double D = 0;
 
                 public static final class SimConstants {
-                        public static final double HP = .4;
+                        public static final double HP = .35;
                         public static final double L1 = 0.2;
                         public static final double L2 = 0.3;
                         public static final double L3 = 0.55;
