@@ -60,7 +60,7 @@ public class CameraSim {
                         PhotonTrackedTarget furthestTarget = result.get(0).targets.get(0);
 
                         for (PhotonTrackedTarget target : result.get(0).targets) {
-                            if (target.bestCameraToTarget.getTranslation().getNorm() < furthestTarget.bestCameraToTarget
+                            if (target.bestCameraToTarget.getTranslation().getNorm() > furthestTarget.bestCameraToTarget
                                     .getTranslation().getNorm()) {
                                 furthestTarget = target;
                             }
