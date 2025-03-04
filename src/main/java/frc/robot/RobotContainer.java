@@ -207,9 +207,8 @@ public class RobotContainer {
                         elevatorSubsystem.setEncoderValue(0);
                         wristSubsystem.setEncoderValue(0);
 
-                        new JoystickButton(operatorJoystick, 6).whileTrue(clawSubsystem.yeetAlgae());
-
                 }));
+                new JoystickButton(operatorJoystick, 6).whileTrue(clawSubsystem.yeetAlgae()).onFalse(clawSubsystem.stopClaw());
         }
 
         public Command getAutonomousCommand() {

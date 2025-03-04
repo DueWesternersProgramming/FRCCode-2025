@@ -24,7 +24,7 @@ public class AlignWithPose extends Command {
 
         xController = new ProfiledPIDController(0.245, 0, 0, new Constraints(2, 2));
         yController = new ProfiledPIDController(0.245, 0, 0, new Constraints(2, 2));
-        rotController = new ProfiledPIDController(0.031, 0, 0, new Constraints(16, 4));
+        rotController = new ProfiledPIDController(0.031, 0, 0, new Constraints(32, 16));
 
         xController.setTolerance(.001);
         yController.setTolerance(.001);

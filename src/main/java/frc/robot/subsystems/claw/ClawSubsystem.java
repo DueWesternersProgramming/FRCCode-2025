@@ -69,7 +69,7 @@ public class ClawSubsystem extends SubsystemBase {
 
     public Command yeetAlgae() {
         return new InstantCommand(() -> {
-            moveAtSpeed(-.75);
+            clawMotor2.set(-1);
         }, this);
     }
 

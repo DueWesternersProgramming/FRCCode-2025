@@ -91,11 +91,20 @@ public class Camera {
                             .update(result.get(0));
 
                     if (estimate.isPresent()) {
-                        double smallestTagDistance = result.get(0).getBestTarget().bestCameraToTarget.getTranslation()
-                                .getNorm();
-                        double poseAmbaguitiy = result.get(0).getBestTarget().getPoseAmbiguity();
-                        if (smallestTagDistance < 5 && poseAmbaguitiy < 0.05) { // The distance will need to be tuned.
+                        PhotonTrackedTarget furthestTarget = result.get(0).targets.get(0);
 
+                        for (PhotonTrackedTarget target : result.get(0).targets) {
+                            if (target.bestCameraToTarget.getTranslation().getNorm() > furthestTarget.bestCameraToTarget
+                                    .getTranslation().getNorm()) {
+                                furthestTarget = target;
+                            }
+                        } // Loop through and find the target furthest away, basicly with the most
+                          // ambiguity.
+
+
+                        double smallestTagDistance = furthestTarget.bestCameraToTarget.getTranslation().getNorm();
+                        double poseAmbaguitiy = furthestTarget.getPoseAmbiguity();
+                        if (smallestTagDistance < 5 && poseAmbaguitiy < 4) { // The distance will need to be tuned.
                             return estimate.get();
                         } else {
                             return null;
