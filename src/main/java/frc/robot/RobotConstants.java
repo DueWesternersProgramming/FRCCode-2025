@@ -146,7 +146,7 @@ public final class RobotConstants {
                         }
 
                         public static final class Algae {
-                                public static final double L2 = 12;
+                                public static final double L2 = 12.75;
                                 public static final double L3 = 13.5;
                         }
                 }

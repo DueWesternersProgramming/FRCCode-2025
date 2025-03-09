@@ -56,7 +56,7 @@ public class Camera {
 
     public boolean hasResults() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
-            return photonCamera.getLatestResult().hasTargets();
+            return photonCamera.getAllUnreadResults().get(0).hasTargets();
         } else {
             return false;
         }
@@ -91,27 +91,32 @@ public class Camera {
                             .update(result.get(0));
 
                     if (estimate.isPresent()) {
-                        PhotonTrackedTarget furthestTarget = result.get(0).targets.get(0);
-
-                        for (PhotonTrackedTarget target : result.get(0).targets) {
-                            if (target.bestCameraToTarget.getTranslation().getNorm() < furthestTarget.bestCameraToTarget
-                                    .getTranslation().getNorm()) {
-                                furthestTarget = target;
-                            }
-                        } // Loop through and find the target furthest away, basicly with the most
-                          // ambiguity.
 
 
-                        double smallestTagDistance = furthestTarget.bestCameraToTarget.getTranslation().getNorm();
-                        double poseAmbaguitiy = furthestTarget.getPoseAmbiguity();
-                        System.out.println(poseAmbaguitiy);
-                        if (smallestTagDistance < 3 && poseAmbaguitiy < 5) { // The distance will need to be tuned.
-                            //System.out.println(poseAmbaguitiy);
+                        return estimate.get(); //skip processing for now
+
+                        // PhotonTrackedTarget furthestTarget = result.get(0).targets.get(0);
+
+                        // for (PhotonTrackedTarget target : result.get(0).targets) {
                             
-                            return estimate.get();
-                        } else {
-                            return null;
-                        }
+                        //     if (target.bestCameraToTarget.getTranslation().getNorm() < furthestTarget.bestCameraToTarget
+                        //             .getTranslation().getNorm()) {
+                        //         furthestTarget = target;
+                        //     }
+                        // } // Loop through and find the target furthest away, basicly with the most
+                        //   // ambiguity.
+
+
+                        // double smallestTagDistance = furthestTarget.bestCameraToTarget.getTranslation().getNorm();
+                        // double poseAmbaguitiy = furthestTarget.getPoseAmbiguity();
+                        // //System.out.println(poseAmbaguitiy);
+                        // if (smallestTagDistance < 3 && poseAmbaguitiy < 5) { // The distance will need to be tuned.
+                        //     //System.out.println(poseAmbaguitiy);
+                            
+                        //     return estimate.get();
+                        // } else {
+                        //     return null;
+                        // }
                     } else {
                         return null;
                     }
