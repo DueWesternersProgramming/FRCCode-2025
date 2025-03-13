@@ -111,7 +111,7 @@ public final class RobotConstants {
                 }
 
                 public static final double MAX_MOTOR_RPM = 10000.0;
-                public static final double MAX_MOTOR_ACCELERATION 000.0;
+                public static final double MAX_MOTOR_ACCELERATION = 5000.0;
                 public static final Constraints CONSTRAINTS = new Constraints(MAX_MOTOR_RPM, MAX_MOTOR_ACCELERATION);
 
                 // public static final double P = 1;
