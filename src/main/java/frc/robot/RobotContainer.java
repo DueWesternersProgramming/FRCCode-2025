@@ -152,7 +152,7 @@ public class RobotContainer {
                                                 clawSubsystem).schedule()))
                                 .onFalse(new InstantCommand(() -> {
                                         driveSubsystem.drive(0, 0, 0, false, false);
-                                }, driveSubsystem));
+                                }, driveSubsystem)).onFalse(clawSubsystem.stopClaw());
 
                 new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral()).onFalse(clawSubsystem.stopClaw());
                 new JoystickButton(driveJoystick, 10).whileTrue(clawSubsystem.outtakeCoral()).onFalse(clawSubsystem.stopClaw());
