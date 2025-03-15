@@ -22,14 +22,14 @@ public class AlignWithPose extends Command {
         this.pose = pose;
         addRequirements(driveSubsystem);
 
-        xController = new ProfiledPIDController(0.245, 0, 0, new Constraints(2, 2));
-        yController = new ProfiledPIDController(0.245, 0, 0, new Constraints(2, 2));
-        rotController = new ProfiledPIDController(0.031, 0, 0, new Constraints(32, 16));
+        // xController = new ProfiledPIDController(0.265, 0, 0, new Constraints(3, 3));
+        // yController = new ProfiledPIDController(0.265, 0, 0, new Constraints(3, 3));
+        // rotController = new ProfiledPIDController(0.031, 0, 0, new Constraints(50, 40));
 
-        xController.setTolerance(.001);
-        yController.setTolerance(.001);
-        rotController.setTolerance(0.005);
-        rotController.enableContinuousInput(-180, 180);
+        // xController.setTolerance(.001);
+        // yController.setTolerance(.001);
+        // rotController.setTolerance(0.005);
+        // rotController.enableContinuousInput(-180, 180);
     }
 
     @Override
@@ -39,22 +39,22 @@ public class AlignWithPose extends Command {
 
     @Override
     public void execute() {
-        double xSpeed = MathUtil.clamp((xController.calculate(driveSubsystem.getPose().getX(), pose.getX())), -1,
-                1);
-        double ySpeed = MathUtil.clamp((yController.calculate(driveSubsystem.getPose().getY(), pose.getY())), -1,
-                1);
-        double rotSpeed = MathUtil.clamp(
-                (rotController.calculate(driveSubsystem.getPose().getRotation().getDegrees(),
-                        pose.getRotation().getDegrees())),
-                -1,
-                1);
+        // double xSpeed = MathUtil.clamp((xController.calculate(driveSubsystem.getPose().getX(), pose.getX())), -1,
+        //         1);
+        // double ySpeed = MathUtil.clamp((yController.calculate(driveSubsystem.getPose().getY(), pose.getY())), -1,
+        //         1);
+        // double rotSpeed = MathUtil.clamp(
+        //         (rotController.calculate(driveSubsystem.getPose().getRotation().getDegrees(),
+        //                 pose.getRotation().getDegrees())),
+        //         -1,
+        //         1);
 
-        if (CowboyUtils.isRedAlliance()){
-            driveSubsystem.drive(-xSpeed, -ySpeed, rotSpeed, true, true);
-        }
-        else{
-            driveSubsystem.drive(xSpeed, ySpeed, rotSpeed, true, true);
-        }
+        // if (CowboyUtils.isRedAlliance()){
+        //     driveSubsystem.drive(-xSpeed, -ySpeed, rotSpeed, true, true);
+        // }
+        // else{
+        //     driveSubsystem.drive(xSpeed, ySpeed, rotSpeed, true, true);
+        // }
         
         
     }
@@ -62,9 +62,9 @@ public class AlignWithPose extends Command {
     @Override
     public void initialize() {
         // Reset each controller using the current sensor readings
-        xController.reset(driveSubsystem.getPose().getX());
-        yController.reset(driveSubsystem.getPose().getY());
-        rotController.reset(driveSubsystem.getPose().getRotation().getDegrees());
+        // xController.reset(driveSubsystem.getPose().getX());
+        // yController.reset(driveSubsystem.getPose().getY());
+        // rotController.reset(driveSubsystem.getPose().getRotation().getDegrees());
 
         // Optionally, stop the drive before starting
         driveSubsystem.drive(0, 0, 0, true, true);
@@ -72,11 +72,12 @@ public class AlignWithPose extends Command {
 
     @Override
     public boolean isFinished() {
-        if (xController.atGoal() && yController.atGoal() && rotController.atGoal()) {
-            return true;
-        } else {
-            return false;
-        }
+        // if (xController.atGoal() && yController.atGoal() && rotController.atGoal()) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+        return false;
     }
 
 }

@@ -4,7 +4,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -17,11 +19,14 @@ import frc.robot.RobotState;
 import frc.robot.RobotConstants.ElevatorConstants;
 import frc.robot.RobotConstants.ScoringConstants;
 import frc.robot.RobotConstants.WristConstants;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.FlippingUtil;
 
 public class AutomatedScoring {
     static Pose2d targetPose;
-    static double xOffset = .2;// left and right
+    static double xOffset = .6;// left and right
     // double yOffset = -.25;// forward and back
 
     private static Pose2d pathPlanToHP(int humanPlayerSide) {
@@ -60,10 +65,11 @@ public class AutomatedScoring {
         }
 
         // Create a translation for the offsets
-        Translation2d translation = new Translation2d(adjustedXOffset, 0.2);
+        Translation2d translation = new Translation2d(adjustedXOffset, 0);
+        // System.out.println(adjustedXOffset);
 
         // Apply the translation to the target pose
-        targetPose = targetPose.transformBy(new Transform2d(translation, targetPose.getRotation()));
+        targetPose = targetPose.transformBy(new Transform2d(translation, new Rotation2d()));
 
         return targetPose;
     }
@@ -78,14 +84,14 @@ public class AutomatedScoring {
             RobotState.isAlgaeMode = true;
             return new ParallelCommandGroup(
                     clawSubsystem.stopClaw(),
-                    new AlignWithPose(drivesubsystem, pose),
+                    PPmoveToPose(pose),
                     new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                             wristSubsystem.goToAlgaeGrabSetpoint(height)));
         } else {
             RobotState.isAlgaeMode = false;
             return new ParallelCommandGroup(
                     clawSubsystem.stopClaw(),
-                    new AlignWithPose(drivesubsystem, pose),
+                    PPmoveToPose(pose),
                     new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
                             wristSubsystem.goToCoralScoreSetpoint(height)));
         }
@@ -126,7 +132,7 @@ public class AutomatedScoring {
             ClawSubsystem clawSubsystem) {
         RobotState.isAlgaeMode = false;
         return new ParallelCommandGroup(
-                new AlignWithPose(drivesubsystem, pathPlanToHP(humanPlayerSide)),
+                PPmoveToPose(pathPlanToHP(humanPlayerSide)),
                 elevatorSubsystem.goToHumanPlayerPickup(), wristSubsystem.goToHumanPlayerSetpoint(),
                 clawSubsystem.intakeCoral());
     }
@@ -138,6 +144,21 @@ public class AutomatedScoring {
         return new ParallelCommandGroup(elevatorSubsystem.goToHumanPlayerPickup(),
                 wristSubsystem.goToHumanPlayerSetpoint(),
                 clawSubsystem.intakeCoral());
+
+    }
+
+    public static Command PPmoveToPose(Pose2d pose) {
+        PathConstraints constraints = new PathConstraints(
+                1.0, 1.0,
+                Units.degreesToRadians(140), Units.degreesToRadians(120));
+
+        // Since AutoBuilder is configured, we can use it to build pathfinding commands
+        Command pathfindingCommand = AutoBuilder.pathfindToPose(
+                targetPose,
+                constraints // Rotation delay distance in meters. This is how far the robot should travel
+                            // before attempting to rotate.
+        );
+        return Commands.deferredProxy(() -> pathfindingCommand);
 
     }
 }
