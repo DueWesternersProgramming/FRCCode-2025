@@ -8,66 +8,64 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.679999999999725,
-        "y": 1.3047500000048309
+        "x": 4.14375,
+        "y": 1.4217499999999998
       },
       "isLocked": false,
       "linkedName": "Reef3L"
     },
     {
       "anchor": {
-        "x": 2.6032500000000005,
-        "y": 2.3675
+        "x": 1.9597500000000003,
+        "y": 1.5192499999999995
       },
       "prevControl": {
-        "x": 3.115857391442034,
-        "y": 2.336749999999999
+        "x": 2.203874289834582,
+        "y": 1.6699002984998643
       },
       "nextControl": {
-        "x": 2.293476297510747,
-        "y": 2.3860825282868987
+        "x": 1.746998948892691,
+        "y": 1.3879602812375045
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.16025,
-        "y": 0.9927499999999998
+        "x": 1.10175,
+        "y": 0.7977499999999997
       },
       "prevControl": {
-        "x": 2.2620000000000005,
-        "y": 2.075
+        "x": 1.4494787338640065,
+        "y": 1.065755833328077
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "HP2"
     }
   ],
-  "rotationTargets": [
+  "rotationTargets": [],
+  "constraintZones": [
     {
-      "waypointRelativePos": 1.7377593360995864,
-      "rotationDegrees": -126.0
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 1.455086848635236,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 300.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
     }
   ],
-  "constraintZones": [],
-  "pointTowardsZones": [
-    {
-      "fieldPosition": {
-        "x": 4.0,
-        "y": 3.5
-      },
-      "rotationOffset": 0.0,
-      "minWaypointRelativePos": 0.39106699751859986,
-      "maxWaypointRelativePos": 0.7602977667493765,
-      "name": "Point Towards Zone"
-    }
-  ],
+  "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 3.0,
-    "maxAngularVelocity": 100.0,
+    "maxVelocity": 5.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 300.0,
     "nominalVoltage": 12.0,
     "unlimited": false

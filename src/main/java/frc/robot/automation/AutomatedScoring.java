@@ -26,7 +26,7 @@ import com.pathplanner.lib.util.FlippingUtil;
 
 public class AutomatedScoring {
     static Pose2d targetPose;
-    static double xOffset = .6;// left and right
+    static double xOffset = .2;// left and right
     // double yOffset = -.25;// forward and back
 
     private static Pose2d pathPlanToHP(int humanPlayerSide) {
@@ -57,15 +57,15 @@ public class AutomatedScoring {
         // Determine the correct x & y offset(s) based on the position
         double adjustedXOffset = xOffset;
         if (position == 0) {
-            adjustedXOffset = -xOffset;
+            adjustedXOffset = xOffset;
         } else if (position == 1) {
             adjustedXOffset = 0;
         } else {
-            adjustedXOffset = xOffset;
+            adjustedXOffset = -xOffset;
         }
 
         // Create a translation for the offsets
-        Translation2d translation = new Translation2d(adjustedXOffset, 0);
+        Translation2d translation = new Translation2d(0, adjustedXOffset);
         // System.out.println(adjustedXOffset);
 
         // Apply the translation to the target pose
@@ -84,14 +84,14 @@ public class AutomatedScoring {
             RobotState.isAlgaeMode = true;
             return new ParallelCommandGroup(
                     clawSubsystem.stopClaw(),
-                    PPmoveToPose(pose),
+                    new AlignWithPose(drivesubsystem, pose),
                     new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                             wristSubsystem.goToAlgaeGrabSetpoint(height)));
         } else {
             RobotState.isAlgaeMode = false;
             return new ParallelCommandGroup(
                     clawSubsystem.stopClaw(),
-                    PPmoveToPose(pose),
+                    new AlignWithPose(drivesubsystem, pose),
                     new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
                             wristSubsystem.goToCoralScoreSetpoint(height)));
         }
@@ -132,7 +132,7 @@ public class AutomatedScoring {
             ClawSubsystem clawSubsystem) {
         RobotState.isAlgaeMode = false;
         return new ParallelCommandGroup(
-                PPmoveToPose(pathPlanToHP(humanPlayerSide)),
+                new AlignWithPose(drivesubsystem, pathPlanToHP(humanPlayerSide)),
                 elevatorSubsystem.goToHumanPlayerPickup(), wristSubsystem.goToHumanPlayerSetpoint(),
                 clawSubsystem.intakeCoral());
     }

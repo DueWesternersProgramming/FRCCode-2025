@@ -24,11 +24,11 @@ public final class RobotConstants {
                 public static final class BlueAlliance {
                         public static final List<Pose2d> REEF_SIDE_POSES = List.of(
                                         new Pose2d(3.153, 4.025, new Rotation2d(Math.toRadians(0))),
-                                        new Pose2d(3.712, 2.874, new Rotation2d(Math.toRadians(60))),
-                                        new Pose2d(5.168, 2.904, new Rotation2d(Math.toRadians(60))),
-                                        new Pose2d(5.766, 4.001, new Rotation2d(Math.toRadians(90))),
-                                        new Pose2d(5.203, 5.152, new Rotation2d(Math.toRadians(120))),
-                                        new Pose2d(3.800, 5.164, new Rotation2d(Math.toRadians(0))));
+                                        new Pose2d(3.822, 2.874, new Rotation2d(Math.toRadians(60))),
+                                        new Pose2d(5.168, 2.904, new Rotation2d(Math.toRadians(120))),
+                                        new Pose2d(5.766, 4.001, new Rotation2d(Math.toRadians(180))),
+                                        new Pose2d(5.203, 5.152, new Rotation2d(Math.toRadians(-120))),
+                                        new Pose2d(3.800, 5.164, new Rotation2d(Math.toRadians(-60))));
                         public static final List<Pose2d> HP_POSES = List.of(
                                         new Pose2d(1.2, 7, new Rotation2d(Units.degreesToRadians(125))),
                                         new Pose2d(1.007, 0.884, new Rotation2d(Units.degreesToRadians(-125))));
@@ -110,8 +110,8 @@ public final class RobotConstants {
                         }
                 }
 
-                public static final double MAX_MOTOR_RPM = 10000.0;
-                public static final double MAX_MOTOR_ACCELERATION = 9000.0;
+                public static final double MAX_MOTOR_RPM = 7000.0;
+                public static final double MAX_MOTOR_ACCELERATION = 3000.0;
                 public static final Constraints CONSTRAINTS = new Constraints(MAX_MOTOR_RPM, MAX_MOTOR_ACCELERATION);
 
                 // public static final double P = 1;

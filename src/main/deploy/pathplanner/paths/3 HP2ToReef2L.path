@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.16025,
-        "y": 0.9927499999999998
+        "x": 1.10175,
+        "y": 0.7977499999999997
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8627500000021278,
-        "y": 1.6942499999969511
+        "x": 2.1616614563844943,
+        "y": 2.1352936275589967
       },
       "isLocked": false,
       "linkedName": "HP2"
@@ -20,8 +20,8 @@
         "y": 2.963
       },
       "prevControl": {
-        "x": 3.4749499999999998,
-        "y": 2.6113070835231396
+        "x": 3.920376668948701,
+        "y": 2.901733774807551
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,14 +34,28 @@
       "rotationDegrees": 59.99999999999999
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.6660049627791566,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 200.0,
+        "maxAngularAcceleration": 200.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.5,
-    "maxAcceleration": 0.5,
+    "maxVelocity": 6.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 400.0,
-    "maxAngularAcceleration": 400.0,
+    "maxAngularAcceleration": 100.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },

@@ -154,6 +154,9 @@ public class RobotContainer {
                                         driveSubsystem.drive(0, 0, 0, false, false);
                                 }, driveSubsystem));
 
+                new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral()).onFalse(clawSubsystem.stopClaw());
+                new JoystickButton(driveJoystick, 10).whileTrue(clawSubsystem.outtakeCoral()).onFalse(clawSubsystem.stopClaw());
+
                 // Above = DriveJoystick, Below = OperatorJoystick
 
                 // Manual claw controls. Triggers. Left is always intake regardless of game
