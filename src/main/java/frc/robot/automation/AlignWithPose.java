@@ -22,9 +22,9 @@ public class AlignWithPose extends Command {
         this.pose = pose;
         addRequirements(driveSubsystem);
 
-        xController = new ProfiledPIDController(0.245, 0, 0, new Constraints(2, 2));
-        yController = new ProfiledPIDController(0.245, 0, 0, new Constraints(2, 2));
-        rotController = new ProfiledPIDController(0.031, 0, 0, new Constraints(16, 4));
+        xController = new ProfiledPIDController(0.265, 0, 0, new Constraints(3, 3));
+        yController = new ProfiledPIDController(0.265, 0, 0, new Constraints(3, 3));
+        rotController = new ProfiledPIDController(0.031, 0, 0, new Constraints(50, 40));
 
         xController.setTolerance(.001);
         yController.setTolerance(.001);
@@ -61,7 +61,7 @@ public class AlignWithPose extends Command {
 
     @Override
     public void initialize() {
-        // Reset each controller using the current sensor readings
+        //Reset each controller using the current sensor readings
         xController.reset(driveSubsystem.getPose().getX());
         yController.reset(driveSubsystem.getPose().getY());
         rotController.reset(driveSubsystem.getPose().getRotation().getDegrees());
@@ -77,6 +77,7 @@ public class AlignWithPose extends Command {
         } else {
             return false;
         }
+        //return false;
     }
 
 }

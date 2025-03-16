@@ -4,7 +4,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -17,6 +19,9 @@ import frc.robot.RobotState;
 import frc.robot.RobotConstants.ElevatorConstants;
 import frc.robot.RobotConstants.ScoringConstants;
 import frc.robot.RobotConstants.WristConstants;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.FlippingUtil;
 
 public class AutomatedScoring {
@@ -35,12 +40,11 @@ public class AutomatedScoring {
     }
 
     private static Pose2d pathPlanToReef(int reefSide, int position) {
-        // System.out.println("Reef Side: " + reefSide.get());
         targetPose = ScoringConstants.BlueAlliance.REEF_SIDE_POSES.get(reefSide - 1);
 
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
-            // System.out.println("Flipping pose");
+
             targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
                     new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() - 90)));
             // // Not sure what to do
@@ -53,18 +57,19 @@ public class AutomatedScoring {
         // Determine the correct x & y offset(s) based on the position
         double adjustedXOffset = xOffset;
         if (position == 0) {
-            adjustedXOffset = -xOffset;
+            adjustedXOffset = xOffset;
         } else if (position == 1) {
             adjustedXOffset = 0;
         } else {
-            adjustedXOffset = xOffset;
+            adjustedXOffset = -xOffset;
         }
 
         // Create a translation for the offsets
-        Translation2d translation = new Translation2d(adjustedXOffset, 0.2);
+        Translation2d translation = new Translation2d(0, adjustedXOffset);
+        // System.out.println(adjustedXOffset);
 
         // Apply the translation to the target pose
-        targetPose = targetPose.transformBy(new Transform2d(translation, targetPose.getRotation()));
+        targetPose = targetPose.transformBy(new Transform2d(translation, new Rotation2d()));
 
         return targetPose;
     }
@@ -139,6 +144,21 @@ public class AutomatedScoring {
         return new ParallelCommandGroup(elevatorSubsystem.goToHumanPlayerPickup(),
                 wristSubsystem.goToHumanPlayerSetpoint(),
                 clawSubsystem.intakeCoral());
+
+    }
+
+    public static Command PPmoveToPose(Pose2d pose) {
+        PathConstraints constraints = new PathConstraints(
+                1.0, 1.0,
+                Units.degreesToRadians(140), Units.degreesToRadians(120));
+
+        // Since AutoBuilder is configured, we can use it to build pathfinding commands
+        Command pathfindingCommand = AutoBuilder.pathfindToPose(
+                targetPose,
+                constraints // Rotation delay distance in meters. This is how far the robot should travel
+                            // before attempting to rotate.
+        );
+        return Commands.deferredProxy(() -> pathfindingCommand);
 
     }
 }

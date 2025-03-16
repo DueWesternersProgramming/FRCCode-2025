@@ -22,16 +22,81 @@ public final class RobotConstants {
 
         public static final class ScoringConstants {
                 public static final class BlueAlliance {
+                        // Pose2d[][] REEF_SIDE_POSES = new Pose2d[6][3];
+                        
+                        // // Reef 1 LEFT
+                        // REEF_SIDE_POSES[0][0] = new Pose2d(3.146, 4.191, new Rotation2d(Math.toRadians(0)));
+
+                        // // Reef 1 ALGAE
+                        // REEF_SIDE_POSES[0][1] = new Pose2d(3.146, 4.025, new Rotation2d(Math.toRadians(0)));
+
+                        // // TODO Reef 1 RIGHT
+                        // REEF_SIDE_POSES[0][2] = new Pose2d(3.146, 3.859, new Rotation2d(Math.toRadians(0)));
+
+
+                        // // Reef 2 LEFT
+                        // REEF_SIDE_POSES[1][0] = new Pose2d(3.659, 2.947, new Rotation2d(Math.toRadians(60)));
+
+                        // // Reef 2 ALGAE
+                        // REEF_SIDE_POSES[1][1] = new Pose2d(3.812, 2.861, new Rotation2d(Math.toRadians(60)));
+
+                        // // TODO Reef 2 RIGHT
+                        // REEF_SIDE_POSES[1][2] = new Pose2d(3.978, 2.801, new Rotation2d(Math.toRadians(60)));
+
+
+                        // // Reef 3 LEFT
+                        // REEF_SIDE_POSES[2][0] = new Pose2d(5.009, 2.781, new Rotation2d(Math.toRadians(120)));
+
+                        // // Reef 3 ALGAE
+                        // REEF_SIDE_POSES[2][1] = new Pose2d(5.168, 2.868, new Rotation2d(Math.toRadians(120)));
+
+                        // // TODO Reef 3 RIGHT
+                        // REEF_SIDE_POSES[2][2] = new Pose2d(5.302, 2.954, new Rotation2d(Math.toRadians(120)));
+
+
+                        // // Reef 4 LEFT
+                        // REEF_SIDE_POSES[3][0] = new Pose2d(5.827, 3.839, new Rotation2d(Math.toRadians(180)));
+
+                        // // Reef 4 ALGAE
+                        // REEF_SIDE_POSES[3][1] = new Pose2d(5.827, 4.025, new Rotation2d(Math.toRadians(180)));
+
+                        // // TODO Reef 4 RIGHT
+                        // REEF_SIDE_POSES[3][2] = new Pose2d(5.827, 4.171, new Rotation2d(Math.toRadians(180)));
+
+
+                        // // Reef 5 LEFT
+                        // REEF_SIDE_POSES[4][0] = new Pose2d(5.308, 5.103, new Rotation2d(Math.toRadians(-120)));
+
+                        // // Reef 5 ALGAE
+                        // REEF_SIDE_POSES[4][1] = new Pose2d(5.155, 5.183, new Rotation2d(Math.toRadians(-120)));
+
+                        // // TODO Reef 5 RIGHT
+                        // REEF_SIDE_POSES[4][2] = new Pose2d(5.022, 5.262, new Rotation2d(Math.toRadians(-120)));
+
+                        
+                        // // Reef 6 LEFT
+                        // REEF_SIDE_POSES[5][0] = new Pose2d(3.965, 5.269, new Rotation2d(Math.toRadians(-60)));
+
+                        // // Reef 6 ALGAE
+                        // REEF_SIDE_POSES[5][1] = new Pose2d(3.825, 5.183, new Rotation2d(Math.toRadians(-60)));
+
+                        // // TODO Reef 6 RIGHT
+                        // REEF_SIDE_POSES[5][2] = new Pose2d(3.665, 5.096, new Rotation2d(Math.toRadians(-60)));
+
+
+                        //OLD LIST BEFORE WE CHANGED TO MULTI DIMENSIONAL ARRAY FOR REEF POSES
                         public static final List<Pose2d> REEF_SIDE_POSES = List.of(
                                         new Pose2d(3.153, 4.025, new Rotation2d(Math.toRadians(0))),
-                                        new Pose2d(3.712, 2.874, new Rotation2d(Math.toRadians(30))),
-                                        new Pose2d(5.131, 2.850, new Rotation2d(Math.toRadians(60))),
-                                        new Pose2d(5.766, 4.001, new Rotation2d(Math.toRadians(90))),
-                                        new Pose2d(5.203, 5.152, new Rotation2d(Math.toRadians(120))),
-                                        new Pose2d(3.800, 5.164, new Rotation2d(Math.toRadians(0))));
+                                        new Pose2d(3.822, 2.874, new Rotation2d(Math.toRadians(60))),
+                                        new Pose2d(5.168, 2.904, new Rotation2d(Math.toRadians(120))),
+                                        new Pose2d(5.766, 4.001, new Rotation2d(Math.toRadians(180))),
+                                        new Pose2d(5.203, 5.152, new Rotation2d(Math.toRadians(-120))),
+                                        new Pose2d(3.800, 5.164, new Rotation2d(Math.toRadians(-60))));
+                        
+
                         public static final List<Pose2d> HP_POSES = List.of(
-                                        new Pose2d(1.2, 7, new Rotation2d(Units.degreesToRadians(125))),
-                                        new Pose2d(1.2, 1, new Rotation2d(Units.degreesToRadians(-125))));
+                                        new Pose2d(1.11, 7.125, new Rotation2d(Units.degreesToRadians(125))),
+                                        new Pose2d(1.007, 0.884, new Rotation2d(Units.degreesToRadians(-125))));
                 }
 
         }
@@ -96,7 +161,7 @@ public final class RobotConstants {
 
                 public static final class HeightSetpoints {
                         public static final double HOME = -3;
-                        public static final double HP = -51.5;
+                        public static final double HP = -49.5;
 
                         public static final class Coral {
                                 public static final double L1 = -20;
@@ -110,8 +175,8 @@ public final class RobotConstants {
                         }
                 }
 
-                public static final double MAX_MOTOR_RPM = 8000.0;
-                public static final double MAX_MOTOR_ACCELERATION = 10000.0;
+                public static final double MAX_MOTOR_RPM = 10000.0;
+                public static final double MAX_MOTOR_ACCELERATION = 9000.0;
                 public static final Constraints CONSTRAINTS = new Constraints(MAX_MOTOR_RPM, MAX_MOTOR_ACCELERATION);
 
                 // public static final double P = 1;
@@ -119,7 +184,7 @@ public final class RobotConstants {
                 // public static final double D = 0;
 
                 public static final class SimConstants {
-                        public static final double HP = .4;
+                        public static final double HP = .35;
                         public static final double L1 = 0.2;
                         public static final double L2 = 0.3;
                         public static final double L3 = 0.55;
@@ -137,7 +202,7 @@ public final class RobotConstants {
 
                 public static final class AngleSetpoints {
                         public static final double HOME = -5;
-                        public static final double HP = -10.0;
+                        public static final double HP = -13.0;
 
                         public static final class Coral {
                                 public static final double L1 = -10;
@@ -146,7 +211,7 @@ public final class RobotConstants {
                         }
 
                         public static final class Algae {
-                                public static final double L2 = 12;
+                                public static final double L2 = 12.75;
                                 public static final double L3 = 13.5;
                         }
                 }

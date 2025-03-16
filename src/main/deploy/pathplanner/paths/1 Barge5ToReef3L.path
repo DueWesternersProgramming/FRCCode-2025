@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.192622950819677,
-        "y": 1.8911885245901638
+        "x": 6.77625,
+        "y": 1.8897499999999992
       },
       "isLocked": false,
       "linkedName": "Barge5"
@@ -20,8 +20,8 @@
         "y": 2.798
       },
       "prevControl": {
-        "x": 5.5383196721311485,
-        "y": 1.8792008196721315
+        "x": 5.173871889610022,
+        "y": 2.6033433529257706
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,13 +30,24 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "pointTowardsZones": [],
+  "pointTowardsZones": [
+    {
+      "fieldPosition": {
+        "x": 5.0,
+        "y": 3.3
+      },
+      "rotationOffset": 0.0,
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0.75,
+      "name": "Point Towards Zone"
+    }
+  ],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 1.5,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularAcceleration": 400.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
@@ -48,7 +59,7 @@
   "folder": "Barge 5 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -178.62201675369508
   },
   "useDefaultConstraints": false
 }

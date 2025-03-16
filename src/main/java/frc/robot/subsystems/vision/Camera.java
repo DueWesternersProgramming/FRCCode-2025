@@ -12,6 +12,8 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.utils.CowboyUtils;
+
+import java.util.List;
 import java.util.Optional;
 
 public class Camera {
@@ -35,9 +37,9 @@ public class Camera {
         }
     }
 
-    public PhotonPipelineResult getResult() {
+    public List<PhotonPipelineResult> getResult() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
-            return photonCamera.getLatestResult();
+            return photonCamera.getAllUnreadResults();
 
         } else {
             return null;
@@ -54,7 +56,7 @@ public class Camera {
 
     public boolean hasResults() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
-            return photonCamera.getLatestResult().hasTargets();
+            return photonCamera.getAllUnreadResults().get(0).hasTargets();
         } else {
             return false;
         }
@@ -62,7 +64,7 @@ public class Camera {
 
     public PhotonTrackedTarget getBestTarget() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
-            return getResult().getBestTarget();
+            return getResult().get(0).getBestTarget();
         } else {
             return null;
         }
@@ -76,24 +78,60 @@ public class Camera {
         }
     }
 
-    public Pose2d getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
+    public EstimatedRobotPose getEstimatedGlobalPose(Pose2d prevEstimatedRobotPose) {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
 
             photonPoseEstimator.setLastPose(prevEstimatedRobotPose);
             try {
+                List<PhotonPipelineResult> result = photonCamera.getAllUnreadResults(); // Only want to call this once
+                                                                                        // per loop.
 
-                // System.out.println((photonCamera.getLatestResult().getBestTarget().fiducialId));
+                if (result.size() > 0) {
+                    Optional<EstimatedRobotPose> estimate = photonPoseEstimator
+                            .update(result.get(0));
 
-                Optional<EstimatedRobotPose> estimate = photonPoseEstimator.update(photonCamera.getLatestResult());
-                // System.out.println(estimate.isPresent());
-                return estimate.isPresent() ? estimate.get().estimatedPose.toPose2d() : null;
+                    if (estimate.isPresent()) {
+
+
+                        return estimate.get(); //skip processing for now
+
+                        // PhotonTrackedTarget furthestTarget = result.get(0).targets.get(0);
+
+                        // for (PhotonTrackedTarget target : result.get(0).targets) {
+                            
+                        //     if (target.bestCameraToTarget.getTranslation().getNorm() < furthestTarget.bestCameraToTarget
+                        //             .getTranslation().getNorm()) {
+                        //         furthestTarget = target;
+                        //     }
+                        // } // Loop through and find the target furthest away, basicly with the most
+                        //   // ambiguity.
+
+
+                        // double smallestTagDistance = furthestTarget.bestCameraToTarget.getTranslation().getNorm();
+                        // double poseAmbaguitiy = furthestTarget.getPoseAmbiguity();
+                        // //System.out.println(poseAmbaguitiy);
+                        // if (smallestTagDistance < 3 && poseAmbaguitiy < 5) { // The distance will need to be tuned.
+                        //     //System.out.println(poseAmbaguitiy);
+                            
+                        //     return estimate.get();
+                        // } else {
+                        //     return null;
+                        // }
+                    } else {
+                        return null;
+                    }
+                } else {
+                    return null;
+                }
 
             } catch (Exception e) {
                 System.out.println(e);
                 return null;
             }
 
-        } else {
+        } else
+
+        {
             return null;
         }
     }

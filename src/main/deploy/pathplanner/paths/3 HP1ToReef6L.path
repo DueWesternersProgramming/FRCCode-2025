@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 1.10175,
-        "y": 7.018249999999999
+        "y": 7.09625
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.07675,
-        "y": 6.94025
+        "x": 2.0767500000000005,
+        "y": 7.018250000000001
       },
       "isLocked": false,
       "linkedName": "HP1"
@@ -35,8 +35,8 @@
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularVelocity": 400.0,
+    "maxAngularAcceleration": 400.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },

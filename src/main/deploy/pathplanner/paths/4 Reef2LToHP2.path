@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8758133554656844,
-        "y": 2.1928679715009034
+        "x": 2.4472500000000004,
+        "y": 2.5722499999999995
       },
       "isLocked": false,
       "linkedName": "Reef2L"
     },
     {
       "anchor": {
-        "x": 1.3752027978096846,
-        "y": 0.8689133657707521
+        "x": 1.10175,
+        "y": 0.7977499999999997
       },
       "prevControl": {
-        "x": 1.6189502749321272,
-        "y": 1.1810081709124662
+        "x": 1.3454974771224426,
+        "y": 1.1098448051417138
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,8 +35,8 @@
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 2.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 400.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 300.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
