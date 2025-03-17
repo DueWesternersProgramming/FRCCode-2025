@@ -122,6 +122,7 @@ public class AutomatedScoring {
 
     public static Command homeSubsystems(ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem) {
         return new InstantCommand(() -> {
+            System.out.println("HOMING");
             elevatorSubsystem.goToSetpoint(ElevatorConstants.HeightSetpoints.HOME);
             wristSubsystem.goToSetpoint(WristConstants.AngleSetpoints.HOME);
         });

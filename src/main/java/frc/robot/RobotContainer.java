@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -154,8 +155,10 @@ public class RobotContainer {
                                         driveSubsystem.drive(0, 0, 0, false, false);
                                 }, driveSubsystem)).onFalse(clawSubsystem.stopClaw());
 
-                new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral()).onFalse(clawSubsystem.stopClaw());
-                new JoystickButton(driveJoystick, 10).whileTrue(clawSubsystem.outtakeCoral()).onFalse(clawSubsystem.stopClaw());
+                new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral())
+                                .onFalse(clawSubsystem.stopClaw());
+                new JoystickButton(driveJoystick, 10).whileTrue(clawSubsystem.outtakeCoral())
+                                .onFalse(clawSubsystem.stopClaw());
 
                 // Above = DriveJoystick, Below = OperatorJoystick
 
@@ -211,7 +214,14 @@ public class RobotContainer {
                         wristSubsystem.setEncoderValue(0);
 
                 }));
-                new JoystickButton(operatorJoystick, 6).whileTrue(clawSubsystem.yeetAlgae()).onFalse(clawSubsystem.stopClaw());
+                new JoystickButton(operatorJoystick, 6).whileTrue(clawSubsystem.yeetAlgae())
+                                .onFalse(clawSubsystem.stopClaw());
+
+                new Trigger(() -> SmartDashboard.getBoolean("HomeSubsystems", false))
+                                .onTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem))
+                                .onTrue(new InstantCommand(() -> SmartDashboard.putBoolean("HomeSubsystems", false)));// go
+                                                                                                                      // back
+                                                                                                                      // to
         }
 
         public Command getAutonomousCommand() {
