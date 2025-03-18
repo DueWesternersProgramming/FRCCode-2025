@@ -45,8 +45,8 @@ public class AutomatedScoring {
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
 
-            targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-                    new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() - 90)));
+            // targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
+            //         new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 180)));
             // // Not sure what to do
             // // about this
         }
@@ -68,8 +68,10 @@ public class AutomatedScoring {
         Translation2d translation = new Translation2d(0, adjustedXOffset);
         // System.out.println(adjustedXOffset);
 
+
         // Apply the translation to the target pose
-        targetPose = targetPose.transformBy(new Transform2d(translation, new Rotation2d()));
+
+        //targetPose = targetPose.transformBy(new Transform2d(translation, new Rotation2d()));
 
         return targetPose;
     }

@@ -42,7 +42,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor2Config = new SparkMaxConfig();
 
         elevatorMotor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-        elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(.5);
+        elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(.75);
         elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(ElevatorConstants.MAX_MOTOR_RPM);
         elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(ElevatorConstants.MAX_MOTOR_ACCELERATION);
 
