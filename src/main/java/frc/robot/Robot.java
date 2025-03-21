@@ -69,6 +69,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
+        m_robotContainer.elevatorSubsystem.setMaxSpeeds(9000, 6500);
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
@@ -88,6 +89,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.cancel();
         }
         CommandScheduler.getInstance().cancelAll();
+        m_robotContainer.elevatorSubsystem.setMaxSpeeds(10000, 9000);
     }
 
     @Override

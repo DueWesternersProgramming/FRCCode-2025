@@ -40,7 +40,7 @@ public class AutomatedScoring {
     }
 
     private static Pose2d pathPlanToReef(int reefSide, int position) {
-        targetPose = ScoringConstants.BlueAlliance.REEF_SIDE_POSES[reefSide - 1][position]; // reefSide is 1 or 2
+        targetPose = ScoringConstants.BlueAlliance.REEF_SIDE_POSES[reefSide - 1][position];
 
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
