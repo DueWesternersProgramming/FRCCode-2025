@@ -6,6 +6,7 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
@@ -22,5 +23,31 @@ public class CowboyUtils {
 
     public static boolean isBlueAlliance() {
         return DriverStation.getAlliance().isPresent() ? (DriverStation.getAlliance().get() == Alliance.Blue) : (false);
+    }
+
+    /**
+     * @see https://en.wikipedia.org/wiki/Vector_projection#Scalar_projection
+     */
+    public static double getParallelError(Pose2d origin, Pose2d target) {
+        Translation2d originToTarget = origin.minus(target).getTranslation();
+        Rotation2d angleBetween = originToTarget.getAngle();
+        double parallelError = originToTarget.getNorm() * angleBetween.getSin();
+
+        return parallelError;
+
+        // return origin.minus(target).getY();
+    }
+
+    /**
+     * @see https://en.wikipedia.org/wiki/Vector_projection#Scalar_projection
+     */
+    public static double getPerpendicularError(Pose2d origin, Pose2d target) {
+        Translation2d originToTarget = origin.minus(target).getTranslation();
+        Rotation2d angleBetween = originToTarget.getAngle();
+        double perpendicularError = originToTarget.getNorm() * angleBetween.getCos();
+
+        return perpendicularError;
+
+        // return -origin.minus(target).getX();
     }
 }

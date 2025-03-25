@@ -20,6 +20,10 @@ import frc.robot.RobotConstants.ElevatorConstants;
 import frc.robot.RobotConstants.ScoringConstants;
 import frc.robot.RobotConstants.WristConstants;
 
+import java.util.function.Supplier;
+
+import org.ejml.equation.IntegerSequence.Range;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.FlippingUtil;
@@ -30,70 +34,91 @@ public class AutomatedScoring {
     // double yOffset = -.25;// forward and back
 
     private static Pose2d pathPlanToHP(int humanPlayerSide) {
-        targetPose = ScoringConstants.BlueAlliance.HP_POSES.get(humanPlayerSide); // no -1 since 0 is left and 1 is
-                                                                                  // right
-                                                                                  // and indexing starts at 0'
+        targetPose = ScoringConstants.HP_POSES.get(humanPlayerSide); // no -1 since 0 is left and 1 is
+                                                                     // right
+                                                                     // and indexing starts at 0'
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
         }
         return targetPose;
     }
 
-    private static Pose2d pathPlanToReef(int reefSide, int position) {
-        targetPose = ScoringConstants.BlueAlliance.REEF_SIDE_POSES[reefSide - 1][position];
+    public static int getClosesetReefSide(Pose2d currentPose) {
+        int closestReefSide = 1; // 1-based index.
+        // Compare using 0-based index for the array.
+        for (int i = 1; i < 7; i++) {
+            Pose2d comparisonPose = ScoringConstants.REEF_SIDE_POSES[i - 1][1];
+            if (CowboyUtils.isRedAlliance()) {
+                comparisonPose = FlippingUtil.flipFieldPose(comparisonPose);
+            }
+            Pose2d closestPose = ScoringConstants.REEF_SIDE_POSES[closestReefSide - 1][1];
+            if (CowboyUtils.isRedAlliance()) {
+                closestPose = FlippingUtil.flipFieldPose(closestPose);
+            }
+            // i is used as 1-based when updating, so access array with (i - 1)
+            if (comparisonPose.getTranslation().getDistance(
+                    currentPose.getTranslation()) < closestPose
+                            .getTranslation()
+                            .getDistance(currentPose.getTranslation())) {
+                closestReefSide = i;
+            }
+        }
+        System.out.println("Closest reef side: " + closestReefSide);
+        return closestReefSide;
+    }
+
+    private static Pose2d getReefPose(int reefSide, int position, Pose2d currentPose) {
+        targetPose = ScoringConstants.REEF_SIDE_POSES[getClosesetReefSide(currentPose) - 1][position];
 
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
-
-            // targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-            //         new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 180)));
-            // // Not sure what to do
-            // // about this
         }
+        targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
+                new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 180)));
         // Field2d field = new Field2d();
         // field.setRobotPose(targetPose);
         // SmartDashboard.putData("e", field);
 
         // Determine the correct x & y offset(s) based on the position
-        double adjustedXOffset = xOffset;
-        if (position == 0) {
-            adjustedXOffset = xOffset;
-        } else if (position == 1) {
-            adjustedXOffset = 0;
-        } else {
-            adjustedXOffset = -xOffset;
-        }
+        // double adjustedXOffset = xOffset;
+        // if (position == 0) {
+        // adjustedXOffset = xOffset;
+        // } else if (position == 1) {
+        // adjustedXOffset = 0;
+        // } else {
+        // adjustedXOffset = -xOffset;
+        // }
 
         // Create a translation for the offsets
-        Translation2d translation = new Translation2d(0, adjustedXOffset);
+        // Translation2d translation = new Translation2d(0, adjustedXOffset);
         // System.out.println(adjustedXOffset);
-
 
         // Apply the translation to the target pose
 
-        //targetPose = targetPose.transformBy(new Transform2d(translation, new Rotation2d()));
+        // targetPose = targetPose.transformBy(new Transform2d(translation, new
+        // Rotation2d()));
 
         return targetPose;
     }
 
     public static Command fullReefAutomation(int reefSide, int position,
-            int height,
+            int height, Supplier<Double> perpendicularSpeed,
             DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
 
-        Pose2d pose = pathPlanToReef(reefSide, position);
+        Pose2d pose = getReefPose(reefSide, position, drivesubsystem.getPose());
         if (position == 1) {
             RobotState.isAlgaeMode = true;
             return new ParallelCommandGroup(
                     clawSubsystem.stopClaw(),
-                    new AlignWithPose(drivesubsystem, pose),
+                    new AlignPerpendicularToPoseCommand(drivesubsystem, pose, perpendicularSpeed),
                     new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                             wristSubsystem.goToAlgaeGrabSetpoint(height)));
         } else {
             RobotState.isAlgaeMode = false;
             return new ParallelCommandGroup(
                     clawSubsystem.stopClaw(),
-                    new AlignWithPose(drivesubsystem, pose),
+                    new AlignPerpendicularToPoseCommand(drivesubsystem, pose, perpendicularSpeed),
                     new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
                             wristSubsystem.goToCoralScoreSetpoint(height)));
         }
@@ -124,7 +149,7 @@ public class AutomatedScoring {
 
     public static Command homeSubsystems(ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem) {
         return new InstantCommand(() -> {
-            System.out.println("HOMING");
+            // System.out.println("HOMING");
             elevatorSubsystem.goToSetpoint(ElevatorConstants.HeightSetpoints.HOME);
             wristSubsystem.goToSetpoint(WristConstants.AngleSetpoints.HOME);
         });

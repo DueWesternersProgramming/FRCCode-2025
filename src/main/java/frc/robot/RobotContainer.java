@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -35,6 +36,7 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.automation.AutomationSelector;
+import frc.robot.RobotConstants.PortConstants;
 import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.automation.AutomatedScoring;
 
@@ -132,17 +134,16 @@ public class RobotContainer {
                 new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
 
                 new JoystickButton(driveJoystick, 2).whileTrue(
-                                new InstantCommand(() -> AutomatedScoring.fullReefAutomation(
+                                Commands.deferredProxy(() -> AutomatedScoring.fullReefAutomation(
                                                 automationSelector.getReefSide(),
                                                 automationSelector.getPosition(),
                                                 automationSelector.getHeight(),
+                                                () -> -driveJoystick.getRawAxis(
+                                                                PortConstants.Controller.DRIVE_COMMAND_Y_AXIS),
                                                 driveSubsystem,
                                                 elevatorSubsystem,
                                                 wristSubsystem,
-                                                clawSubsystem).schedule()))
-                                .onFalse(new InstantCommand(() -> {
-                                        driveSubsystem.drive(0, 0, 0, false, false);
-                                }, driveSubsystem));
+                                                clawSubsystem)));
 
                 new JoystickButton(driveJoystick, 11).whileTrue(
                                 new InstantCommand(() -> AutomatedScoring.humanPlayerPickup(
@@ -150,10 +151,7 @@ public class RobotContainer {
                                                 driveSubsystem,
                                                 elevatorSubsystem,
                                                 wristSubsystem,
-                                                clawSubsystem).schedule()))
-                                .onFalse(new InstantCommand(() -> {
-                                        driveSubsystem.drive(0, 0, 0, false, false);
-                                }, driveSubsystem)).onFalse(clawSubsystem.stopClaw());
+                                                clawSubsystem).schedule()));
 
                 new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral())
                                 .onFalse(clawSubsystem.stopClaw());
