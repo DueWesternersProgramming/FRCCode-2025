@@ -43,7 +43,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         elevatorMotor2Config = new SparkMaxConfig();
 
         elevatorMotor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-        elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(.75);
+        elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(.95);
 
         //default before auto/teleop changes it
         elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(10000);

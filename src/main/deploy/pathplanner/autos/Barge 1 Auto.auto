@@ -37,12 +37,6 @@
         {
           "type": "named",
           "data": {
-            "name": "StopClaw"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "HumanPlayer"
           }
         },
@@ -65,15 +59,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "3 HP1ToReef6L"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Score L3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 HP1ToReef6L"
           }
         },
         {
@@ -86,6 +80,12 @@
           "type": "named",
           "data": {
             "name": "CoralOut"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
           }
         },
         {
@@ -113,15 +113,15 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "5 HP1ToReef6R"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "Score L3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 HP1ToReef6R"
           }
         },
         {
@@ -134,6 +134,12 @@
           "type": "named",
           "data": {
             "name": "CoralOut"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
           }
         }
       ]

@@ -23,8 +23,8 @@ public class AlignWithPose extends Command {
         this.pose = pose;
         addRequirements(driveSubsystem);
 
-        xController = new ProfiledPIDController(0.265, 0, 0, new Constraints(3, 3));
-        yController = new ProfiledPIDController(0.265, 0, 0, new Constraints(3, 3));
+        xController = new ProfiledPIDController(0.35, 0, 0, new Constraints(4, 3));
+        yController = new ProfiledPIDController(0.35, 0, 0, new Constraints(4, 3));
         rotController = new ProfiledPIDController(0.031, 0, 0, new Constraints(50, 40));
 
         xController.setTolerance(.001);

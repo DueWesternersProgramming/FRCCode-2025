@@ -426,7 +426,7 @@ public class DriveSubsystem extends SubsystemBase {
 
             ChassisSpeeds speeds = new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
 
-            Rotation2d rotation = CowboyUtils.isRedAlliance() ? Rotation2d.fromDegrees(getGyroAngle() + 180)
+            Rotation2d rotation = CowboyUtils.isRedAlliance() ? Rotation2d.fromDegrees(getGyroAngle() + (RobotBase.isSimulation() ? 180 : 0))
                     : Rotation2d.fromDegrees(getGyroAngle());
 
             var swerveModuleStates = DrivetrainConstants.DRIVE_KINEMATICS.toSwerveModuleStates(

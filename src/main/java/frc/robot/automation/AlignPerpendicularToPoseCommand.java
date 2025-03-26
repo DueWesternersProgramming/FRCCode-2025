@@ -1,5 +1,6 @@
 package frc.robot.automation;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,7 +11,9 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.RobotConstants;
 import frc.robot.RobotConstants.DrivetrainConstants;
+import frc.robot.RobotConstants.TeleopConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.utils.CowboyUtils;
 
@@ -19,9 +22,9 @@ import java.util.function.Supplier;
 
 public class AlignPerpendicularToPoseCommand extends Command {
     private final ProfiledPIDController angleController = new ProfiledPIDController(5.0, 0.0, 0.4,
-            new TrapezoidProfile.Constraints(3.0, 5.0));
+            new TrapezoidProfile.Constraints(0.5, 0.5));
 
-    private final PIDController parallelController = new PIDController(5.0, 0.0, 0.1);
+    private final PIDController parallelController = new PIDController(3.0, 0.0, 0.1);
 
     private final DriveSubsystem driveSubsystem;
     private final Pose2d targetPoseSupplier;
@@ -63,8 +66,14 @@ public class AlignPerpendicularToPoseCommand extends Command {
         double angularSpeed = angleController.calculate(thetaError, 0);
         angularSpeed = !angleController.atSetpoint() ? angularSpeed : 0;
 
+
+        double perpendicularConstrained = MathUtil.applyDeadband(
+                    MathUtil.clamp(perpendicularInput.get(), -TeleopConstants.MAX_SPEED_PERCENT, TeleopConstants.MAX_SPEED_PERCENT),
+                    RobotConstants.PortConstants.Controller.JOYSTICK_AXIS_THRESHOLD);
+        double perpendicularSquared = Math.copySign(perpendicularConstrained * perpendicularConstrained, perpendicularConstrained);
+
         ChassisSpeeds speeds = new ChassisSpeeds(
-                perpendicularInput.get() * DrivetrainConstants.MAX_SPEED_METERS_PER_SECOND,
+                perpendicularSquared * DrivetrainConstants.MAX_SPEED_METERS_PER_SECOND,
                 parallelSpeed,
                 angularSpeed);
 
