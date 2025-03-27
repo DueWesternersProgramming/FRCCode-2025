@@ -11,6 +11,8 @@ public class AutomationSelector {
         SmartDashboard.putNumber("Level", 1); // L1-L3, 1-3
         SmartDashboard.putNumber("HumanPlayer", 0); // 0 for left, 1 for right
         SmartDashboard.putBoolean("HomeSubsystems", false);
+        SmartDashboard.putBoolean("IntakeOn", false);
+        SmartDashboard.putBoolean("OuttakeOn", false);
     }
 
     public int getReefSide() {

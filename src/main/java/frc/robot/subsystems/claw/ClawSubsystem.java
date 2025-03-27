@@ -51,12 +51,19 @@ public class ClawSubsystem extends SubsystemBase {
 
     public Command intakeCoral() {
         return new InstantCommand(() -> {
+            if (RobotBase.isSimulation()) {
+                System.out.println("INTAKING CORAL");
+            }
             moveAtSpeed(.5);
         }, this);
     }
 
     public Command outtakeCoral() {
         return new InstantCommand(() -> {
+            if (RobotBase.isSimulation()) {
+                System.out.println("OUTTAKING CORAL");
+            }
+            System.out.println("OUTTAKING CORAL");
             moveAtSpeed(-1);
         }, this);
     }
@@ -81,6 +88,9 @@ public class ClawSubsystem extends SubsystemBase {
 
     public Command stopClaw() {
         return new InstantCommand(() -> {
+            if (RobotBase.isSimulation()) {
+                System.out.println("STOPPING CLAW");
+            }
             moveAtSpeed(0);
         }, this);
     }

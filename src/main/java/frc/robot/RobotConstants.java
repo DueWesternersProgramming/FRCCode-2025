@@ -367,17 +367,10 @@ public final class RobotConstants {
         }
 
         public static final class VisionConstants {
-                public static enum PoseEstimationMethod {
-                        MULTI_TAG,
-                        SINGLE_TAG
-                }
 
-                public static final Matrix<N3, N1> singleTagStdDevs = VecBuilder.fill(4, 4, 8);
-                public static final Matrix<N3, N1> multiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+                // public static final double SINGLE_TAG_CUTOFF_METERS = 4.0;
 
-                public static final double SINGLE_TAG_CUTOFF_METERS = 4.0;
-
-                public static final double AMBIGUITY_CUTOFF = 0.05;
+                // public static final double AMBIGUITY_CUTOFF = 0.05;
 
                 public static final Transform3d[] CAMERA_POSITIONS = {
                                 new Transform3d(
@@ -411,35 +404,20 @@ public final class RobotConstants {
                                                                                                // face up we
                                                                                                // need - ;)
                                                                 Units.degreesToRadians(0))),
-                                // Back left
+                                // Back Left
                                 new Transform3d(
                                                 new Translation3d(
-                                                                Units.inchesToMeters(-4), // forward+
-                                                                Units.inchesToMeters(10.2), // left+
-                                                                Units.inchesToMeters(11.1)), // up+
+                                                                Units.inchesToMeters(-4.361060), // forward+
+                                                                Units.inchesToMeters(9.375080), // left+
+                                                                Units.inchesToMeters(24.57)), // up+
                                                 new Rotation3d(
                                                                 Units.degreesToRadians(0),
-                                                                Units.degreesToRadians(-20.5), // Note, these are all
-                                                                                               // counter clockwise so
-                                                                                               // to
-                                                                                               // face up we
-                                                                                               // need - ;)
-                                                                Units.degreesToRadians(180 - 25))),
-
-                                // Back right
-                                new Transform3d(
-                                                new Translation3d(
-                                                                Units.inchesToMeters(-4), // forward+
-                                                                Units.inchesToMeters(-10.2), // left+
-                                                                Units.inchesToMeters(11.1)), // up+
-                                                new Rotation3d(
-                                                                Units.degreesToRadians(0),
-                                                                Units.degreesToRadians(-20.5), // Note, these are all
-                                                                                               // counter clockwise so
-                                                                                               // to
-                                                                                               // face up we
-                                                                                               // need - ;)
-                                                                Units.degreesToRadians(180 + 25))) };
+                                                                Units.degreesToRadians(-5), // Note, these are all
+                                                                                            // counter clockwise so
+                                                                                            // to
+                                                                                            // face up we
+                                                                                            // need - ;)
+                                                                Units.degreesToRadians(180 + 5))) };
         }
 
         public static final class SubsystemEnabledConstants {

@@ -146,12 +146,13 @@ public class RobotContainer {
                                                 clawSubsystem)));
 
                 new JoystickButton(driveJoystick, 11).whileTrue(
-                                new InstantCommand(() -> AutomatedScoring.humanPlayerPickup(
-                                                automationSelector.getHumanPlayerStation(),
+                                AutomatedScoring.humanPlayerPickupNoPathing(
                                                 driveSubsystem,
                                                 elevatorSubsystem,
                                                 wristSubsystem,
-                                                clawSubsystem).schedule()));
+                                                clawSubsystem))
+                                .onFalse(clawSubsystem.stopClaw())
+                                .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
 
                 new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral())
                                 .onFalse(clawSubsystem.stopClaw());
@@ -160,8 +161,7 @@ public class RobotContainer {
 
                 // Above = DriveJoystick, Below = OperatorJoystick
 
-                // Manual claw controls. Triggers. Left is always intake regardless of game
-                // peice.
+                // Manual claw controls. Triggers.
                 new Trigger(() -> operatorJoystick.getRawAxis(2) > .2).whileTrue(clawSubsystem.intakeCoral())
                                 .onFalse(clawSubsystem.stopClaw());
                 new Trigger(() -> operatorJoystick.getRawAxis(3) > .2).whileTrue(clawSubsystem.outtakeCoral())
@@ -217,9 +217,14 @@ public class RobotContainer {
 
                 new Trigger(() -> SmartDashboard.getBoolean("HomeSubsystems", false))
                                 .onTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem))
-                                .onTrue(new InstantCommand(() -> SmartDashboard.putBoolean("HomeSubsystems", false)));// go
-                                                                                                                      // back
-                                                                                                                      // to
+                                .onTrue(new InstantCommand(() -> SmartDashboard.putBoolean("HomeSubsystems", false)));
+
+                new Trigger(() -> SmartDashboard.getBoolean("IntakeOn", false))
+                                .whileTrue(clawSubsystem.intakeCoral())
+                                .onFalse(clawSubsystem.stopClaw());
+                new Trigger(() -> SmartDashboard.getBoolean("OuttakeOn", false))
+                                .whileTrue(clawSubsystem.outtakeCoral())
+                                .onFalse(clawSubsystem.stopClaw());
         }
 
         public Command getAutonomousCommand() {
