@@ -156,7 +156,7 @@ public class RobotContainer {
 
                 new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral())
                                 .onFalse(clawSubsystem.stopClaw());
-                new JoystickButton(driveJoystick, 10).whileTrue(clawSubsystem.outtakeCoral())
+                new JoystickButton(driveJoystick, 7).whileTrue(clawSubsystem.outtakeCoral())
                                 .onFalse(clawSubsystem.stopClaw());
 
                 // Above = DriveJoystick, Below = OperatorJoystick

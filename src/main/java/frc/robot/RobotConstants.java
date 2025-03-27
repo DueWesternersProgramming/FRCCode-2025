@@ -162,7 +162,7 @@ public final class RobotConstants {
                         public static final class Coral {
                                 public static final double L1 = -20;
                                 public static final double L2 = -45;
-                                public static final double L3 = -70.5;
+                                public static final double L3 = -70;
                         }
 
                         public static final class Algae {
@@ -199,7 +199,7 @@ public final class RobotConstants {
                         public static final class Coral {
                                 public static final double L1 = -10;
                                 public static final double L2 = -3;
-                                public static final double L3 = -6.8;
+                                public static final double L3 = -7;
                         }
 
                         public static final class Algae {

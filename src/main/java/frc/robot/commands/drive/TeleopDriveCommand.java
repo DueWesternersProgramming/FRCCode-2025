@@ -23,7 +23,7 @@ public class TeleopDriveCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
+        //drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class TeleopDriveCommand extends Command {
 
     @Override
     public void initialize() {
-        drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
+        //drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
     }
 
     @Override
