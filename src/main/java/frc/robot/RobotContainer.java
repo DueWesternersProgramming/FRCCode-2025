@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -142,8 +143,7 @@ public class RobotContainer {
                                                                 PortConstants.Controller.DRIVE_COMMAND_Y_AXIS),
                                                 driveSubsystem,
                                                 elevatorSubsystem,
-                                                wristSubsystem,
-                                                clawSubsystem)));
+                                                wristSubsystem)));
 
                 new JoystickButton(driveJoystick, 11).whileTrue(
                                 AutomatedScoring.humanPlayerPickupNoPathing(
@@ -151,12 +151,12 @@ public class RobotContainer {
                                                 elevatorSubsystem,
                                                 wristSubsystem,
                                                 clawSubsystem))
-                                .onFalse(clawSubsystem.stopClaw())
-                                .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
+                                .onFalse(new SequentialCommandGroup(clawSubsystem.stopClaw(),new WaitCommand(1),AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem)));
+                                
 
                 new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral())
                                 .onFalse(clawSubsystem.stopClaw());
-                new JoystickButton(driveJoystick, 7).whileTrue(clawSubsystem.outtakeCoral())
+                new JoystickButton(driveJoystick, 7).onTrue(new SequentialCommandGroup(new WaitCommand(0.1),clawSubsystem.outtakeCoral()))
                                 .onFalse(clawSubsystem.stopClaw());
 
                 // Above = DriveJoystick, Below = OperatorJoystick

@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.cancel();
         }
         CommandScheduler.getInstance().cancelAll();
-        m_robotContainer.elevatorSubsystem.setMaxSpeeds(9000, 5000);
+        //m_robotContainer.elevatorSubsystem.setMaxSpeeds(9000, 5000);
     }
 
     @Override

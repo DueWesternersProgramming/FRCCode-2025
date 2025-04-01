@@ -21,7 +21,7 @@ import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 public class AlignPerpendicularToPoseCommand extends Command {
-    private final ProfiledPIDController angleController = new ProfiledPIDController(5.0, 0.0, 0.4,
+    private final ProfiledPIDController angleController = new ProfiledPIDController(6.0, 0.0, 0.4,
             new TrapezoidProfile.Constraints(0.5, 0.5));
 
     private final PIDController parallelController = new PIDController(3.0, 0.0, 0.1);

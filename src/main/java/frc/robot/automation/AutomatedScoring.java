@@ -101,21 +101,20 @@ public class AutomatedScoring {
 
     public static Command fullReefAutomation(int reefSide, int position,
             int height, Supplier<Double> perpendicularSpeed,
-            DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
-            ClawSubsystem clawSubsystem) {
+            DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem) {
 
         Pose2d pose = getReefPose(reefSide, position, drivesubsystem.getPose());
         if (position == 1) {
             RobotState.isAlgaeMode = true;
             return new ParallelCommandGroup(
-                    clawSubsystem.stopClaw(),
+                    
                     new AlignPerpendicularToPoseCommand(drivesubsystem, pose, perpendicularSpeed),
                     new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                             wristSubsystem.goToAlgaeGrabSetpoint(height)));
         } else {
             RobotState.isAlgaeMode = false;
             return new ParallelCommandGroup(
-                    clawSubsystem.stopClaw(),
+                    
                     new AlignPerpendicularToPoseCommand(drivesubsystem, pose, perpendicularSpeed),
                     new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
                             wristSubsystem.goToCoralScoreSetpoint(height)));
