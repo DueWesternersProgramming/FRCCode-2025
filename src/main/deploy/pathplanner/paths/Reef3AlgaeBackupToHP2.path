@@ -1,0 +1,93 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.70375,
+        "y": 1.7825
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.23575,
+        "y": 1.6069999999999993
+      },
+      "isLocked": false,
+      "linkedName": "Reef3AlgaeBackup"
+    },
+    {
+      "anchor": {
+        "x": 2.25225,
+        "y": 1.8214999999999997
+      },
+      "prevControl": {
+        "x": 2.6032179212940747,
+        "y": 1.8946164702547663
+      },
+      "nextControl": {
+        "x": 2.007504637942814,
+        "y": 1.7705126706769525
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.10175,
+        "y": 0.7977499999999997
+      },
+      "prevControl": {
+        "x": 0.518385633067997,
+        "y": 0.3029970833359612
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "HP2"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.35780933062879644,
+      "rotationDegrees": 100.0
+    },
+    {
+      "waypointRelativePos": 1.483975659229192,
+      "rotationDegrees": -126.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 1.25,
+      "maxWaypointRelativePos": 1.5,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 300.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 5.0,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 500.0,
+    "maxAngularAcceleration": 400.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -126.0
+  },
+  "reversed": false,
+  "folder": "Barge 5 Paths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 29.845931949687355
+  },
+  "useDefaultConstraints": false
+}
