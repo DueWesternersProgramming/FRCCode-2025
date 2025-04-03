@@ -37,12 +37,6 @@
         {
           "type": "named",
           "data": {
-            "name": "StopClaw"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "HumanPlayer"
           }
         },
@@ -65,15 +59,24 @@
           }
         },
         {
+<<<<<<< HEAD:src/main/deploy/pathplanner/autos/Barge State 1 Auto.auto
           "type": "path",
           "data": {
             "pathName": "3 HP1ToReef5R"
           }
         },
         {
+=======
+>>>>>>> d13b774deb3ef23b1e37a593fd881bda3a629a36:src/main/deploy/pathplanner/autos/Barge 1 Auto.auto
           "type": "named",
           "data": {
             "name": "Score L3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 HP1ToReef6L"
           }
         },
         {
@@ -90,6 +93,15 @@
         },
         {
           "type": "wait",
+<<<<<<< HEAD:src/main/deploy/pathplanner/autos/Barge State 1 Auto.auto
+=======
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+>>>>>>> d13b774deb3ef23b1e37a593fd881bda3a629a36:src/main/deploy/pathplanner/autos/Barge 1 Auto.auto
           "data": {
             "waitTime": 0.25
           }
@@ -113,12 +125,15 @@
           }
         },
         {
+<<<<<<< HEAD:src/main/deploy/pathplanner/autos/Barge State 1 Auto.auto
           "type": "path",
           "data": {
             "pathName": "Reef5BackupToAlgae"
           }
         },
         {
+=======
+>>>>>>> d13b774deb3ef23b1e37a593fd881bda3a629a36:src/main/deploy/pathplanner/autos/Barge 1 Auto.auto
           "type": "named",
           "data": {
             "name": "StopClaw"
@@ -137,6 +152,12 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "5 HP1ToReef6R"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 0.25
@@ -146,6 +167,12 @@
           "type": "named",
           "data": {
             "name": "StopClaw"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
           }
         }
       ]

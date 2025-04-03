@@ -4,6 +4,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -22,13 +23,13 @@ public class AlignWithPose extends Command {
         this.pose = pose;
         addRequirements(driveSubsystem);
 
-        xController = new ProfiledPIDController(0.265, 0, 0, new Constraints(3, 3));
-        yController = new ProfiledPIDController(0.265, 0, 0, new Constraints(3, 3));
+        xController = new ProfiledPIDController(0.35, 0, 0, new Constraints(4, 3));
+        yController = new ProfiledPIDController(0.35, 0, 0, new Constraints(4, 3));
         rotController = new ProfiledPIDController(0.031, 0, 0, new Constraints(50, 40));
 
         xController.setTolerance(.001);
         yController.setTolerance(.001);
-        rotController.setTolerance(0.005);
+        rotController.setTolerance(Units.degreesToRadians(.5));
         rotController.enableContinuousInput(-180, 180);
     }
 
@@ -49,19 +50,17 @@ public class AlignWithPose extends Command {
                 -1,
                 1);
 
-        if (CowboyUtils.isRedAlliance()){
+        if (CowboyUtils.isRedAlliance()) {
             driveSubsystem.drive(-xSpeed, -ySpeed, rotSpeed, true, true);
-        }
-        else{
+        } else {
             driveSubsystem.drive(xSpeed, ySpeed, rotSpeed, true, true);
         }
-        
-        
+
     }
 
     @Override
     public void initialize() {
-        //Reset each controller using the current sensor readings
+        // Reset each controller using the current sensor readings
         xController.reset(driveSubsystem.getPose().getX());
         yController.reset(driveSubsystem.getPose().getY());
         rotController.reset(driveSubsystem.getPose().getRotation().getDegrees());
@@ -77,7 +76,7 @@ public class AlignWithPose extends Command {
         } else {
             return false;
         }
-        //return false;
+        // return false;
     }
 
 }
