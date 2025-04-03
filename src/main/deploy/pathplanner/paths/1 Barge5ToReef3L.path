@@ -59,7 +59,7 @@
   "folder": "Barge 5 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -178.62201675369508
+    "rotation": 147.99461679191648
   },
   "useDefaultConstraints": false
 }

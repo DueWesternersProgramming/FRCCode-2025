@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.9182500000000005,
-        "y": 6.12125
+        "x": 5.562295081967213,
+        "y": 5.73924180327869
       },
       "isLocked": false,
       "linkedName": "Reef5Algae"
     },
     {
       "anchor": {
-        "x": 5.908499999999999,
-        "y": 6.101749999999999
+        "x": 5.957889344262295,
+        "y": 6.254713114754098
       },
       "prevControl": {
-        "x": 6.0584999999999996,
-        "y": 6.301749999999999
+        "x": 6.107889344262295,
+        "y": 6.454713114754099
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,7 +33,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
+    "maxVelocity": 5.0,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,

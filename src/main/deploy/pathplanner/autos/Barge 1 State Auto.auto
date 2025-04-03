@@ -119,9 +119,9 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "StopClaw"
+            "waitTime": 0.25
           }
         },
         {
