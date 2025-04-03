@@ -7,7 +7,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Score L2"
+            "name": "Score L3"
           }
         },
         {
@@ -67,7 +67,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 HP1ToReef6L"
+            "pathName": "3 HP1ToReef5R"
           }
         },
         {
@@ -89,21 +89,21 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "HumanPlayer"
+            "waitTime": 0.25
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "4 Reef6LToHP1"
+            "pathName": "Reef5RBackup"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "CoralIn"
+            "name": "GrabHighAlgae"
           }
         },
         {
@@ -115,13 +115,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "5 HP1ToReef6R"
+            "pathName": "Reef5BackupToAlgae"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Score L3"
+            "name": "StopClaw"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef5AlgaeToBackup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeOut"
           }
         },
         {
@@ -133,7 +145,7 @@
         {
           "type": "named",
           "data": {
-            "name": "CoralOut"
+            "name": "StopClaw"
           }
         }
       ]
