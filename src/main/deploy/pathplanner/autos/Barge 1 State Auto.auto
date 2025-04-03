@@ -1,0 +1,157 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "1 Barge1ToReef5L"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralOut"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopClaw"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "HumanPlayer"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 Reef5LToHP1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralIn"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.75
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopClaw"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Score L3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 HP1ToReef5R"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "CoralOut"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopClaw"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef5RBackup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GrabHighAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef5BackupToAlgae"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopClaw"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef5AlgaeToBackup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeOut"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopClaw"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
