@@ -103,13 +103,19 @@
         {
           "type": "named",
           "data": {
+            "name": "AlgaeIn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "GrabLowAlgae"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.75
           }
         },
         {

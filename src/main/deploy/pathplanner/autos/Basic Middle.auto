@@ -53,6 +53,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "AlgaeIn"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 1.0
