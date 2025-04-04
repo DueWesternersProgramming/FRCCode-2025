@@ -103,6 +103,12 @@
         {
           "type": "named",
           "data": {
+            "name": "AlgaeIn"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "GrabLowAlgae"
           }
         },
