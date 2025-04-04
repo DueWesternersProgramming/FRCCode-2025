@@ -39,6 +39,60 @@
           "data": {
             "name": "StopClaw"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef4RToBackup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "GrabLowAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef4BackupToAlgae"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reef4AlgaeToBackup"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "AlgaeOut"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.25
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopClaw"
+          }
         }
       ]
     }

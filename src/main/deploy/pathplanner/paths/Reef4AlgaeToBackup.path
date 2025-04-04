@@ -4,37 +4,42 @@
     {
       "anchor": {
         "x": 5.8087371551217135,
-        "y": 4.033
+        "y": 4.029
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.534966663318434,
-        "y": 3.930110655737706
+        "x": 6.7274999999951355,
+        "y": 4.1810000000023875
       },
       "isLocked": false,
       "linkedName": "Reef4Algae"
     },
     {
       "anchor": {
-        "x": 6.017827868852459,
-        "y": 0.6324795081967204
+        "x": 6.980999999995134,
+        "y": 4.600250000002387
       },
       "prevControl": {
-        "x": 6.18357786885246,
-        "y": 1.3052295081967227
+        "x": 6.827514846616407,
+        "y": 4.402911945658304
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Processor"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0,
+      "rotationDegrees": -25.425240762131377
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.5,
-    "maxAcceleration": 0.5,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -42,7 +47,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -92.6025622024998
+    "rotation": -47.02136494035597
   },
   "reversed": false,
   "folder": "Barge Middle Paths",
@@ -50,5 +55,5 @@
     "velocity": 0,
     "rotation": 180.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

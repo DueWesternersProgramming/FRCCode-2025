@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Barge5ToReef3R"
+            "pathName": "Barge5ToReef2R"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Reef3RToHP2"
+            "pathName": "Reef2RToHP2"
           }
         },
         {
@@ -73,7 +73,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HP2ToReef3L"
+            "pathName": "HP2ToReef2L"
           }
         },
         {
@@ -97,13 +97,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Reef3LBackup"
+            "pathName": "Reef2LBackup"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "GrabHighAlgae"
+            "name": "GrabLowAlgae"
           }
         },
         {
@@ -115,19 +115,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Reef3LBackupToAlgae"
+            "pathName": "Reef2LBackupToAlgae"
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "StopClaw"
+            "waitTime": 0.25
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Reef3AlgaeBackup"
+            "pathName": "Reef2AlgaeToBackup"
           }
         },
         {
@@ -146,12 +146,6 @@
           "type": "named",
           "data": {
             "name": "StopClaw"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Reef3AlgaeBackupToHP2"
           }
         }
       ]

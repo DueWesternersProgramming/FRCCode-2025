@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.3539999999999996,
-        "y": 2.1725
+        "x": 3.673,
+        "y": 2.971
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2210411301017046,
-        "y": 2.4027915179807873
+        "x": 3.5889495583475757,
+        "y": 2.7355525042434463
       },
       "isLocked": false,
-      "linkedName": "Reef2LBackup"
+      "linkedName": "Reef2L"
     },
     {
       "anchor": {
-        "x": 5.153673873049554,
-        "y": 2.85
+        "x": 3.3539999999999996,
+        "y": 2.1725
       },
       "prevControl": {
-        "x": 5.278673873049554,
-        "y": 2.6334936490538903
+        "x": 3.0604758541904244,
+        "y": 2.150595212999285
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Reef3Algae"
+      "linkedName": "Reef2LBackup"
     }
   ],
   "rotationTargets": [],
@@ -47,8 +47,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 0.6,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 300.0,
     "maxAngularAcceleration": 300.0,
     "nominalVoltage": 12.0,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 118.39539240872935
+    "rotation": 59.99999999999999
   },
   "reversed": false,
   "folder": "Barge 5 Paths",

@@ -3,47 +3,42 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.10175,
-        "y": 0.7977499999999997
+        "x": 3.8339268432992752,
+        "y": 2.882738506811717
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.50875,
-        "y": 1.7825
+        "x": 3.5977499999999996,
+        "y": 2.5819999999999994
       },
       "isLocked": false,
-      "linkedName": "HP2"
+      "linkedName": "Reef2Algae"
     },
     {
       "anchor": {
-        "x": 5.017,
-        "y": 2.798
+        "x": 2.64225,
+        "y": 1.7044999999999992
       },
       "prevControl": {
-        "x": 5.142,
-        "y": 2.5814936490538902
+        "x": 2.5935,
+        "y": 2.2017499999999997
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Reef3L"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.32332657200811554,
-      "rotationDegrees": 95.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6660049627791566,
+      "minWaypointRelativePos": 0.75,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 2.0,
         "maxAcceleration": 1.0,
-        "maxAngularVelocity": 200.0,
-        "maxAngularAcceleration": 200.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 300.0,
         "nominalVoltage": 12.0,
         "unlimited": false
       }
@@ -52,22 +47,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 6.0,
-    "maxAcceleration": 6.0,
-    "maxAngularVelocity": 400.0,
-    "maxAngularAcceleration": 100.0,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 300.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": -12.26477372789239
   },
   "reversed": false,
   "folder": "Barge 5 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -126.0
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": false
 }

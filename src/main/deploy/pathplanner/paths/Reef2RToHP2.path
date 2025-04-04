@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.295,
-        "y": 2.953
+        "x": 3.965495633971004,
+        "y": 2.7942236769095814
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.64525,
-        "y": 1.8507499999999992
+        "x": 3.22725,
+        "y": 2.2992499999999993
       },
       "isLocked": false,
-      "linkedName": "Reef3R"
+      "linkedName": "Reef2R"
     },
     {
       "anchor": {
@@ -87,7 +87,7 @@
   "folder": "Barge 5 Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": false
 }

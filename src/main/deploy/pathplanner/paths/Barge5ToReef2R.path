@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.125717213114753,
-        "y": 1.8072745901639349
+        "x": 6.87375,
+        "y": 1.5875
       },
       "isLocked": false,
       "linkedName": "Barge5"
     },
     {
       "anchor": {
-        "x": 5.295,
-        "y": 2.953
+        "x": 3.965495633971004,
+        "y": 2.7942236769095814
       },
       "prevControl": {
-        "x": 5.610245901639344,
-        "y": 2.466598360655738
+        "x": 3.315,
+        "y": 1.2169999999999994
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Reef3R"
+      "linkedName": "Reef2R"
     }
   ],
   "rotationTargets": [],
@@ -53,7 +53,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 59.99999999999999
   },
   "reversed": false,
   "folder": "Barge 5 Paths",
