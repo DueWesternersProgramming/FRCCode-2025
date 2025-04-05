@@ -55,7 +55,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.75
+            "waitTime": 0.5
           }
         },
         {
@@ -134,24 +134,6 @@
           "type": "path",
           "data": {
             "pathName": "Reef2AlgaeToBackup"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "AlgaeOut"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.25
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopClaw"
           }
         }
       ]
