@@ -8,46 +8,41 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.7274999999951355,
-        "y": 4.1810000000023875
+        "x": 7.517250000000001,
+        "y": 4.181
       },
       "isLocked": false,
       "linkedName": "Reef4Algae"
     },
     {
       "anchor": {
-        "x": 6.980999999995134,
-        "y": 4.600250000002387
+        "x": 6.025499999999999,
+        "y": 1.012249999999999
       },
       "prevControl": {
-        "x": 6.827514846616407,
-        "y": 4.402911945658304
+        "x": 5.779433323575052,
+        "y": 0.9680777151012041
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 1.0,
-      "rotationDegrees": -25.425240762131377
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 2.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxVelocity": 2.0,
+    "maxAcceleration": 1.0,
+    "maxAngularVelocity": 100.0,
+    "maxAngularAcceleration": 100.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -47.02136494035597
+    "rotation": -91.21887523513112
   },
   "reversed": false,
   "folder": "Barge Middle Paths",

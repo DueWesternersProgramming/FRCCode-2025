@@ -19,7 +19,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 1.0
+            "waitTime": 0.25
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.5
+            "waitTime": 0.25
           }
         },
         {
@@ -83,12 +83,6 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "AlgaeOut"
-          }
-        },
-        {
           "type": "wait",
           "data": {
             "waitTime": 0.25
@@ -98,6 +92,12 @@
           "type": "named",
           "data": {
             "name": "StopClaw"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ProcessorHome"
           }
         }
       ]
