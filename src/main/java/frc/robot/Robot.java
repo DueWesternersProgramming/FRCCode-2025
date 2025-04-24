@@ -4,6 +4,13 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.DataLogManager;
@@ -13,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.automation.AutomatedScoring;
 import frc.robot.automation.AutomationSelector;
+import frc.robot.utils.CowboyUtils;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,15 +32,36 @@ import frc.robot.automation.AutomationSelector;
  * build.gradle file in the
  * project.
  */
-
-// @Logged(name = "Robot")
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer = new RobotContainer();
 
     public Robot() {
-        // DataLogManager.start();
-        // Epilogue.bind(this);
+        Logger.recordMetadata("FRCCode-2025", "FRCCode-2025"); // Set a metadata value
+
+        if (isReal()) {
+            Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        } else if (isSimulation()) {
+            setUseTiming(false);// Run as fast as possible
+            String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the
+                                                          // user)
+            Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+            Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a
+                                                                                                  // new log
+        }
+        Logger.start();
+    }
+
+    @Override
+    public void robotInit() {
+        // if (Robot.isReal()) {
+        // CowboyUtils.RobotModes.currentMode = CowboyUtils.RobotModes.Mode.REAL;
+        // } else if (Robot.isSimulation()) {
+        // CowboyUtils.RobotModes.currentMode = CowboyUtils.RobotModes.Mode.SIM;
+        // } else {
+        // CowboyUtils.RobotModes.currentMode = CowboyUtils.RobotModes.Mode.REPLAY;
+        // }
     }
 
     /**
@@ -89,7 +118,7 @@ public class Robot extends TimedRobot {
             m_autonomousCommand.cancel();
         }
         CommandScheduler.getInstance().cancelAll();
-        //m_robotContainer.elevatorSubsystem.setMaxSpeeds(9000, 5000);
+        // m_robotContainer.elevatorSubsystem.setMaxSpeeds(9000, 5000);
     }
 
     @Override

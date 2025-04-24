@@ -16,7 +16,6 @@ import java.util.Optional;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.simulation.VisionSystemSim;
 
-//@Logged
 public class VisionSubsystem extends SubsystemBase {
     private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera", "backLeftCamera" };
     public static Camera[] cameras = new Camera[3];

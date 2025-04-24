@@ -17,6 +17,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
 
 public final class RobotConstants {
 
@@ -185,7 +186,10 @@ public final class RobotConstants {
         }
 
         public static final class ClawConstants {
-
+                public static final double INTAKE_CORAL_SPEED = 0.5;
+                public static final double OUTTAKE_CORAL_SPEED = -1;
+                public static final double INTAKE_ALGAE_SPEED = -0.75;
+                public static final double OUTTAKE_ALGAE_SPEED = 1;
         }
 
         public static final class WristConstants {

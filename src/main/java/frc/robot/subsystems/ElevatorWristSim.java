@@ -9,7 +9,6 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import frc.robot.RobotConstants.ElevatorConstants;
 
-//@Logged
 public class ElevatorWristSim {
 
     // Get the default NetworkTable instance and a table (choose a table name of

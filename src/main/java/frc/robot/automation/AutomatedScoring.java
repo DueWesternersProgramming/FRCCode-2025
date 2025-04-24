@@ -107,14 +107,14 @@ public class AutomatedScoring {
         if (position == 1) {
             RobotState.isAlgaeMode = true;
             return new ParallelCommandGroup(
-                    
+
                     new AlignPerpendicularToPoseCommand(drivesubsystem, pose, perpendicularSpeed),
                     new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                             wristSubsystem.goToAlgaeGrabSetpoint(height)));
         } else {
             RobotState.isAlgaeMode = false;
             return new ParallelCommandGroup(
-                    
+
                     new AlignPerpendicularToPoseCommand(drivesubsystem, pose, perpendicularSpeed),
                     new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
                             wristSubsystem.goToCoralScoreSetpoint(height)));
@@ -136,12 +136,6 @@ public class AutomatedScoring {
         RobotState.isAlgaeMode = true;
         return new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                 wristSubsystem.goToAlgaeGrabSetpoint(height)); // clawSubsystem.intakeAlgae());
-    }
-
-    public static Command stopClaw(ClawSubsystem clawSubsystem) {
-        return new InstantCommand(() -> {
-            clawSubsystem.moveAtSpeed(0);
-        }, clawSubsystem);
     }
 
     public static Command homeSubsystems(ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem) {

@@ -31,13 +31,18 @@ import frc.robot.commands.claw.SetClawSpeed;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.elevator.MoveElevatorManual;
 import frc.robot.commands.wrist.MoveWristManual;
+import frc.robot.subsystems.claw.ClawSim;
+import frc.robot.subsystems.claw.ClawSpark;
 import frc.robot.subsystems.claw.ClawSubsystem;
+import frc.robot.subsystems.claw.ClawSubsystemIO;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.automation.AutomationSelector;
 import frc.robot.RobotConstants.PortConstants;
+import frc.robot.utils.CowboyUtils;
+import frc.robot.utils.CowboyUtils.RobotModes;
 import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.automation.AutomatedScoring;
 
@@ -47,8 +52,7 @@ public class RobotContainer {
         public final DriveSubsystem driveSubsystem = new DriveSubsystem();
         public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
         public final WristSubsystem wristSubsystem = new WristSubsystem();
-        public final ClawSubsystem clawSubsystem = new ClawSubsystem();
-
+        public final ClawSubsystem clawSubsystem;
         private final Joystick driveJoystick = new Joystick(RobotConstants.PortConstants.Controller.DRIVE_JOYSTICK);
         private final Joystick operatorJoystick = new Joystick(
                         RobotConstants.PortConstants.Controller.OPERATOR_JOYSTICK);
@@ -62,6 +66,25 @@ public class RobotContainer {
         private final Field2d field = new Field2d();
 
         public RobotContainer() {
+                System.out.println("Robot Mode: " + CowboyUtils.RobotModes.currentMode);
+
+                switch (RobotModes.currentMode) {
+                        case REAL:
+                                // Real robot, instantiate hardware IO implementations
+                                clawSubsystem = new ClawSubsystem(new ClawSpark());
+                                break;
+
+                        case SIM:
+                                clawSubsystem = new ClawSubsystem(new ClawSim());
+                                break;
+
+                        default:
+                                // Replayed robot, disable IO implementations
+                                clawSubsystem = new ClawSubsystem(new ClawSubsystemIO() {
+                                });
+                                break;
+                }
+
                 driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
                 // elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem,
@@ -151,12 +174,13 @@ public class RobotContainer {
                                                 elevatorSubsystem,
                                                 wristSubsystem,
                                                 clawSubsystem))
-                                .onFalse(new SequentialCommandGroup(clawSubsystem.stopClaw(),new WaitCommand(1),AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem)));
-                                
+                                .onFalse(new SequentialCommandGroup(clawSubsystem.stopClaw(), new WaitCommand(1),
+                                                AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem)));
 
                 new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral())
                                 .onFalse(clawSubsystem.stopClaw());
-                new JoystickButton(driveJoystick, 7).onTrue(new SequentialCommandGroup(new WaitCommand(0.1),clawSubsystem.outtakeCoral()))
+                new JoystickButton(driveJoystick, 7)
+                                .onTrue(new SequentialCommandGroup(new WaitCommand(0.1), clawSubsystem.outtakeCoral()))
                                 .onFalse(clawSubsystem.stopClaw());
 
                 // Above = DriveJoystick, Below = OperatorJoystick
@@ -212,8 +236,6 @@ public class RobotContainer {
                         wristSubsystem.setEncoderValue(0);
 
                 }));
-                new JoystickButton(operatorJoystick, 6).whileTrue(clawSubsystem.yeetAlgae())
-                                .onFalse(clawSubsystem.stopClaw());
 
                 new Trigger(() -> SmartDashboard.getBoolean("HomeSubsystems", false))
                                 .onTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem))

@@ -25,7 +25,6 @@ import frc.robot.subsystems.ElevatorWristSim;
 import frc.robot.Robot;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
-//@Logged
 public class WristSubsystem extends SubsystemBase {
     SparkMax wristMotor;
     SparkMaxConfig wristMotorConfig;
