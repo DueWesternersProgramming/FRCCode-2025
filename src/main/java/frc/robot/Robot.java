@@ -37,21 +37,27 @@ public class Robot extends LoggedRobot {
     private RobotContainer m_robotContainer = new RobotContainer();
 
     public Robot() {
-        Logger.recordMetadata("FRCCode-2025", "FRCCode-2025"); // Set a metadata value
-
+        Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
+    
         if (isReal()) {
             Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
             Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-        } else if (isSimulation()) {
-            setUseTiming(false);// Run as fast as possible
-            String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the
-                                                          // user)
+        } else {
+            setUseTiming(false); // Run as fast as possible
+            String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+            
+            // Ensure the log path contains a file extension
+            if (!logPath.contains(".")) {
+                logPath += ".log"; // Append a default extension if none exists
+            }
+    
             Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-            Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a
-                                                                                                  // new log
+            Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
         }
-        Logger.start();
+    
+        Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
     }
+    
 
     @Override
     public void robotInit() {
