@@ -37,27 +37,31 @@ public class Robot extends LoggedRobot {
     private RobotContainer m_robotContainer = new RobotContainer();
 
     public Robot() {
-        Logger.recordMetadata("ProjectName", "MyProject"); // Set a metadata value
-    
+        Logger.recordMetadata("FRCCode-2025", "FRCCode-2025"); // Set a metadata value
+
         if (isReal()) {
+            // In real robot mode, log to a USB stick and NetworkTables
             Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
             Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        } else if (isSimulation()) {
+            setUseTiming(true); // Use normal timing in sim
+
+            // Optional: comment out the replay setup if not using AdvantageScope replay
+            // String logPath = LogFileUtil.findReplayLog();
+            // Logger.setReplaySource(new WPILOGReader(logPath));
+            // Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath,
+            // "_sim")));
+            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+
+            // Instead, just create a new log file like we do on real robot
+            Logger.addDataReceiver(new WPILOGWriter("logs/sim-" + System.currentTimeMillis() + ".wpilog"));
         } else {
-            setUseTiming(false); // Run as fast as possible
-            String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-            
-            // Ensure the log path contains a file extension
-            if (!logPath.contains(".")) {
-                logPath += ".log"; // Append a default extension if none exists
-            }
-    
-            Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-            Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+            System.out.println("Unknown robot mode. Please verify robot configuration.");
         }
-    
-        Logger.start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
+
+        // Start logging
+        Logger.start();
     }
-    
 
     @Override
     public void robotInit() {

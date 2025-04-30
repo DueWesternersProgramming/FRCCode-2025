@@ -24,7 +24,6 @@ public class ClawSubsystem extends SubsystemBase {
     }
 
     public Command setClawSpeed(double speed) {
-        Logger.recordOutput("Clawsubsystem/clawspeed", speed);
         return Commands.runOnce(() -> io.moveAtSpeed(speed), this);
     }
 
