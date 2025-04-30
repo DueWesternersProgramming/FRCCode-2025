@@ -33,4 +33,24 @@ public class GyroIONAVX implements GyroIO {
         m_gyro.setAngleAdjustment(0);
     }
 
+    @Override
+    public double getVelocityX() {
+        return m_gyro.getVelocityX();
+    }
+
+    @Override
+    public double getVelocityY() {
+        return m_gyro.getVelocityY();
+    }
+
+    @Override
+    public double getRate() {
+        return m_gyro.getRate() * DrivetrainConstants.GYRO_ORIENTATION;
+    }
+
+    @Override
+    public void updateInputs(GyroIOInputs inputs) {
+        inputs.connected = m_gyro.isConnected();
+        inputs.gyroAngle = getGyroAngle();
+    }
 }

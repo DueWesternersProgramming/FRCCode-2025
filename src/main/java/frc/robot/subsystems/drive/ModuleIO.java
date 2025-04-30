@@ -14,20 +14,20 @@ public interface ModuleIO {
         // public SwerveModulePosition modulePosition = new SwerveModulePosition();
     }
 
-    public default void updateInputs(ModuleIOInputs inputs) {
+    default void updateInputs(ModuleIOInputs inputs) {
     }
 
-    public default SwerveModuleState getState() {
+    default SwerveModuleState getState() {
         return new SwerveModuleState();
     }
 
-    public default SwerveModulePosition getPosition() {
+    default SwerveModulePosition getPosition() {
         return new SwerveModulePosition();
     }
 
-    public default void setDesiredState(SwerveModuleState state) {
+    default void setDesiredState(SwerveModuleState state) {
     }
 
-    public default void resetEncoders() {
+    default void resetEncoders() {
     }
 }

@@ -7,7 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 public interface GyroIO {
     @AutoLog
     public static class GyroIOInputs {
-        public Boolean connected = false;
+        public boolean connected = false;
         public double gyroAngle = 0.0;
     }
 
@@ -25,6 +25,18 @@ public interface GyroIO {
 
     default void setGyroAngle(double angle) {
         // default implementation does nothing ;) - Harrison learning AKit
+    }
+
+    default double getVelocityX() {
+        return 0.0;
+    }
+
+    default double getVelocityY() {
+        return 0.0;
+    }
+
+    default double getRate() {
+        return 0.0;
     }
 
     default void updateInputs(GyroIOInputs inputs) {

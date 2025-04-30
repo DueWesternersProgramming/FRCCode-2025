@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.Module;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -36,6 +37,12 @@ import frc.robot.subsystems.claw.ClawSpark;
 import frc.robot.subsystems.claw.ClawSubsystem;
 import frc.robot.subsystems.claw.ClawSubsystemIO;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.drive.ModuleIO;
+import frc.robot.subsystems.drive.ModuleIOSim;
+import frc.robot.subsystems.drive.ModuleIOSpark;
+import frc.robot.subsystems.drive.gyro.GyroIO;
+import frc.robot.subsystems.drive.gyro.GyroIONAVX;
+import frc.robot.subsystems.drive.gyro.GyroIOSim;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
@@ -49,7 +56,7 @@ import frc.robot.automation.AutomatedScoring;
 //@Logged(name = "RobotContainer")
 public class RobotContainer {
         public final VisionSubsystem visionSubsystem = new VisionSubsystem();
-        public final DriveSubsystem driveSubsystem = new DriveSubsystem();
+        public final DriveSubsystem driveSubsystem;
         public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
         public final WristSubsystem wristSubsystem = new WristSubsystem();
         public final ClawSubsystem clawSubsystem;
@@ -57,6 +64,7 @@ public class RobotContainer {
         private final Joystick operatorJoystick = new Joystick(
                         RobotConstants.PortConstants.Controller.OPERATOR_JOYSTICK);
 
+        ModuleIO[] moduleIOs;
         public final AutomationSelector automationSelector = new AutomationSelector();
 
         SendableChooser<Command> m_autoPositionChooser = new SendableChooser<>();
@@ -71,10 +79,42 @@ public class RobotContainer {
                 switch (RobotModes.currentMode) {
                         case REAL:
                                 // Real robot, instantiate hardware IO implementations
+
+                                moduleIOs = new ModuleIO[] {
+                                                new ModuleIOSpark(RobotConstants.PortConstants.CAN.FRONT_LEFT_DRIVING,
+                                                                RobotConstants.PortConstants.CAN.FRONT_LEFT_TURNING,
+                                                                RobotConstants.PortConstants.CAN.FRONT_LEFT_STEERING,
+                                                                false),
+                                                new ModuleIOSpark(RobotConstants.PortConstants.CAN.FRONT_RIGHT_DRIVING,
+                                                                RobotConstants.PortConstants.CAN.FRONT_RIGHT_TURNING,
+                                                                RobotConstants.PortConstants.CAN.FRONT_RIGHT_STEERING,
+                                                                false),
+                                                new ModuleIOSpark(RobotConstants.PortConstants.CAN.REAR_LEFT_DRIVING,
+                                                                RobotConstants.PortConstants.CAN.REAR_LEFT_TURNING,
+                                                                RobotConstants.PortConstants.CAN.REAR_LEFT_STEERING,
+                                                                false),
+                                                new ModuleIOSpark(RobotConstants.PortConstants.CAN.REAR_RIGHT_DRIVING,
+                                                                RobotConstants.PortConstants.CAN.REAR_RIGHT_TURNING,
+                                                                RobotConstants.PortConstants.CAN.REAR_RIGHT_STEERING,
+                                                                false),
+                                };
+                                driveSubsystem = new DriveSubsystem(moduleIOs, new GyroIONAVX());
+
                                 clawSubsystem = new ClawSubsystem(new ClawSpark());
+
                                 break;
 
                         case SIM:
+
+                                moduleIOs = new ModuleIO[] {
+                                                new ModuleIOSim(),
+                                                new ModuleIOSim(),
+                                                new ModuleIOSim(),
+                                                new ModuleIOSim(),
+                                };
+
+                                driveSubsystem = new DriveSubsystem(moduleIOs, new GyroIOSim());
+
                                 clawSubsystem = new ClawSubsystem(new ClawSim());
                                 break;
 
@@ -82,6 +122,21 @@ public class RobotContainer {
                                 // Replayed robot, disable IO implementations
                                 clawSubsystem = new ClawSubsystem(new ClawSubsystemIO() {
                                 });
+
+                                moduleIOs = new ModuleIO[] {
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                                new ModuleIO() {
+                                                },
+                                };
+                                driveSubsystem = new DriveSubsystem(moduleIOs, new GyroIO() {
+
+                                });
+
                                 break;
                 }
 
