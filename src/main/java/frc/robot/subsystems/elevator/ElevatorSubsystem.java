@@ -1,172 +1,96 @@
 package frc.robot.subsystems.elevator;
 
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import com.revrobotics.spark.config.SoftLimitConfig;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
+import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotConstants.PortConstants.CAN;
-import frc.robot.subsystems.ElevatorWristSim;
+import frc.robot.RobotConstants.ScoringConstants.Setpoints;
 import frc.robot.RobotConstants.ElevatorConstants;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkClosedLoopController;
+import frc.robot.utils.CowboyUtils;
 
-//@Logged
 public class ElevatorSubsystem extends SubsystemBase {
-    SparkMax elevatorMotor1;
-    SparkMax elevatorMotor2;
-    SparkMaxConfig elevatorMotor1Config;
-    SparkMaxConfig elevatorMotor2Config;
-    static SparkClosedLoopController elevatorMotor1Controller;
+    ElevatorSubsystemIO io;
+    ElevatorSubsystemIOInputsAutoLogged inputs = new ElevatorSubsystemIOInputsAutoLogged();
 
-    public ElevatorSubsystem() {
-
-        elevatorMotor1 = new SparkMax(CAN.ELEVATOR_MOTOR_1, MotorType.kBrushless);
-        elevatorMotor2 = new SparkMax(CAN.ELEVATOR_MOTOR_2, MotorType.kBrushless);
-
-        elevatorMotor1Controller = elevatorMotor1.getClosedLoopController();
-
-        elevatorMotor1Config = new SparkMaxConfig();
-        elevatorMotor2Config = new SparkMaxConfig();
-
-        elevatorMotor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-        elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(1);
-
-        //default before auto/teleop changes it
-        elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(10000);
-        elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(6500);
-
-        elevatorMotor1Config.closedLoop.pid(0.5, 0.0, 2);
-
-        elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1, true);
-
-        elevatorMotor1.configure(elevatorMotor1Config, ResetMode.kResetSafeParameters,
-                PersistMode.kPersistParameters);
-
-        elevatorMotor1Config.softLimit
-                .reverseSoftLimit(0)
-                .reverseSoftLimitEnabled(true).forwardSoftLimit(0).forwardSoftLimitEnabled(true);
-
-        elevatorMotor2.configure(elevatorMotor2Config, ResetMode.kResetSafeParameters,
-                PersistMode.kPersistParameters);
-        // } else {
-        new ElevatorWristSim();
-    }
-    public void setMaxSpeeds(double speed, double acceleration){
-        elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(speed);
-        elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(acceleration);
-    }
-
-    public void setSoftLimitEnabled(boolean isEnabled) {
-        //elevatorMotor1Config.softLimit.forwardSoftLimitEnabled(isEnabled).reverseSoftLimitEnabled(isEnabled);
-    }
-
-    public void goToSetpoint(double setpoint) {
-        // Add code here to move the elevator to the scoring height
-        if (RobotBase.isReal()) {
-            elevatorMotor1Controller.setReference(setpoint, ControlType.kMAXMotionPositionControl,
-                    ClosedLoopSlot.kSlot0, -.2);
-        }
+    public ElevatorSubsystem(ElevatorSubsystemIO io) {
+        this.io = io;
     }
 
     public void setEncoderValue(double value) {
-        // In rotations
-        elevatorMotor1.getEncoder().setPosition(value);
+        io.setEncoderValue(value);
     }
 
-    public void setMotorVoltage(double volts) {
-        elevatorMotor1.setVoltage(volts);
-    }
-
-    public Command goToCoralScoreSetpoint(int level) {
+    public Command goToCoralScoreSetpoint(Setpoints level) {
         return new InstantCommand(() -> {
             double setpoint;
-            if (RobotBase.isReal()) {
-                if (level == 1) {
-                    setpoint = ElevatorConstants.HeightSetpoints.Coral.L1;
-                } else if (level == 2) {
-                    setpoint = ElevatorConstants.HeightSetpoints.Coral.L2;
-                } else if (level == 3) {
-                    setpoint = ElevatorConstants.HeightSetpoints.Coral.L3;
-                } else {
-                    setpoint = ElevatorConstants.HeightSetpoints.HOME;
-                }
-                goToSetpoint(setpoint);
-            } else {
-                ElevatorWristSim.goToScoreSetpoint(level);// Passes in the L1-L3 into the sim logic
+            switch (level) {
+                case L1:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L1
+                            : ElevatorConstants.HeightSetpoints.Coral.L1;
+                    break;
+                case L2:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L2
+                            : ElevatorConstants.HeightSetpoints.Coral.L2;
+                    break;
+                case L3:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L3
+                            : ElevatorConstants.HeightSetpoints.Coral.L3;
+                    break;
+                default:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.HOME
+                            : ElevatorConstants.HeightSetpoints.HOME;
+                    break;
             }
+            io.goToSetpoint(setpoint);
         }, this);
     }
 
-    public Command goToAlgaeGrabSetpoint(int level) {
+    public Command goToAlgaeGrabSetpoint(Setpoints level) {
         return new InstantCommand(() -> {
             double setpoint;
-            if (RobotBase.isReal()) {
-                if (level == 2) {
-                    setpoint = ElevatorConstants.HeightSetpoints.Algae.L2;
-                } else if (level == 3) {
-                    setpoint = ElevatorConstants.HeightSetpoints.Algae.L3;
-                } else {
-                    setpoint = ElevatorConstants.HeightSetpoints.HOME;
-                }
-                goToSetpoint(setpoint);
-            } else {
-                // ElevatorWristSim.goToScoreSetpoint(level);// Passes in the L1-L3 into the sim
-                // logic, this needs some work.
+            switch (level) {
+                case L2:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L2
+                            : ElevatorConstants.HeightSetpoints.Algae.L2;
+                    break;
+                case L3:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L3
+                            : ElevatorConstants.HeightSetpoints.Algae.L3;
+                    break;
+                default:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.HOME
+                            : ElevatorConstants.HeightSetpoints.HOME;
+                    break;
             }
+
+            io.goToSetpoint(setpoint);
+
         }, this);
     }
 
     public Command goToHumanPlayerPickup() {
         return new InstantCommand(() -> {
-            double setpoint;
-            if (RobotBase.isReal()) {
-                goToSetpoint(ElevatorConstants.HeightSetpoints.HP);
-            } else {
-                ElevatorWristSim.goToHumanPlayerSetpoint();// Passes in the L1-L3 into the
-                                                           // sim logic
-            }
+            io.goToSetpoint(CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.HP
+                    : ElevatorConstants.HeightSetpoints.HP);
+        }, this);
+    }
+
+    public Command goToHomeSetpoint() {
+        return new InstantCommand(() -> {
+            io.goToSetpoint(CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.HOME
+                    : ElevatorConstants.HeightSetpoints.HOME);
         }, this);
     }
 
     public void moveAtSpeed(double speed) {
-        elevatorMotor1.set(speed * .5);
-    }
-
-    // public Command homeElevator() {
-    // return this.run(() -> elevatorMotor1.setVoltage(1)).until(() ->
-    // getCurrentDraw() > 30.0)
-    // .finallyDo(() -> setEncoderValue(0));
-    // }
-
-    public double getCurrentDraw() {
-        return elevatorMotor1.getOutputCurrent();
-    }
-
-    public RelativeEncoder getEncoder() {
-        return elevatorMotor1.getEncoder();
+        io.moveAtSpeed(speed);
     }
 
     @Override
     public void periodic() {
-        if (RobotBase.isReal()) {
-            SmartDashboard.putNumber("elevator encoder pos", elevatorMotor1.getEncoder().getPosition());
-            // SmartDashboard.putNumber("elevator motor current draw", getCurrentDraw());
-        } else {
-        }
+        io.updateInputs(inputs);
+        Logger.processInputs("ElevatorSubsystem", inputs);
     }
 
 }

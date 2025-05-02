@@ -26,6 +26,10 @@ public class CowboyUtils {
         return DriverStation.getAlliance().isPresent() ? (DriverStation.getAlliance().get() == Alliance.Blue) : (false);
     }
 
+    public static boolean isSim() {
+        return RobotBase.isSimulation();
+    }
+
     /**
      * @see https://en.wikipedia.org/wiki/Vector_projection#Scalar_projection
      */

@@ -1,6 +1,7 @@
 package frc.robot.automation;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.RobotConstants.ScoringConstants.Setpoints;
 
 public class AutomationSelector {
 
@@ -29,11 +30,21 @@ public class AutomationSelector {
         return value;
     }
 
-    public int getHeight() {
+    public Setpoints getHeight() {
         // Retrieve value from SmartDashboard
         int value = (int) SmartDashboard.getNumber("Level", 1);
         System.out.println("Retrieved Level: " + value);
-        return value;
+
+        switch (value) {
+            case 1:
+                return Setpoints.L1;
+            case 2:
+                return Setpoints.L2;
+            case 3:
+                return Setpoints.L3;
+            default:
+                return Setpoints.HOME; // Default to HOME if invalid value
+        }
     }
 
     public int getHumanPlayerStation() {

@@ -4,13 +4,9 @@
 
 package frc.robot;
 
-import com.fasterxml.jackson.databind.Module;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.epilogue.EpilogueConfiguration;
-import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.epilogue.logging.EpilogueBackend;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -28,7 +24,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.RobotSystemsCheckCommand;
-import frc.robot.commands.claw.SetClawSpeed;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.elevator.MoveElevatorManual;
 import frc.robot.commands.wrist.MoveWristManual;
@@ -44,21 +39,28 @@ import frc.robot.subsystems.drive.gyro.GyroIO;
 import frc.robot.subsystems.drive.gyro.GyroIONAVX;
 import frc.robot.subsystems.drive.gyro.GyroIOSim;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.elevator.ElevatorSubsystemIO;
+import frc.robot.subsystems.elevator.ElevatorSubsystemIOSim;
+import frc.robot.subsystems.elevator.ElevatorSubsystemIOSpark;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
+import frc.robot.subsystems.wrist.WristSubsystemIO;
+import frc.robot.subsystems.wrist.WristSubsystemIOSim;
+import frc.robot.subsystems.wrist.WristSubsystemIOSpark;
 import frc.robot.automation.AutomationSelector;
 import frc.robot.RobotConstants.PortConstants;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.utils.CowboyUtils.RobotModes;
 import frc.robot.RobotConstants.PortConstants.CAN;
+import frc.robot.RobotConstants.ScoringConstants.Setpoints;
 import frc.robot.automation.AutomatedScoring;
 
 //@Logged(name = "RobotContainer")
 public class RobotContainer {
         public final VisionSubsystem visionSubsystem = new VisionSubsystem();
         public final DriveSubsystem driveSubsystem;
-        public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-        public final WristSubsystem wristSubsystem = new WristSubsystem();
+        public final ElevatorSubsystem elevatorSubsystem;
+        public final WristSubsystem wristSubsystem;
         public final ClawSubsystem clawSubsystem;
         private final Joystick driveJoystick = new Joystick(RobotConstants.PortConstants.Controller.DRIVE_JOYSTICK);
         private final Joystick operatorJoystick = new Joystick(
@@ -100,6 +102,10 @@ public class RobotContainer {
                                 };
                                 driveSubsystem = new DriveSubsystem(moduleIOs, new GyroIONAVX());
 
+                                elevatorSubsystem = new ElevatorSubsystem(new ElevatorSubsystemIOSpark());
+
+                                wristSubsystem = new WristSubsystem(new WristSubsystemIOSpark());
+
                                 clawSubsystem = new ClawSubsystem(new ClawSpark());
 
                                 break;
@@ -115,13 +121,16 @@ public class RobotContainer {
 
                                 driveSubsystem = new DriveSubsystem(moduleIOs, new GyroIOSim());
 
+                                elevatorSubsystem = new ElevatorSubsystem(new ElevatorSubsystemIOSim());
+
+                                wristSubsystem = new WristSubsystem(new WristSubsystemIOSim());
+
                                 clawSubsystem = new ClawSubsystem(new ClawSim());
+
                                 break;
 
                         default:
                                 // Replayed robot, disable IO implementations
-                                clawSubsystem = new ClawSubsystem(new ClawSubsystemIO() {
-                                });
 
                                 moduleIOs = new ModuleIO[] {
                                                 new ModuleIO() {
@@ -134,7 +143,15 @@ public class RobotContainer {
                                                 },
                                 };
                                 driveSubsystem = new DriveSubsystem(moduleIOs, new GyroIO() {
+                                });
 
+                                elevatorSubsystem = new ElevatorSubsystem(new ElevatorSubsystemIO() {
+                                });
+
+                                wristSubsystem = new WristSubsystem(new WristSubsystemIO() {
+                                });
+
+                                clawSubsystem = new ClawSubsystem(new ClawSubsystemIO() {
                                 });
 
                                 break;
@@ -168,13 +185,13 @@ public class RobotContainer {
                         System.out.println("Running...");
                 }));
                 NamedCommands.registerCommand("Score L1",
-                                AutomatedScoring.scoreCoralNoPathing(1, elevatorSubsystem, wristSubsystem,
+                                AutomatedScoring.scoreCoralNoPathing(Setpoints.L1, elevatorSubsystem, wristSubsystem,
                                                 clawSubsystem));
                 NamedCommands.registerCommand("Score L2",
-                                AutomatedScoring.scoreCoralNoPathing(2, elevatorSubsystem, wristSubsystem,
+                                AutomatedScoring.scoreCoralNoPathing(Setpoints.L2, elevatorSubsystem, wristSubsystem,
                                                 clawSubsystem));
                 NamedCommands.registerCommand("Score L3",
-                                AutomatedScoring.scoreCoralNoPathing(3, elevatorSubsystem, wristSubsystem,
+                                AutomatedScoring.scoreCoralNoPathing(Setpoints.L3, elevatorSubsystem, wristSubsystem,
                                                 clawSubsystem));
 
                 NamedCommands.registerCommand("HumanPlayer",
@@ -182,11 +199,11 @@ public class RobotContainer {
                                                 wristSubsystem, clawSubsystem));
 
                 NamedCommands.registerCommand("GrabLowAlgae",
-                                AutomatedScoring.grabAlgaeNoPathing(2, elevatorSubsystem, wristSubsystem,
+                                AutomatedScoring.grabAlgaeNoPathing(Setpoints.L2, elevatorSubsystem, wristSubsystem,
                                                 clawSubsystem));
 
                 NamedCommands.registerCommand("GrabHighAlgae",
-                                AutomatedScoring.grabAlgaeNoPathing(3, elevatorSubsystem, wristSubsystem,
+                                AutomatedScoring.grabAlgaeNoPathing(Setpoints.L3, elevatorSubsystem, wristSubsystem,
                                                 clawSubsystem));
 
                 NamedCommands.registerCommand("CoralIn", clawSubsystem.intakeCoral());
@@ -248,12 +265,14 @@ public class RobotContainer {
 
                 // Algae bottom (L2 algae), A button
                 new JoystickButton(operatorJoystick, 1)
-                                .whileTrue(AutomatedScoring.grabAlgaeNoPathing(2, elevatorSubsystem, wristSubsystem,
+                                .whileTrue(AutomatedScoring.grabAlgaeNoPathing(Setpoints.L2, elevatorSubsystem,
+                                                wristSubsystem,
                                                 clawSubsystem));
                 // .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
                 // Algae top (L3 algae), Y button
                 new JoystickButton(operatorJoystick, 4)
-                                .whileTrue(AutomatedScoring.grabAlgaeNoPathing(3, elevatorSubsystem, wristSubsystem,
+                                .whileTrue(AutomatedScoring.grabAlgaeNoPathing(Setpoints.L3, elevatorSubsystem,
+                                                wristSubsystem,
                                                 clawSubsystem));
                 // .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
 
@@ -268,17 +287,20 @@ public class RobotContainer {
 
                 // L1, DOWN POV BUTTON
                 new POVButton(operatorJoystick, 180)
-                                .whileTrue(AutomatedScoring.scoreCoralNoPathing(1, elevatorSubsystem, wristSubsystem,
+                                .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L1, elevatorSubsystem,
+                                                wristSubsystem,
                                                 clawSubsystem));
 
                 // L2, RIGHT POV BUTTON
                 new POVButton(operatorJoystick, 90)
-                                .whileTrue(AutomatedScoring.scoreCoralNoPathing(2, elevatorSubsystem, wristSubsystem,
+                                .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L2, elevatorSubsystem,
+                                                wristSubsystem,
                                                 clawSubsystem));
 
                 // L3, RIGHT POV BUTTON
                 new POVButton(operatorJoystick, 0)
-                                .whileTrue(AutomatedScoring.scoreCoralNoPathing(3, elevatorSubsystem, wristSubsystem,
+                                .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L3, elevatorSubsystem,
+                                                wristSubsystem,
                                                 clawSubsystem));
 
                 new JoystickButton(operatorJoystick, 7)

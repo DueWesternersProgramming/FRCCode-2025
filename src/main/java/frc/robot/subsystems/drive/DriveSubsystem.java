@@ -21,12 +21,11 @@ import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.RobotState;
 import frc.robot.utils.CowboyUtils;
@@ -63,8 +62,6 @@ public class DriveSubsystem extends SubsystemBase {
     private Rotation2d m_trackedRotation = new Rotation2d();
 
     private static SwerveDrivePoseEstimator m_odometry;
-
-    Field2d field = new Field2d();
 
     GyroIO gyroIO;
     GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
@@ -178,47 +175,6 @@ public class DriveSubsystem extends SubsystemBase {
         return states;
     }
 
-    private void putSmartDashboardData() {
-        Logger.recordOutput("Odometry Pose", m_odometry.getEstimatedPosition());
-        // SmartDashboard.putData("Odometry Pose Field", field);
-        // SmartDashboard.putNumberArray("modules pose angles", new double[] {
-        // moduleIO[0].getPosition().angle.getDegrees(),
-        // moduleIO[1].getPosition().angle.getDegrees(),
-        // moduleIO[2].getPosition().angle.getDegrees(),
-        // moduleIO[3].getPosition().angle.getDegrees()
-        // });
-        // SmartDashboard.putNumberArray("modules pose meters", new double[] {
-        // moduleIO[0].getPosition().distanceMeters,
-        // moduleIO[1].getPosition().distanceMeters,
-        // moduleIO[2].getPosition().distanceMeters,
-        // moduleIO[3].getPosition().distanceMeters
-        // });
-
-        // SmartDashboard.putNumberArray("Virtual abs encoders", new double[] {
-        // swerveModules[0].getTurningAbsoluteEncoder().getVirtualPosition(),
-        // swerveModules[1].getTurningAbsoluteEncoder().getVirtualPosition(),
-        // swerveModules[2].getTurningAbsoluteEncoder().getVirtualPosition(),
-        // swerveModules[3].getTurningAbsoluteEncoder().getVirtualPosition()
-        // });
-        // SmartDashboard.putNumberArray("Raw abs encoders", new double[] {
-        // swerveModules[0].getTurningAbsoluteEncoder().getPosition(),
-        // swerveModules[1].getTurningAbsoluteEncoder().getPosition(),
-        // swerveModules[2].getTurningAbsoluteEncoder().getPosition(),
-        // swerveModules[3].getTurningAbsoluteEncoder().getPosition()
-        // });
-        Logger.recordOutput("Module states", getModuleStates());
-        // SmartDashboard.putNumberArray("rev encoders",
-        // new double[] { swerveModules[0].getTurningEncoder().getPosition(),
-        // swerveModules[1].getTurningEncoder().getPosition(),
-        // swerveModules[2].getTurningEncoder().getPosition(),
-        // swerveModules[3].getTurningEncoder().getPosition() });
-
-        Logger.recordOutput("Gyro", gyroIO.getGyroAngle());
-
-        // SmartDashboard.putData("Debugging field",
-        // VisionSubsystem.visionSim.getDebugField());
-    }
-
     private void updateOdometry() {
         // Update the odometry (Called in periodic)
 
@@ -238,13 +194,12 @@ public class DriveSubsystem extends SubsystemBase {
                         moduleIO[2].getPosition(),
                         moduleIO[3].getPosition()
                 });
-
-        field.setRobotPose(m_odometry.getEstimatedPosition());
         RobotState.updatePose(m_odometry.getEstimatedPosition());
+
+        Logger.recordOutput("DriveSubsystem/OdometryPose", m_odometry.getEstimatedPosition());
     }
 
     private void updateVisionMeasurements() {
-        // if (RobotBase.isReal()) {
 
         for (int i = 0; i < VisionSubsystem.getLengthOfCameraList(); i++) {
             EstimatedRobotPose estimatedRobotPose = VisionSubsystem.getVisionPoses()[i];
@@ -252,18 +207,24 @@ public class DriveSubsystem extends SubsystemBase {
                 m_odometry.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
                         estimatedRobotPose.timestampSeconds);
                 if (i == 0) {
-                    SmartDashboard.putBoolean("Front Left Adding Pose?", true);
+                    Logger.recordOutput("/VisionSubsystem/FL Adding Data", true);
                 }
                 if (i == 1) {
-                    SmartDashboard.putBoolean("Front Right Adding Pose?", true);
+                    Logger.recordOutput("/VisionSubsystem/FR Adding Data", true);
+                }
+                if (i == 2) {
+                    Logger.recordOutput("/VisionSubsystem/BL Adding Data", true);
                 }
 
             } catch (Exception e) {
                 if (i == 0) {
-                    SmartDashboard.putBoolean("Front Left Adding Pose?", false);
+                    Logger.recordOutput("/VisionSubsystem/FL Adding Data", false);
                 }
                 if (i == 1) {
-                    SmartDashboard.putBoolean("Front Right Adding Pose?", false);
+                    Logger.recordOutput("/VisionSubsystem/FL Adding Data", false);
+                }
+                if (i == 2) {
+                    Logger.recordOutput("/VisionSubsystem/BL Adding Data", false);
                 }
             }
         }
@@ -273,14 +234,16 @@ public class DriveSubsystem extends SubsystemBase {
     public void periodic() {
         if (SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED) {
             updateOdometry();
-            putSmartDashboardData();
+            Logger.recordOutput("Module states", getModuleStates());
+
+            Logger.recordOutput("Gyro", gyroIO.getGyroAngle());
+
             for (int i = 0; i < moduleIO.length; i++) {
                 moduleIO[i].updateInputs(moduleInputs[i]);
                 // e.g. produces “DriveModule0”, “DriveModule1”, etc.
                 // FL, FR, RL, RR
                 Logger.processInputs("DriveSubsystem/DriveModule" + i, moduleInputs[i]);
             }
-
             gyroIO.updateInputs(gyroInputs);
             Logger.processInputs("DriveSubsystem/Gyro", gyroInputs);
         }
@@ -378,6 +341,12 @@ public class DriveSubsystem extends SubsystemBase {
                 m_currentRotation = rot;
             }
 
+            if (Robot.isSimulation() && CowboyUtils.isRedAlliance()) {
+                xSpeedCommanded = -xSpeedCommanded; // Away from the DS
+                ySpeedCommanded = -ySpeedCommanded; // Away from long wall
+                m_currentRotation = -m_currentRotation;
+            }
+
             // Convert the commanded speeds into the correct units for the drivetrain
             double xSpeedDelivered = xSpeedCommanded * DrivetrainConstants.MAX_SPEED_METERS_PER_SECOND;
             double ySpeedDelivered = ySpeedCommanded * DrivetrainConstants.MAX_SPEED_METERS_PER_SECOND;
@@ -394,13 +363,12 @@ public class DriveSubsystem extends SubsystemBase {
 
             SwerveDriveKinematics.desaturateWheelSpeeds(
                     swerveModuleStates, DrivetrainConstants.MAX_SPEED_METERS_PER_SECOND);
-            if (RobotState.isManualControl) {
-                moduleIO[0].setDesiredState(swerveModuleStates[0]);
-                moduleIO[1].setDesiredState(swerveModuleStates[1]);
-                moduleIO[2].setDesiredState(swerveModuleStates[2]);
-                moduleIO[3].setDesiredState(swerveModuleStates[3]);
 
-            }
+            moduleIO[0].setDesiredState(swerveModuleStates[0]);
+            moduleIO[1].setDesiredState(swerveModuleStates[1]);
+            moduleIO[2].setDesiredState(swerveModuleStates[2]);
+            moduleIO[3].setDesiredState(swerveModuleStates[3]);
+
         }
     }
 

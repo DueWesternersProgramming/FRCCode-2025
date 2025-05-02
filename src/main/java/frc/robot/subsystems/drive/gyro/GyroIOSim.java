@@ -6,19 +6,16 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.utils.CowboyUtils;
 
-//This file is basicly the same as @GyroIONAVX.java due to NAVX ha simulation options, but we want to apply our own red allinace 180 deg offset.
-
 public class GyroIOSim implements GyroIO {
-    private static AHRS m_gyro;
+    private double fakeGyro = 0;
 
     public GyroIOSim() {
-        m_gyro = new AHRS(AHRS.NavXComType.kMXP_SPI);
+
     }
 
     @Override
     public double getGyroAngle() {
-        // THIS LINE IS THE KEY CHANGE
-        return (m_gyro.getAngle() + (CowboyUtils.isRedAlliance() ? 180 : 0)) * DrivetrainConstants.GYRO_ORIENTATION;
+        return fakeGyro + (CowboyUtils.isRedAlliance() ? 180 : 0);
     }
 
     @Override
@@ -28,33 +25,32 @@ public class GyroIOSim implements GyroIO {
 
     @Override
     public void setGyroAngle(double angle) {
-        m_gyro.setAngleAdjustment(angle);
+        fakeGyro = angle;
     }
 
     @Override
     public void reset() {
-        m_gyro.reset();
-        m_gyro.setAngleAdjustment(0);
+        fakeGyro = 0;
     }
 
     @Override
     public double getVelocityX() {
-        return m_gyro.getVelocityX();
+        return 0;
     }
 
     @Override
     public double getVelocityY() {
-        return m_gyro.getVelocityY();
+        return 0;
     }
 
     @Override
     public double getRate() {
-        return m_gyro.getRate() * DrivetrainConstants.GYRO_ORIENTATION;
+        return 0;
     }
 
     @Override
     public void updateInputs(GyroIOInputs inputs) {
-        inputs.connected = m_gyro.isConnected();
+        inputs.connected = true;
         inputs.gyroAngle = getGyroAngle();
     }
 }

@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.RobotConstants.ScoringConstants.Setpoints;
 import frc.robot.automation.AutomatedScoring;
 import frc.robot.commands.drive.RunAtVelocity;
 import frc.robot.subsystems.claw.ClawSubsystem;
@@ -30,12 +31,12 @@ public class RobotSystemsCheckCommand extends SequentialCommandGroup {
                 new RunAtVelocity(drivesubsystem, -0.5, 0, 0),
                 new WaitCommand(1),
                 clawSubsystem.stopClaw(),
-                AutomatedScoring.scoreCoralNoPathing(3, elevatorSubsystem, wristSubsystem, clawSubsystem),
+                AutomatedScoring.scoreCoralNoPathing(Setpoints.L3, elevatorSubsystem, wristSubsystem, clawSubsystem),
                 new RunAtVelocity(drivesubsystem, 0, 0, 0.5),
                 new WaitCommand(1),
                 new RunAtVelocity(drivesubsystem, 0, 0, -0.5),
                 new WaitCommand(1),
-                AutomatedScoring.grabAlgaeNoPathing(1, elevatorSubsystem, wristSubsystem, clawSubsystem),
+                AutomatedScoring.grabAlgaeNoPathing(Setpoints.L1, elevatorSubsystem, wristSubsystem, clawSubsystem),
                 new WaitCommand(2),
                 AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem),
                 new RunAtVelocity(drivesubsystem, 0, 0, 0),

@@ -23,6 +23,14 @@ public final class RobotConstants {
 
         public static final class ScoringConstants {
 
+                public enum Setpoints {
+                        HOME,
+                        HP,
+                        L1,
+                        L2,
+                        L3
+                }
+
                 public static final Pose2d[][] REEF_SIDE_POSES;
 
                 static {
@@ -161,6 +169,7 @@ public final class RobotConstants {
                         public static final double HP = -49.5;
 
                         public static final class Coral {
+                                // Example of a completed switch statement
                                 public static final double L1 = -20;
                                 public static final double L2 = -45;
                                 public static final double L3 = -69.5;
@@ -170,17 +179,14 @@ public final class RobotConstants {
                                 public static final double L2 = -42;
                                 public static final double L3 = -70;
                         }
-                }
 
-                // public static final double P = 1;
-                // public static final double I = 0;
-                // public static final double D = 0;
-
-                public static final class SimConstants {
-                        public static final double HP = .35;
-                        public static final double L1 = 0.2;
-                        public static final double L2 = 0.3;
-                        public static final double L3 = 0.55;
+                        public static final class SimConstants {
+                                public static final double HOME = 0;
+                                public static final double HP = .35;
+                                public static final double L1 = 0.2;
+                                public static final double L2 = 0.3;
+                                public static final double L3 = 0.55;
+                        }
                 }
 
         }
@@ -209,6 +215,14 @@ public final class RobotConstants {
                         public static final class Algae {
                                 public static final double L2 = 12.75;
                                 public static final double L3 = 13.5;
+                        }
+
+                        public static final class SimConstants {
+                                public static final double HOME = 0;
+                                public static final double HP = 0;
+                                public static final double L1 = 0;
+                                public static final double L2 = 0;
+                                public static final double L3 = 0;
                         }
                 }
 
