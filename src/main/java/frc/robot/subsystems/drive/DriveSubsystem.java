@@ -91,26 +91,6 @@ public class DriveSubsystem extends SubsystemBase {
                             moduleIOs[3].getPosition()
                     }, new Pose2d());
 
-            // swerveModules[0] = new SwerveModule(// Front Left
-            // RobotConstants.PortConstants.CAN.FRONT_LEFT_DRIVING,
-            // RobotConstants.PortConstants.CAN.FRONT_LEFT_TURNING,
-            // RobotConstants.PortConstants.CAN.FRONT_LEFT_STEERING, false);
-
-            // swerveModules[1] = new SwerveModule( // Front Right
-            // RobotConstants.PortConstants.CAN.FRONT_RIGHT_DRIVING,
-            // RobotConstants.PortConstants.CAN.FRONT_RIGHT_TURNING,
-            // RobotConstants.PortConstants.CAN.FRONT_RIGHT_STEERING, false);
-
-            // swerveModules[2] = new SwerveModule( // Rear Left
-            // RobotConstants.PortConstants.CAN.REAR_LEFT_DRIVING,
-            // RobotConstants.PortConstants.CAN.REAR_LEFT_TURNING,
-            // RobotConstants.PortConstants.CAN.REAR_LEFT_STEERING, false);
-
-            // swerveModules[3] = new SwerveModule( // Rear Right
-            // RobotConstants.PortConstants.CAN.REAR_RIGHT_DRIVING,
-            // RobotConstants.PortConstants.CAN.REAR_RIGHT_TURNING,
-            // RobotConstants.PortConstants.CAN.REAR_RIGHT_STEERING, false);
-
             gyroIO.reset();
             resetEncoders();
 
@@ -123,7 +103,6 @@ public class DriveSubsystem extends SubsystemBase {
                             moduleIOs[2].getPosition(),
                             moduleIOs[3].getPosition()
                     }, new Pose2d(0, 0, new Rotation2d()));
-
         }
 
         try {
@@ -556,6 +535,10 @@ public class DriveSubsystem extends SubsystemBase {
             RobotState.xLocked = !RobotState.xLocked;
         });
 
+    }
+
+    public ModuleIO getModule(int index) {
+        return moduleIO[index];
     }
 
 }

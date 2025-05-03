@@ -1,6 +1,16 @@
 package frc.robot;
 
+import static edu.wpi.first.units.Units.Inch;
+import static edu.wpi.first.units.Units.KilogramSquareMeters;
+import static edu.wpi.first.units.Units.Pound;
+import static edu.wpi.first.units.Units.Volt;
+
 import java.util.List;
+import java.util.function.Supplier;
+
+import org.ironmaple.simulation.drivesims.COTS;
+import org.ironmaple.simulation.drivesims.GyroSimulation;
+
 import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -15,8 +25,13 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.units.measure.Mass;
+import edu.wpi.first.units.measure.MomentOfInertia;
+import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.RobotBase;
 
 public final class RobotConstants {
@@ -158,6 +173,30 @@ public final class RobotConstants {
                 public static final int GYRO_ORIENTATION = -1; // 1 for upside down, -1 for right side up.
 
                 public static final boolean FIELD_RELATIVE = true;
+
+                // Here are some Maple Sim specific constants
+
+                public static final Mass ROBOT_MASS = Pound.of(135); // ~ robot weight with bumpers
+
+                public static final DCMotor DRIVE_MOTOR_MODEL = DCMotor.getNEO(1);
+                public static final DCMotor STEER_MOTOR_MODEL = DCMotor.getNEO(1);
+
+                public static final Distance BUMPER_LENGTH = Inch.of(36);
+                public static final Distance BUMPER_WIDTH = Inch.of(36);
+
+                public static final Distance TRACK_LENGTH = Inch.of(24.75);
+                public static final Distance TRACK_WIDTH = Inch.of(24.75);
+
+                public static final MomentOfInertia STEER_INERTIA = KilogramSquareMeters.of(0.025);
+                public static final double WHEEL_COEFFICIENT_OF_FRICTION = 1.5;
+
+                public static final Voltage DRIVE_FRICTION_VOLTAGE = Volt.of(1.5); // volts
+                public static final Voltage STEER_FRICTION_VOLTAGE = Volt.of(0.5); // volts
+
+                public static final Distance DRIVE_WHEEL_RADIUS = Inch.of(1); // radius of the wheels
+
+                public static final Supplier<GyroSimulation> gyroSimulationFactory = COTS.ofNav2X();
+
         }
 
         public static final class ElevatorConstants {

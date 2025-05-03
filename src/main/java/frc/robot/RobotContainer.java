@@ -4,14 +4,22 @@
 
 package frc.robot;
 
+import org.ironmaple.simulation.SimulatedArena;
+import org.ironmaple.simulation.drivesims.SwerveDriveSimulation;
+import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
+import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -48,11 +56,13 @@ import frc.robot.subsystems.wrist.WristSubsystemIO;
 import frc.robot.subsystems.wrist.WristSubsystemIOSim;
 import frc.robot.subsystems.wrist.WristSubsystemIOSpark;
 import frc.robot.automation.AutomationSelector;
+import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.RobotConstants.PortConstants;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.utils.CowboyUtils.RobotModes;
 import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.RobotConstants.ScoringConstants.Setpoints;
+import frc.robot.RobotConstants.SwerveModuleConstants;
 import frc.robot.automation.AutomatedScoring;
 
 //@Logged(name = "RobotContainer")
@@ -73,13 +83,17 @@ public class RobotContainer {
 
         PowerDistribution pdp;
 
-        private final Field2d field = new Field2d();
+        // private final Field2d field = new Field2d();
+
+        private final SwerveDriveSimulation driveSimulation;
+        public final LoggedPowerDistribution powerDistribution;
 
         public RobotContainer() {
                 System.out.println("Robot Mode: " + CowboyUtils.RobotModes.currentMode);
 
                 switch (RobotModes.currentMode) {
                         case REAL:
+                                driveSimulation = null;
                                 // Real robot, instantiate hardware IO implementations
 
                                 moduleIOs = new ModuleIO[] {
@@ -108,10 +122,10 @@ public class RobotContainer {
 
                                 clawSubsystem = new ClawSubsystem(new ClawSpark());
 
+                                powerDistribution = LoggedPowerDistribution.getInstance(CAN.PDH, ModuleType.kRev);
                                 break;
 
                         case SIM:
-
                                 moduleIOs = new ModuleIO[] {
                                                 new ModuleIOSim(),
                                                 new ModuleIOSim(),
@@ -127,10 +141,40 @@ public class RobotContainer {
 
                                 clawSubsystem = new ClawSubsystem(new ClawSim());
 
+                                powerDistribution = LoggedPowerDistribution.getInstance();
+
+                                // MapleSim setup:
+
+                                driveSimulation = new SwerveDriveSimulation(
+                                                DriveTrainSimulationConfig.Default()
+                                                                .withRobotMass(DrivetrainConstants.ROBOT_MASS)
+                                                                .withBumperSize(DrivetrainConstants.BUMPER_LENGTH,
+                                                                                DrivetrainConstants.BUMPER_WIDTH)
+                                                                .withTrackLengthTrackWidth(
+                                                                                DrivetrainConstants.TRACK_LENGTH,
+                                                                                DrivetrainConstants.TRACK_WIDTH)
+                                                                .withSwerveModule(new SwerveModuleSimulationConfig(
+                                                                                DrivetrainConstants.DRIVE_MOTOR_MODEL,
+                                                                                DrivetrainConstants.STEER_MOTOR_MODEL,
+                                                                                SwerveModuleConstants.DRIVING_MOTOR_REDUCTION,
+                                                                                SwerveModuleConstants.TURNING_MOTOR_REDUCTION,
+                                                                                DrivetrainConstants.DRIVE_FRICTION_VOLTAGE,
+                                                                                DrivetrainConstants.STEER_FRICTION_VOLTAGE,
+                                                                                DrivetrainConstants.DRIVE_WHEEL_RADIUS, // Corrected
+                                                                                                                        // parameter
+                                                                                DrivetrainConstants.STEER_INERTIA,
+                                                                                DrivetrainConstants.WHEEL_COEFFICIENT_OF_FRICTION))
+                                                                .withGyro(DrivetrainConstants.gyroSimulationFactory),
+                                                new Pose2d());
+                                SimulatedArena.getInstance().addDriveTrainSimulation(driveSimulation);
+                                SimulatedArena.getInstance().resetFieldForAuto();
+
                                 break;
 
                         default:
                                 // Replayed robot, disable IO implementations
+                                driveSimulation = null;
+                                powerDistribution = LoggedPowerDistribution.getInstance();
 
                                 moduleIOs = new ModuleIO[] {
                                                 new ModuleIO() {
@@ -170,6 +214,7 @@ public class RobotContainer {
 
                 try {
                         pdp = new PowerDistribution(CAN.PDH, ModuleType.kRev);
+
                         m_autoPositionChooser = AutoBuilder.buildAutoChooser("Test Auto");
                         Shuffleboard.getTab("Autonomous Selection").add(m_autoPositionChooser);
                         Shuffleboard.getTab("Power").add(pdp);
@@ -338,8 +383,19 @@ public class RobotContainer {
                 return new RobotSystemsCheckCommand(driveSubsystem, elevatorSubsystem, wristSubsystem, clawSubsystem);
         }
 
-        public Field2d getField() {
-                return field;
+        public void updateFieldSimAndDisplay() {
+                if (driveSimulation == null) {
+                        System.out.println("NOOOO");
+                        return;
+                }
+                SimulatedArena.getInstance().simulationPeriodic();
+                Logger.recordOutput("FieldSimulation/RobotPosition", driveSimulation.getSimulatedDriveTrainPose());
+                Logger.recordOutput(
+                                "FieldSimulation/Algae",
+                                SimulatedArena.getInstance().getGamePiecesArrayByType("Algae"));
+                Logger.recordOutput(
+                                "FieldSimulation/Coral",
+                                SimulatedArena.getInstance().getGamePiecesArrayByType("Coral"));
         }
 
 }
