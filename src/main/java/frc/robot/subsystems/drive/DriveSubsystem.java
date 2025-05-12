@@ -34,6 +34,7 @@ import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.subsystems.drive.ModuleIO.ModuleIOInputs;
 import frc.robot.subsystems.drive.gyro.GyroIO;
 import frc.robot.subsystems.drive.gyro.GyroIOInputsAutoLogged;
+import frc.robot.subsystems.questnav.TimestampedPose;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.utils.SwerveUtils;
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -185,7 +186,7 @@ public class DriveSubsystem extends SubsystemBase {
                             * ModuleIOSim.getPeriodicRate()));
             gyroIO.setGyroAngle(m_trackedRotation.getDegrees());
         }
-        // m_trackedRotation = new Rotation2d(getGyroAngle());
+
         m_odometry.update(
                 gyroIO.getGyroRotation2d(),
                 new SwerveModulePosition[] {
@@ -194,12 +195,12 @@ public class DriveSubsystem extends SubsystemBase {
                         moduleIO[2].getPosition(),
                         moduleIO[3].getPosition()
                 });
-        RobotState.updatePose(m_odometry.getEstimatedPosition());
+        RobotState.robotPose = m_odometry.getEstimatedPosition();
 
         Logger.recordOutput("DriveSubsystem/OdometryPose", m_odometry.getEstimatedPosition());
     }
 
-    private void updateVisionMeasurements() {
+    private void updateOdometrySensorMeasurements() {
 
         for (int i = 0; i < VisionSubsystem.getLengthOfCameraList(); i++) {
             EstimatedRobotPose estimatedRobotPose = VisionSubsystem.getVisionPoses()[i];
@@ -228,6 +229,20 @@ public class DriveSubsystem extends SubsystemBase {
                 }
             }
         }
+
+        // QuestNav poses:
+
+        // TODO add a queue system like this for PV
+
+        if (DriverStation.isEnabled()) {
+            TimestampedPose timestampedPose;
+            while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
+                m_odometry.addVisionMeasurement(
+                        timestampedPose.pose(), timestampedPose.timestamp()
+                // , QuestConstants.stdDevs
+                );
+            }
+        }
     }
 
     @Override
@@ -250,7 +265,7 @@ public class DriveSubsystem extends SubsystemBase {
         // Vision pose estimates are added into the main odometry filter if vision
         // subsystem is enabled.
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
-            updateVisionMeasurements();
+            updateOdometrySensorMeasurements();
         }
     }
 

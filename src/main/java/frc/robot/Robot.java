@@ -9,6 +9,7 @@ import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -55,13 +56,6 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void robotInit() {
-        // if (Robot.isReal()) {
-        // CowboyUtils.RobotModes.currentMode = CowboyUtils.RobotModes.Mode.REAL;
-        // } else if (Robot.isSimulation()) {
-        // CowboyUtils.RobotModes.currentMode = CowboyUtils.RobotModes.Mode.SIM;
-        // } else {
-        // CowboyUtils.RobotModes.currentMode = CowboyUtils.RobotModes.Mode.REPLAY;
-        // }
     }
 
     /**
@@ -98,6 +92,9 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
+        m_robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
+        RobotState.isQuestNavPoseReset = true;
+
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
@@ -113,6 +110,11 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void teleopInit() {
+        if (!DriverStation.isFMSAttached()) {
+            m_robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
+            RobotState.isQuestNavPoseReset = true;
+        }
+
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }

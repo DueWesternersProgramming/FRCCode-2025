@@ -42,6 +42,9 @@ import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystemIO;
 import frc.robot.subsystems.elevator.ElevatorSubsystemIOSim;
 import frc.robot.subsystems.elevator.ElevatorSubsystemIOSpark;
+import frc.robot.subsystems.questnav.QuestNavIO;
+import frc.robot.subsystems.questnav.QuestNavIOReal;
+import frc.robot.subsystems.questnav.QuestNavSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystemIO;
@@ -58,6 +61,7 @@ import frc.robot.automation.AutomatedScoring;
 //@Logged(name = "RobotContainer")
 public class RobotContainer {
         public final VisionSubsystem visionSubsystem = new VisionSubsystem();
+        public final QuestNavSubsystem questNavSubsystem;
         public final DriveSubsystem driveSubsystem;
         public final ElevatorSubsystem elevatorSubsystem;
         public final WristSubsystem wristSubsystem;
@@ -108,6 +112,8 @@ public class RobotContainer {
 
                                 clawSubsystem = new ClawSubsystem(new ClawSpark());
 
+                                questNavSubsystem = new QuestNavSubsystem(new QuestNavIOReal());
+
                                 break;
 
                         case SIM:
@@ -126,6 +132,8 @@ public class RobotContainer {
                                 wristSubsystem = new WristSubsystem(new WristSubsystemIOSim());
 
                                 clawSubsystem = new ClawSubsystem(new ClawSim());
+
+                                questNavSubsystem = new QuestNavSubsystem(new QuestNavIOReal());
 
                                 break;
 
@@ -152,6 +160,9 @@ public class RobotContainer {
                                 });
 
                                 clawSubsystem = new ClawSubsystem(new ClawSubsystemIO() {
+                                });
+
+                                questNavSubsystem = new QuestNavSubsystem(new QuestNavIO() {
                                 });
 
                                 break;
