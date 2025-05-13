@@ -112,6 +112,7 @@ public class Robot extends LoggedRobot {
     public void teleopInit() {
         if (!DriverStation.isFMSAttached()) {
             m_robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
+            System.out.println("RESET");
             RobotState.isQuestNavPoseReset = true;
         }
 

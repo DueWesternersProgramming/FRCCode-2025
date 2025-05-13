@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 public class CowboyUtils {
 
     public static final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout
-            .loadField(AprilTagFields.kDefaultField);
+            .loadField(AprilTagFields.k2025ReefscapeWelded);
 
     public static Pose2d testPose = new Pose2d(1.4, 5.55, new Rotation2d(Math.toRadians(0)));
 
@@ -58,6 +58,8 @@ public class CowboyUtils {
 
     public static final class RobotModes {
         public static Mode simMode = Mode.SIM;
+        public static Mode replayMode = Mode.REPLAY;
+        public static Mode realMode = Mode.REAL;
         public static Mode currentMode = RobotBase.isReal() ? Mode.REAL : simMode;
 
         public static enum Mode {

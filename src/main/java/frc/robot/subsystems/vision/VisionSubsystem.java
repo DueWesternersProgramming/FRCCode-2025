@@ -2,17 +2,24 @@ package frc.robot.subsystems.vision;
 
 import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotState;
 import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.RobotConstants.VisionConstants;
+import frc.robot.RobotConstants.VisionConstants.AprilTagCameraConfig;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.utils.CowboyUtils;
+import frc.robot.utils.CowboyUtils.RobotModes;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.simulation.VisionSystemSim;
 
@@ -23,61 +30,60 @@ public class VisionSubsystem extends SubsystemBase {
 
     public static VisionSystemSim visionSim;
 
+    public static record AprilTagCamera(
+            AprilTagCameraIO io,
+            AprilTagIOInputsAutoLogged inputs,
+            VisionConstants.VisionSource source) {
+    }
+
+    private final List<AprilTagCamera> aprilTagCameras = new ArrayList<>();
+
     public VisionSubsystem() {
-        if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
+        for (AprilTagCameraConfig config : VisionConstants.CAMERA_CONFIGS) {
+            AprilTagCameraIO io;
 
-            if (RobotBase.isSimulation()) {
-                visionSim = new VisionSystemSim("visionSim");
-                visionSim.addAprilTags(CowboyUtils.aprilTagFieldLayout);
+            switch (RobotModes.currentMode) {
+                case REAL:
+                    if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
+                        io = new AprilTagCameraIOPhoton(
+                                config.source());
 
-                visionSim.clearCameras();
-
-                for (int i = 0; i < cameraNames.length; i++) {
-                    cameraSims[i] = new CameraSim(cameraNames[i], VisionConstants.CAMERA_POSITIONS[i]);
-                    visionSim.addCamera(cameraSims[i].photonCameraSim, VisionConstants.CAMERA_POSITIONS[i]);
-                }
-
-            } else {
-                // Create as many camera instances as you have in the array cameraNames
-                for (int i = 0; i < cameraNames.length; i++) {
-                    cameras[i] = new Camera(cameraNames[i], VisionConstants.CAMERA_POSITIONS[i]);
-                }
+                    } else {
+                        io = new AprilTagCameraIO() {
+                        };
+                    }
+                    break;
+                case SIM:
+                    if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
+                        io = new AprilTagCameraIOPhotonSim(
+                                config.source(),
+                                config.simConfig());
+                    } else {
+                        io = new AprilTagCameraIO() {
+                        };
+                    }
+                    break;
+                case REPLAY:
+                default:
+                    io = new AprilTagCameraIO() {
+                    };
+                    break;
             }
+
+            aprilTagCameras.add(new AprilTagCamera(io, new AprilTagIOInputsAutoLogged(), config.source()));
+
         }
-
-    }
-
-    public static EstimatedRobotPose[] getVisionPoses() {
-        EstimatedRobotPose[] list = new EstimatedRobotPose[3];
-        for (int i = 0; i < cameraNames.length; i++) {
-            try {
-                if (RobotBase.isSimulation()) {
-                    list[i] = cameraSims[i].getEstimatedGlobalPose(RobotState.robotPose);
-                } else {
-
-                    list[i] = cameras[i].getEstimatedGlobalPose(RobotState.robotPose);
-                }
-
-            } catch (Exception e) {
-                list[i] = null;
-            }
-        }
-        return list;
-
-    }
-
-    public static int getLengthOfCameraList() {
-        return cameras.length;
     }
 
     @Override
     public void periodic() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
             if (RobotBase.isSimulation()) {
-                visionSim.update(RobotState.robotPose);
+                VisionConstants.aprilTagSim.get().update(RobotState.robotPose);
             }
-            if (RobotBase.isReal()) {
-
+            for (AprilTagCamera camera : aprilTagCameras) {
+                camera.io.updateInputs(camera.inputs);
+                Logger.processInputs("VisionSubsystem/" + camera.source.name(), camera.inputs);
             }
         }
     }

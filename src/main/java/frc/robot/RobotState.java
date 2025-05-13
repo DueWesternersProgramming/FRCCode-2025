@@ -16,6 +16,7 @@ public class RobotState {
     public static Pose2d robotPose = new Pose2d();
     public static Boolean isQuestNavPoseReset = false;
     private static final Queue<TimestampedPose> questMeasurements = new LinkedBlockingQueue<>(20);
+    private static final Queue<TimestampedPose> aprilTagCameraMeasurements = new LinkedBlockingQueue<>(20);
 
     public static Queue<TimestampedPose> getQuestMeasurments() {
         return questMeasurements;
@@ -23,6 +24,14 @@ public class RobotState {
 
     public static void offerQuestMeasurement(TimestampedPose observation) {
         questMeasurements.offer(observation);
+    }
+
+    public static Queue<TimestampedPose> getAprilTagCameraMeasurments() {
+        return aprilTagCameraMeasurements;
+    }
+
+    public static void offerAprilTagCameraMeasurement(TimestampedPose observation) {
+        aprilTagCameraMeasurements.offer(observation);
     }
 
     public static Command setCanRotate(Boolean state) {
