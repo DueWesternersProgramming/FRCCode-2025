@@ -10,6 +10,11 @@ public class QuestNavIOReal implements QuestNavIO {
     Transform2d QUEST_TO_ROBOT = new Transform2d();
 
     @Override
+    public Pose2d getQuestPose() {
+        return questNav.getPose();
+    }
+
+    @Override
     public Pose2d getRobotPose() {
         return questNav.getPose().transformBy(QUEST_TO_ROBOT.inverse());
     }

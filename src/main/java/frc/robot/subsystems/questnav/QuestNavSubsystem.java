@@ -4,12 +4,16 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotState;
+import frc.robot.subsystems.drive.DriveSubsystem;
 
 public class QuestNavSubsystem extends SubsystemBase {
     QuestNavIO io;
     QuestIOInputsAutoLogged inputs = new QuestIOInputsAutoLogged();
+
+    private final QuestCalibration calibration = new QuestCalibration();
 
     public QuestNavSubsystem(QuestNavIO io) {
         this.io = io;
@@ -25,6 +29,12 @@ public class QuestNavSubsystem extends SubsystemBase {
 
     public Boolean isConnected() {
         return io.isConnected();
+    }
+
+    public Command calibrateCommand(DriveSubsystem driveSubsystem) {
+        return calibration.determineOffsetToRobotCenter(
+                driveSubsystem,
+                io.getRobotPose());
     }
 
     @Override

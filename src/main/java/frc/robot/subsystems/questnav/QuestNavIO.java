@@ -1,6 +1,8 @@
 package frc.robot.subsystems.questnav;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj2.command.Command;
+
 import org.littletonrobotics.junction.AutoLog;
 
 public interface QuestNavIO {
@@ -19,6 +21,10 @@ public interface QuestNavIO {
     }
 
     default Pose2d getRobotPose() {
+        return new Pose2d();
+    }
+
+    default Pose2d getQuestPose() {
         return new Pose2d();
     }
 

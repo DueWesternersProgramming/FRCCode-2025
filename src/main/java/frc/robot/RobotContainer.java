@@ -232,6 +232,9 @@ public class RobotContainer {
         }
 
         private void configureButtonBindings() {
+
+                new JoystickButton(driveJoystick, 0).onTrue(questNavSubsystem.calibrateCommand(driveSubsystem));
+
                 new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
                                 .onFalse(RobotState.setCanRotate(false));
 
@@ -335,6 +338,7 @@ public class RobotContainer {
                 new Trigger(() -> SmartDashboard.getBoolean("OuttakeOn", false))
                                 .whileTrue(clawSubsystem.outtakeCoral())
                                 .onFalse(clawSubsystem.stopClaw());
+
         }
 
         public Command getAutonomousCommand() {
