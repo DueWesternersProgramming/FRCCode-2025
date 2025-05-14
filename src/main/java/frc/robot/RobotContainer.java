@@ -233,7 +233,7 @@ public class RobotContainer {
 
         private void configureButtonBindings() {
 
-                new JoystickButton(driveJoystick, 0).onTrue(questNavSubsystem.calibrateCommand(driveSubsystem));
+                new JoystickButton(driveJoystick, 6).onTrue(questNavSubsystem.calibrateCommand(driveSubsystem));
 
                 new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
                                 .onFalse(RobotState.setCanRotate(false));

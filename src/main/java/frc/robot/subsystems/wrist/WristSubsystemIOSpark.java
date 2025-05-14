@@ -38,7 +38,7 @@ public class WristSubsystemIOSpark implements WristSubsystemIO {
 
     @Override
     public void goToSetpoint(double setpoint) {
-        wristMotorController.setReference(setpoint, ControlType.kPosition);
+        wristMotorController.setReference(setpoint, ControlType.kMAXMotionPositionControl);
     }
 
     @Override

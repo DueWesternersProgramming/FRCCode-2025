@@ -109,6 +109,8 @@ public class ModuleIOSpark implements ModuleIO {
 
                 m_desiredState.angle = new Rotation2d(0);
                 m_drivingEncoder.setPosition(0);
+
+                resetEncoders();
         }
 
         @Override
@@ -158,6 +160,22 @@ public class ModuleIOSpark implements ModuleIO {
 
                 m_desiredState = desiredState;
 
+        }
+
+        /** Zeroes all the SwerveModule relative encoders. */
+        public void resetEncoders() {
+
+                m_drivingEncoder.setPosition(0); // arbitrarily set driving encoder to zero
+        
+                // temp
+                m_turningAbsoluteEncoder.resetVirtualPosition();
+                // the reading and setting of the calibrated absolute turning encoder values is
+                // done in the Drivetrain's constructor
+
+                m_turningSparkMax.set(0); // no moving during reset of relative turning encoder
+
+                m_turningEncoder.setPosition(m_turningAbsoluteEncoder.getPosition()); // set relative position based on
+                                                                                      // virtual absolute position
         }
 
         @Override

@@ -233,8 +233,8 @@ public final class RobotConstants {
                         }
                 }
 
-                public static final double MAX_MOTOR_RPM = 6000.0;
-                public static final double MAX_MOTOR_ACCELERATION = 4000.0;
+                public static final double MAX_MOTOR_RPM = 2000.0;
+                public static final double MAX_MOTOR_ACCELERATION = 2000.0;
         }
 
         public static final class SwerveModuleConstants {
