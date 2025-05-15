@@ -9,7 +9,7 @@ public class QuestNavIOReal implements QuestNavIO {
     private final QuestNavUtils questNav = new QuestNavUtils();
 
     // First, Declare our geometrical transform from the Quest to the robot center
-    Transform2d QUEST_TO_ROBOT = new Transform2d(0.064,0.007,new Rotation2d(Units.degreesToRadians(90)));
+    Transform2d QUEST_TO_ROBOT = new Transform2d(0,0,new Rotation2d(Units.degreesToRadians(-90)));
 
     @Override
     public Pose2d getQuestPose() {
@@ -23,7 +23,7 @@ public class QuestNavIOReal implements QuestNavIO {
 
     @Override
     public void setRobotPose(Pose2d pose) {
-        questNav.setPose(pose.transformBy(QUEST_TO_ROBOT));
+        questNav.setPose(pose);//.transformBy(QUEST_TO_ROBOT));
     }
 
     @Override

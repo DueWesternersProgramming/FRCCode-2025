@@ -244,15 +244,15 @@ public class DriveSubsystem extends SubsystemBase {
 
         // QuestNav poses:
 
-        if (DriverStation.isEnabled()) {
+        // if (DriverStation.isEnabled()) {
 
-            while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
-                m_odometry.addVisionMeasurement(
-                        timestampedPose.pose(), timestampedPose.timestamp()
-                // , QuestConstants.stdDevs
-                );
-            }
-        }
+        //     while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
+        //         m_odometry.addVisionMeasurement(
+        //                 timestampedPose.pose(), timestampedPose.timestamp()
+        //         // , QuestConstants.stdDevs
+        //         );
+        //     }
+        // }
     }
 
     @Override
