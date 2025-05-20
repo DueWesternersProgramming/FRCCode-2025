@@ -34,9 +34,9 @@ import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.subsystems.drive.ModuleIO.ModuleIOInputs;
 import frc.robot.subsystems.drive.gyro.GyroIO;
 import frc.robot.subsystems.drive.gyro.GyroIOInputsAutoLogged;
-import frc.robot.subsystems.questnav.TimestampedPose;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.utils.SwerveUtils;
+import frc.robot.utils.TimestampedPose;
 
 import com.fasterxml.jackson.core.format.InputAccessor.Std;
 import com.pathplanner.lib.auto.AutoBuilder;

@@ -1,8 +1,8 @@
 package frc.robot.subsystems.claw;
 
-public class ClawSim implements ClawSubsystemIO {
+public class ClawIOSim implements ClawSubsystemIO {
 
-    public ClawSim() {
+    public ClawIOSim() {
 
     }
 

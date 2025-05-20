@@ -1,29 +1,32 @@
 package frc.robot.subsystems.questnav;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
+import frc.robot.RobotState;
+import frc.robot.utils.QuestNavUtils;
 
 public class QuestNavIOReal implements QuestNavIO {
     private final QuestNavUtils questNav = new QuestNavUtils();
 
-    // First, Declare our geometrical transform from the Quest to the robot center
-    Transform2d QUEST_TO_ROBOT = new Transform2d(0,0,new Rotation2d(Units.degreesToRadians(-90)));
+    Transform2d QuestUncorrectedToCorrected = new Transform2d();
 
     @Override
-    public Pose2d getQuestPose() {
+    public Pose2d getUncorrectedPose() {
         return questNav.getPose();
     }
 
     @Override
-    public Pose2d getRobotPose() {
-        return questNav.getPose().transformBy(QUEST_TO_ROBOT.inverse());
+    public Pose2d getCorrectedPose() {
+        return questNav.getPose().transformBy(QuestUncorrectedToCorrected);
     }
 
     @Override
     public void setRobotPose(Pose2d pose) {
-        questNav.setPose(pose);//.transformBy(QUEST_TO_ROBOT));
+        QuestUncorrectedToCorrected = pose.minus(getUncorrectedPose());
     }
 
     @Override
@@ -35,13 +38,14 @@ public class QuestNavIOReal implements QuestNavIO {
     public void updateInputs(QuestIOInputs inputs) {
         inputs.connected = questNav.getConnected();
 
-        inputs.rawPose = questNav.getPose();
-        inputs.pose = getRobotPose();
+        inputs.uncorrectedPose = getUncorrectedPose();
+        inputs.correctedPose = getCorrectedPose();
 
         double timestamp = inputs.timestamp;
         inputs.timestamp = questNav.getTimestamp();
         inputs.timestampDelta = timestamp - inputs.timestamp;
         inputs.batteryLevel = questNav.getBatteryPercent();
+        inputs.questUncorrectedToCorrected = QuestUncorrectedToCorrected;
 
         questNav.processHeartbeat();
         questNav.cleanupResponses();

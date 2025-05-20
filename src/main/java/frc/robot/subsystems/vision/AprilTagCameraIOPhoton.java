@@ -1,5 +1,6 @@
 package frc.robot.subsystems.vision;
 
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -14,7 +15,6 @@ import frc.robot.RobotState;
 import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.RobotConstants.VisionConstants.AprilTagCameraConfig;
 import frc.robot.RobotConstants.VisionConstants.VisionSource;
-import frc.robot.subsystems.questnav.TimestampedPose;
 import frc.robot.utils.CowboyUtils;
 
 import java.util.List;
@@ -61,7 +61,9 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
                             estimatedRobotPose.ifPresent(est -> {
                                 Pose2d pose = estimatedRobotPose.get().estimatedPose.toPose2d();
                                 inputs.pose = pose;
-                                RobotState.offerAprilTagCameraMeasurement(new TimestampedPose(pose, getTargetYaw()));
+                                RobotState.offerAprilTagCameraMeasurement(
+                                        new frc.robot.utils.TimestampedPose(pose, getTargetYaw()));
+
                             });
                         }
                     }

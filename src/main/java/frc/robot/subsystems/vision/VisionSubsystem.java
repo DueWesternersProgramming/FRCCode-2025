@@ -24,10 +24,6 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.simulation.VisionSystemSim;
 
 public class VisionSubsystem extends SubsystemBase {
-    private static String[] cameraNames = { "frontLeftCamera", "frontRightCamera", "backLeftCamera" };
-    public static Camera[] cameras = new Camera[3];
-    public static CameraSim[] cameraSims = new CameraSim[3];
-
     public static VisionSystemSim visionSim;
 
     public static record AprilTagCamera(

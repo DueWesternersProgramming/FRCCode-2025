@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotState;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.utils.QuestCalibration;
+import frc.robot.utils.TimestampedPose;
 
 public class QuestNavSubsystem extends SubsystemBase {
     QuestNavIO io;
@@ -24,7 +26,7 @@ public class QuestNavSubsystem extends SubsystemBase {
     }
 
     public Pose2d getRobotPose() {
-        return io.getRobotPose();
+        return io.getCorrectedPose();
     }
 
     public Boolean isConnected() {
@@ -34,7 +36,7 @@ public class QuestNavSubsystem extends SubsystemBase {
     public Command calibrateCommand(DriveSubsystem driveSubsystem) {
         return calibration.determineOffsetToRobotCenter(
                 driveSubsystem,
-                io.getRobotPose());
+                io.getCorrectedPose());
     }
 
     @Override
@@ -44,6 +46,11 @@ public class QuestNavSubsystem extends SubsystemBase {
 
         // Do filtering here in the future...
         Boolean isPoseWithinTolerance = true;
+
+        if (inputs.correctedPose.getTranslation().getDistance(RobotState.robotPose.getTranslation()) > 0.25) {
+            isPoseWithinTolerance = false;
+        }
+        Logger.recordOutput("QuestNavSubsystem/isPoseInTolerance", isPoseWithinTolerance);
 
         if (DriverStation.isEnabled() && RobotState.isQuestNavPoseReset && isPoseWithinTolerance) {
             RobotState.offerQuestMeasurement(new TimestampedPose(getRobotPose(),

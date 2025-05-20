@@ -27,8 +27,8 @@ import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.elevator.MoveElevatorManual;
 import frc.robot.commands.wrist.MoveWristManual;
-import frc.robot.subsystems.claw.ClawSim;
-import frc.robot.subsystems.claw.ClawSpark;
+import frc.robot.subsystems.claw.ClawIOSim;
+import frc.robot.subsystems.claw.ClawIOSpark;
 import frc.robot.subsystems.claw.ClawSubsystem;
 import frc.robot.subsystems.claw.ClawSubsystemIO;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -110,7 +110,7 @@ public class RobotContainer {
 
                                 wristSubsystem = new WristSubsystem(new WristSubsystemIOSpark());
 
-                                clawSubsystem = new ClawSubsystem(new ClawSpark());
+                                clawSubsystem = new ClawSubsystem(new ClawIOSpark());
 
                                 questNavSubsystem = new QuestNavSubsystem(new QuestNavIOReal());
 
@@ -131,7 +131,7 @@ public class RobotContainer {
 
                                 wristSubsystem = new WristSubsystem(new WristSubsystemIOSim());
 
-                                clawSubsystem = new ClawSubsystem(new ClawSim());
+                                clawSubsystem = new ClawSubsystem(new ClawIOSim());
 
                                 questNavSubsystem = new QuestNavSubsystem(new QuestNavIOReal());
 
