@@ -22,6 +22,9 @@ public class QuestNavSubsystem extends SubsystemBase {
     }
 
     public void setRobotPose(Pose2d pose) {
+        System.out.println("Setting robot pose");
+        io.zeroPosition();
+        io.zeroHeading();
         io.setRobotPose(pose);
     }
 

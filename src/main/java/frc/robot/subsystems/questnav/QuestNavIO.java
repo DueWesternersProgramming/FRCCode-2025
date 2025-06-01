@@ -37,6 +37,14 @@ public interface QuestNavIO {
         return false;
     }
 
+    default void zeroPosition() {
+        // Default implementation does nothing
+    }
+
+    default void zeroHeading() {
+        // Default implementation does nothing
+    }
+
     default void updateInputs(QuestIOInputs inputs) {
         inputs.connected = false;
         inputs.uncorrectedPose = Pose2d.kZero;

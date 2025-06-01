@@ -14,6 +14,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -512,6 +513,12 @@ public final class RobotConstants {
                                                                                             // face up we
                                                                                             // need - ;)
                                                                 Units.degreesToRadians(180 + 5))) };
+        }
+
+        public static final class QuestNavConstants {
+                public static final Transform2d questToRobotCenter = new Transform2d(
+                                new Translation2d(0, 0), // Use the quest offset calculation command to determine this
+                                Rotation2d.kZero);
         }
 
         public static final class SubsystemEnabledConstants {
