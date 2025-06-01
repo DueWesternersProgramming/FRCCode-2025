@@ -14,6 +14,8 @@ public class QuestNavIOReal implements QuestNavIO {
     // Only store translational offset
     private Translation2d translationOffset = new Translation2d();
 
+    private Rotation2d rotationOffset = Rotation2d.kZero;
+
     @Override
     public Pose2d getUncorrectedPose() {
         return questNav.getUncorrectedPose();
@@ -23,7 +25,7 @@ public class QuestNavIOReal implements QuestNavIO {
     public Pose2d getCorrectedPose() {
         Translation2d translated = getUncorrectedPose().getTranslation().plus(translationOffset);
 
-        Pose2d poseAtQuest = new Pose2d(translated, questNav.getUncorrectedYaw());
+        Pose2d poseAtQuest = new Pose2d(translated, questNav.getUncorrectedYaw().rotateBy(rotationOffset));
 
         Pose2d robotCenterPose = poseAtQuest.transformBy(QuestNavConstants.questToRobotCenter);
 
@@ -34,6 +36,7 @@ public class QuestNavIOReal implements QuestNavIO {
     public void setRobotPose(Pose2d pose) {
         Translation2d currentUncorrected = getUncorrectedPose().getTranslation();
         translationOffset = pose.getTranslation().minus(currentUncorrected);
+        rotationOffset = pose.getRotation().minus(questNav.getUncorrectedYaw());
     }
 
     @Override
