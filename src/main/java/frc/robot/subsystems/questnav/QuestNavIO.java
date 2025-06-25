@@ -18,7 +18,6 @@ public interface QuestNavIO {
         public double timestamp = 0;
         public double timestampDelta = 0;
         public double batteryLevel = 0;
-        public Transform2d questUncorrectedToCorrected = Transform2d.kZero;
     }
 
     default Pose2d getCorrectedPose() {

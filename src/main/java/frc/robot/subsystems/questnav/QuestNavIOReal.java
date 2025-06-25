@@ -6,52 +6,29 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.RobotConstants.QuestNavConstants;
-import frc.robot.utils.QuestNavUtils;
+import gg.questnav.questnav.QuestNav;
 
 public class QuestNavIOReal implements QuestNavIO {
-    private final QuestNavUtils questNav = new QuestNavUtils();
-
-    // Only store translational offset
-    private Translation2d translationOffset = new Translation2d();
-
-    private Rotation2d rotationOffset = Rotation2d.kZero;
+    private final QuestNav questNav = new QuestNav();
 
     @Override
     public Pose2d getUncorrectedPose() {
-        return questNav.getUncorrectedPose();
+        return questNav.getPose();
     }
 
     @Override
     public Pose2d getCorrectedPose() {
-        Translation2d translated = getUncorrectedPose().getTranslation().plus(translationOffset);
-
-        Pose2d poseAtQuest = new Pose2d(translated, questNav.getUncorrectedYaw().rotateBy(rotationOffset));
-
-        Pose2d robotCenterPose = poseAtQuest.transformBy(QuestNavConstants.questToRobotCenter);
-
-        return robotCenterPose;
+        return getUncorrectedPose().transformBy(QuestNavConstants.ROBOT_TO_QUEST.inverse());
     }
 
     @Override
     public void setRobotPose(Pose2d pose) {
-        Translation2d currentUncorrected = getUncorrectedPose().getTranslation();
-        translationOffset = pose.getTranslation().minus(currentUncorrected);
-        rotationOffset = pose.getRotation().minus(questNav.getUncorrectedYaw());
+
     }
 
     @Override
     public boolean isConnected() {
-        return questNav.connected();
-    }
-
-    @Override
-    public void zeroPosition() {
-        questNav.zeroPosition();
-    }
-
-    @Override
-    public void zeroHeading() {
-        questNav.zeroHeading();
+        return questNav.isConnected();
     }
 
     @Override
@@ -62,13 +39,11 @@ public class QuestNavIOReal implements QuestNavIO {
         inputs.correctedPose = getCorrectedPose();
 
         double timestamp = inputs.timestamp;
-        inputs.timestamp = questNav.timestamp();
+        inputs.timestamp = questNav.getDataTimestamp();
         inputs.timestampDelta = timestamp - inputs.timestamp;
         inputs.batteryLevel = questNav.getBatteryPercent();
-        inputs.questUncorrectedToCorrected = new edu.wpi.first.math.geometry.Transform2d(
-                translationOffset, Rotation2d.kZero);
 
-        questNav.processHeartbeat();
-        questNav.cleanUpQuestNavMessages();
+        questNav.commandPeriodic();
+
     }
 }
