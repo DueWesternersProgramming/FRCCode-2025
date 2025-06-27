@@ -517,7 +517,7 @@ public final class RobotConstants {
 
         public static final class QuestNavConstants {
                 public static final Transform2d ROBOT_TO_QUEST = new Transform2d(
-                                new Translation2d(0, 0), // Use the quest offset calculation command to determine this
+                                new Translation2d(-.376,0.440), // Use the quest offset calculation command to determine this
                                 Rotation2d.kCCW_90deg); // This is the rotation from the Quest Nav to the robot center.
                                                         // Ours faces left.
         }

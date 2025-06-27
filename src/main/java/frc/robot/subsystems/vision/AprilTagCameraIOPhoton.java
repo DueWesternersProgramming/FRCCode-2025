@@ -38,6 +38,7 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
     @Override
     public void updateInputs(AprilTagIOInputs inputs) {
         inputs.connected = photonCamera.isConnected();
+        // photonCamera.getAllUnreadResults();
         inputs.targetIDs = photonCamera.getLatestResult().getTargets().stream()
                 .map(PhotonTrackedTarget::getFiducialId)
                 .mapToInt(Integer::intValue)
@@ -54,10 +55,9 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
                 if (results.size() > 0) {
                     for (PhotonPipelineResult result : results) {
                         if (result.hasTargets()) {
-                            PhotonTrackedTarget target = result.getBestTarget();
+                            //PhotonTrackedTarget target = result.getBestTarget();
 
                             Optional<EstimatedRobotPose> estimatedRobotPose = photonPoseEstimator.update(result);
-                            ;
                             estimatedRobotPose.ifPresent(est -> {
                                 Pose2d pose = estimatedRobotPose.get().estimatedPose.toPose2d();
                                 inputs.pose = pose;
