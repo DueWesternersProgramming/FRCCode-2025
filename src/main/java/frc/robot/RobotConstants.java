@@ -516,10 +516,17 @@ public final class RobotConstants {
         }
 
         public static final class QuestNavConstants {
-                public static final Transform2d ROBOT_TO_QUEST = new Transform2d(
-                                new Translation2d(-.376,0.440), // Use the quest offset calculation command to determine this
-                                Rotation2d.kCCW_90deg); // This is the rotation from the Quest Nav to the robot center.
-                                                        // Ours faces left.
+                // public static final Transform2d ROBOT_TO_QUEST = new Transform2d(
+                // new Translation2d(0, 0), // Use the quest offset calculation command to
+                // // determine this
+                // Rotation2d.kCCW_90deg); // This is the rotation from the Quest Nav to the
+                // robot center.
+                // // Ours faces left.
+                public static final Matrix<N3, N1> QUESTNAV_STD_DEVS = VecBuilder.fill(
+                                0.02, // Trust down to 2cm in X direction
+                                0.02, // Trust down to 2cm in Y direction
+                                0.035 // Trust down to 2 degrees rotational
+                );
         }
 
         public static final class SubsystemEnabledConstants {

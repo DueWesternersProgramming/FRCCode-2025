@@ -30,6 +30,7 @@ import frc.robot.RobotConstants;
 import frc.robot.RobotState;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.RobotConstants.DrivetrainConstants;
+import frc.robot.RobotConstants.QuestNavConstants;
 import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.subsystems.drive.ModuleIO.ModuleIOInputs;
 import frc.robot.subsystems.drive.gyro.GyroIO;
@@ -237,22 +238,18 @@ public class DriveSubsystem extends SubsystemBase {
         TimestampedPose timestampedPose;
         while ((timestampedPose = RobotState.getAprilTagCameraMeasurments().poll()) != null) {
             m_odometry.addVisionMeasurement(
-                    timestampedPose.pose(), timestampedPose.timestamp()
-            // , QuestConstants.stdDevs
-            );
+                    timestampedPose.pose(), timestampedPose.timestamp()); // May need to add std devs for pv
         }
 
         // QuestNav poses:
 
-        // if (DriverStation.isEnabled()) {
+        if (DriverStation.isEnabled()) {
 
-        //     while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
-        //         m_odometry.addVisionMeasurement(
-        //                 timestampedPose.pose(), timestampedPose.timestamp()
-        //         // , QuestConstants.stdDevs
-        //         );
-        //     }
-        // }
+            while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
+                m_odometry.addVisionMeasurement(
+                        timestampedPose.pose(), timestampedPose.timestamp(), QuestNavConstants.QUESTNAV_STD_DEVS);
+            }
+        }
     }
 
     @Override

@@ -241,7 +241,9 @@ public class RobotContainer {
                 new JoystickButton(driveJoystick, 3).onChange(driveSubsystem.xCommand()); // Needs to be while true so
                                                                                           // the
                                                                                           // command ends
-                new JoystickButton(driveJoystick, 4).whileTrue(driveSubsystem.gyroReset());
+                new JoystickButton(driveJoystick, 4).whileTrue(new SequentialCommandGroup(driveSubsystem.gyroReset(),
+                                new InstantCommand(() -> questNavSubsystem.setRobotPose(driveSubsystem.getPose()),
+                                                questNavSubsystem)));
 
                 new JoystickButton(driveJoystick, 2).whileTrue(
                                 Commands.deferredProxy(() -> AutomatedScoring.fullReefAutomation(

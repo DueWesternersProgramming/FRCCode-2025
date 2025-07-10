@@ -110,17 +110,16 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void teleopInit() {
+        CommandScheduler.getInstance().cancelAll();
+
         if (!DriverStation.isFMSAttached()) {
             m_robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
-            System.out.println("RESET");
             RobotState.isQuestNavPoseReset = true;
         }
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        CommandScheduler.getInstance().cancelAll();
-        // m_robotContainer.elevatorSubsystem.setMaxSpeeds(9000, 5000);
     }
 
     @Override
