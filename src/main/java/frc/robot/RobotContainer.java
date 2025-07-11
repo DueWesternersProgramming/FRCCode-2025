@@ -7,6 +7,8 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -242,7 +244,7 @@ public class RobotContainer {
                                                                                           // the
                                                                                           // command ends
                 new JoystickButton(driveJoystick, 4).whileTrue(new SequentialCommandGroup(driveSubsystem.gyroReset(),
-                                new InstantCommand(() -> questNavSubsystem.setRobotPose(driveSubsystem.getPose()),
+                                new InstantCommand(() -> questNavSubsystem.setRobotPose(new Pose2d(driveSubsystem.getPose().getX(),driveSubsystem.getPose().getY(), new Rotation2d())),
                                                 questNavSubsystem)));
 
                 new JoystickButton(driveJoystick, 2).whileTrue(

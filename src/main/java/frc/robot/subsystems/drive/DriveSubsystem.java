@@ -205,34 +205,6 @@ public class DriveSubsystem extends SubsystemBase {
 
     private void updateOdometrySensorMeasurements() {
 
-        // for (int i = 0; i < VisionSubsystem.getLengthOfCameraList(); i++) {
-        // EstimatedRobotPose estimatedRobotPose = VisionSubsystem.getVisionPoses()[i];
-        // try {
-        // m_odometry.addVisionMeasurement(estimatedRobotPose.estimatedPose.toPose2d(),
-        // estimatedRobotPose.timestampSeconds);
-        // if (i == 0) {
-        // Logger.recordOutput("/VisionSubsystem/FL Adding Data", true);
-        // }
-        // if (i == 1) {
-        // Logger.recordOutput("/VisionSubsystem/FR Adding Data", true);
-        // }
-        // if (i == 2) {
-        // Logger.recordOutput("/VisionSubsystem/BL Adding Data", true);
-        // }
-
-        // } catch (Exception e) {
-        // if (i == 0) {
-        // Logger.recordOutput("/VisionSubsystem/FL Adding Data", false);
-        // }
-        // if (i == 1) {
-        // Logger.recordOutput("/VisionSubsystem/FL Adding Data", false);
-        // }
-        // if (i == 2) {
-        // Logger.recordOutput("/VisionSubsystem/BL Adding Data", false);
-        // }
-        // }
-        // }
-
         // PV poses:
 
         TimestampedPose timestampedPose;

@@ -49,7 +49,7 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
 
         if (!results.isEmpty()) {
 
-            photonPoseEstimator.setLastPose(RobotState.robotPose);
+            //photonPoseEstimator.setLastPose(RobotState.robotPose);
             try {
 
                 if (results.size() > 0) {
@@ -62,8 +62,7 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
                                 Pose2d pose = estimatedRobotPose.get().estimatedPose.toPose2d();
                                 inputs.pose = pose;
                                 RobotState.offerAprilTagCameraMeasurement(
-                                        new frc.robot.utils.TimestampedPose(pose, getTargetYaw()));
-
+                                        new frc.robot.utils.TimestampedPose(pose, estimatedRobotPose.get().timestampSeconds));
                             });
                         }
                     }
