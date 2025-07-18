@@ -172,11 +172,6 @@ public class RobotContainer {
 
                 driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
-                // elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem,
-                // operatorJoystick));
-                // wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem,
-                // operatorJoystick));
-
                 createNamedCommands();
 
                 configureButtonBindings();
