@@ -235,12 +235,13 @@ public class RobotContainer {
                 new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
                                 .onFalse(RobotState.setCanRotate(false));
 
-                new JoystickButton(driveJoystick, 3).onChange(driveSubsystem.xCommand()); // Needs to be while true so
-                                                                                          // the
-                                                                                          // command ends
-                new JoystickButton(driveJoystick, 4).whileTrue(new SequentialCommandGroup(driveSubsystem.gyroReset(),
-                                new InstantCommand(() -> questNavSubsystem.setRobotPose(new Pose2d(driveSubsystem.getPose().getX(),driveSubsystem.getPose().getY(), new Rotation2d())),
-                                                questNavSubsystem)));
+                new JoystickButton(driveJoystick, 3).onChange(driveSubsystem.xCommand());
+
+                new JoystickButton(driveJoystick, 4)
+                                .whileTrue(new SequentialCommandGroup(
+                                                Commands.deferredProxy(
+                                                                () -> questNavSubsystem.resetPoseYaw(new Rotation2d())),
+                                                driveSubsystem.gyroReset()));
 
                 new JoystickButton(driveJoystick, 2).whileTrue(
                                 Commands.deferredProxy(() -> AutomatedScoring.fullReefAutomation(

@@ -3,8 +3,10 @@ package frc.robot.subsystems.questnav;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotState;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -32,6 +34,15 @@ public class QuestNavSubsystem extends SubsystemBase {
 
     public Boolean isConnected() {
         return io.isConnected();
+    }
+
+    public Command resetPoseYaw(Rotation2d yaw) {
+        return new InstantCommand(() -> {
+            Pose2d currentPose = io.getCorrectedPose();
+            Pose2d newPose = new Pose2d(currentPose.getTranslation(), yaw);
+            io.setRobotPose(newPose);
+        }, this);
+
     }
 
     public Command calibrateCommand(DriveSubsystem driveSubsystem) {
