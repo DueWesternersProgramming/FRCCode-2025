@@ -1,6 +1,11 @@
 package frc.robot;
 
 import java.util.List;
+import java.util.Optional;
+
+import org.photonvision.simulation.VisionSystemSim;
+
+import com.google.flatbuffers.Constants;
 import com.pathplanner.lib.path.PathConstraints;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
@@ -9,6 +14,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -17,10 +23,21 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.subsystems.vision.SimCameraConfig;
+import frc.robot.utils.CowboyUtils.RobotModes;
 
 public final class RobotConstants {
 
         public static final class ScoringConstants {
+
+                public enum Setpoints {
+                        HOME,
+                        HP,
+                        L1,
+                        L2,
+                        L3
+                }
 
                 public static final Pose2d[][] REEF_SIDE_POSES;
 
@@ -160,6 +177,7 @@ public final class RobotConstants {
                         public static final double HP = -49.5;
 
                         public static final class Coral {
+                                // Example of a completed switch statement
                                 public static final double L1 = -20;
                                 public static final double L2 = -45;
                                 public static final double L3 = -69.5;
@@ -169,23 +187,23 @@ public final class RobotConstants {
                                 public static final double L2 = -42;
                                 public static final double L3 = -70;
                         }
-                }
 
-                // public static final double P = 1;
-                // public static final double I = 0;
-                // public static final double D = 0;
-
-                public static final class SimConstants {
-                        public static final double HP = .35;
-                        public static final double L1 = 0.2;
-                        public static final double L2 = 0.3;
-                        public static final double L3 = 0.55;
+                        public static final class SimConstants {
+                                public static final double HOME = 0;
+                                public static final double HP = .35;
+                                public static final double L1 = 0.2;
+                                public static final double L2 = 0.3;
+                                public static final double L3 = 0.55;
+                        }
                 }
 
         }
 
         public static final class ClawConstants {
-
+                public static final double INTAKE_CORAL_SPEED = 0.5;
+                public static final double OUTTAKE_CORAL_SPEED = -1;
+                public static final double INTAKE_ALGAE_SPEED = -0.75;
+                public static final double OUTTAKE_ALGAE_SPEED = 1;
         }
 
         public static final class WristConstants {
@@ -206,10 +224,18 @@ public final class RobotConstants {
                                 public static final double L2 = 12.75;
                                 public static final double L3 = 13.5;
                         }
+
+                        public static final class SimConstants {
+                                public static final double HOME = 0;
+                                public static final double HP = 0;
+                                public static final double L1 = 0;
+                                public static final double L2 = 0;
+                                public static final double L3 = 0;
+                        }
                 }
 
                 public static final double MAX_MOTOR_RPM = 6000.0;
-                public static final double MAX_MOTOR_ACCELERATION = 4000.0;
+                public static final double MAX_MOTOR_ACCELERATION = 3000.0;
         }
 
         public static final class SwerveModuleConstants {
@@ -368,9 +394,78 @@ public final class RobotConstants {
 
         public static final class VisionConstants {
 
-                // public static final double SINGLE_TAG_CUTOFF_METERS = 4.0;
+                public static final record AprilTagCameraConfig(VisionSource source, SimCameraConfig simConfig) {
+                }
 
-                // public static final double AMBIGUITY_CUTOFF = 0.05;
+                public record VisionSource(String name, Transform3d robotToCamera) {
+                }
+
+                public static final Optional<VisionSystemSim> aprilTagSim = RobotModes.currentMode == RobotModes.simMode
+                                ? Optional.of(new VisionSystemSim("AprilTagSim"))
+                                : Optional.empty();
+
+                public static final List<AprilTagCameraConfig> CAMERA_CONFIGS = List.of(
+                                // Front Left
+                                new AprilTagCameraConfig(
+                                                new VisionSource(
+                                                                "frontLeftCamera",
+                                                                new Transform3d(
+                                                                                new Translation3d(
+                                                                                                Units.inchesToMeters(
+                                                                                                                5.125), // forward+
+                                                                                                Units.inchesToMeters(
+                                                                                                                7.99), // left+
+                                                                                                Units.inchesToMeters(
+                                                                                                                13.725000)), // up+
+                                                                                new Rotation3d(
+                                                                                                // Counter clockwise
+                                                                                                // positive
+                                                                                                Units.degreesToRadians(
+                                                                                                                0),
+                                                                                                Units.degreesToRadians(
+                                                                                                                0),
+                                                                                                Units.degreesToRadians(
+                                                                                                                0)))),
+                                                SimCameraConfig.ARDUCAM_OV9281_55),
+                                // Front Right
+                                new AprilTagCameraConfig(
+                                                new VisionSource(
+                                                                "frontRightCamera",
+                                                                new Transform3d(
+                                                                                new Translation3d(
+                                                                                                Units.inchesToMeters(
+                                                                                                                5.077711), // forward+
+                                                                                                Units.inchesToMeters(
+                                                                                                                -8.006511), // left+
+                                                                                                Units.inchesToMeters(
+                                                                                                                24.964102)), // up+
+                                                                                new Rotation3d(
+                                                                                                Units.degreesToRadians(
+                                                                                                                0),
+                                                                                                Units.degreesToRadians(
+                                                                                                                -27.5),
+                                                                                                Units.degreesToRadians(
+                                                                                                                10)))),
+                                                SimCameraConfig.ARDUCAM_OV9281_55),
+                                // Back Right
+                                new AprilTagCameraConfig(
+                                                new VisionSource(
+                                                                "backLeftCamera", new Transform3d(
+                                                                                new Translation3d(
+                                                                                                Units.inchesToMeters(
+                                                                                                                -4.361060), // forward+
+                                                                                                Units.inchesToMeters(
+                                                                                                                9.375080), // left+
+                                                                                                Units.inchesToMeters(
+                                                                                                                24.57)), // up+
+                                                                                new Rotation3d(
+                                                                                                Units.degreesToRadians(
+                                                                                                                0),
+                                                                                                Units.degreesToRadians(
+                                                                                                                -5),
+                                                                                                Units.degreesToRadians(
+                                                                                                                180 + 5)))),
+                                                SimCameraConfig.ARDUCAM_OV9281_55));
 
                 public static final Transform3d[] CAMERA_POSITIONS = {
                                 new Transform3d(
@@ -420,9 +515,22 @@ public final class RobotConstants {
                                                                 Units.degreesToRadians(180 + 5))) };
         }
 
+        public static final class QuestNavConstants {
+                // public static final Transform2d ROBOT_TO_QUEST = new Transform2d(
+                // new Translation2d(0, 0), // Use the quest offset calculation command to
+                // // determine this
+                // Rotation2d.kCCW_90deg); // This is the rotation from the Quest Nav to the
+                // robot center.
+                // // Ours faces left.
+                public static final Matrix<N3, N1> QUESTNAV_STD_DEVS = VecBuilder.fill(
+                                0.02, // Trust down to 2cm in X direction
+                                0.02, // Trust down to 2cm in Y direction
+                                0.035 // Trust down to 2 degrees rotational
+                );
+        }
+
         public static final class SubsystemEnabledConstants {
                 public static final boolean DRIVE_SUBSYSTEM_ENABLED = true;
-
                 public static final boolean VISION_SUBSYSTEM_ENABLED = true;
         }
 }

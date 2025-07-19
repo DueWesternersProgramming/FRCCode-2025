@@ -4,15 +4,14 @@
 
 package frc.robot;
 
-import edu.wpi.first.epilogue.Logged;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.automation.AutomatedScoring;
-import frc.robot.automation.AutomationSelector;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,15 +23,39 @@ import frc.robot.automation.AutomationSelector;
  * build.gradle file in the
  * project.
  */
-
-// @Logged(name = "Robot")
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer = new RobotContainer();
 
     public Robot() {
-        // DataLogManager.start();
-        // Epilogue.bind(this);
+        Logger.recordMetadata("FRCCode-2025", "FRCCode-2025"); // Set a metadata value
+
+        if (isReal()) {
+            // In real robot mode, log to a USB stick and NetworkTables
+            Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+        } else if (isSimulation()) {
+            setUseTiming(true); // Use normal timing in sim
+
+            // Optional: comment out the replay setup if not using AdvantageScope replay
+            // String logPath = LogFileUtil.findReplayLog();
+            // Logger.setReplaySource(new WPILOGReader(logPath));
+            // Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath,
+            // "_sim")));
+            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+
+            // Instead, just create a new log file like we do on real robot
+            Logger.addDataReceiver(new WPILOGWriter("logs/sim-" + System.currentTimeMillis() + ".wpilog"));
+        } else {
+            System.out.println("Unknown robot mode. Please verify robot configuration.");
+        }
+
+        // Start logging
+        Logger.start();
+    }
+
+    @Override
+    public void robotInit() {
     }
 
     /**
@@ -69,7 +92,9 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_robotContainer.elevatorSubsystem.setMaxSpeeds(6000, 3000);
+        m_robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
+        RobotState.isQuestNavPoseReset = true;
+
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)
@@ -85,11 +110,16 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        CommandScheduler.getInstance().cancelAll();
+
+        if (!DriverStation.isFMSAttached()) {
+            m_robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
+            RobotState.isQuestNavPoseReset = true;
+        }
+
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        CommandScheduler.getInstance().cancelAll();
-        //m_robotContainer.elevatorSubsystem.setMaxSpeeds(9000, 5000);
     }
 
     @Override

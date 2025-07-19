@@ -1,32 +1,21 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+package frc.robot.subsystems.drive;
 
-package frc.robot.subsystems.drive.swerve;
-
-import com.revrobotics.sim.SparkMaxSim;
-import com.revrobotics.spark.SparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
-import com.revrobotics.RelativeEncoder;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
+import com.revrobotics.spark.config.SparkMaxConfig;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.simulation.EncoderSim;
-import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 import frc.robot.RobotConstants.SwerveModuleConstants;
 import frc.robot.sensors.CanCoder;
 
-/**
- * The {@code SwerveModule} class contains fields and methods pertaining to the
- * function of a swerve module.
- */
-public class SwerveModule {
+public class ModuleIOSpark implements ModuleIO {
         public final SparkMax m_drivingSparkMax;
         private final SparkMax m_turningSparkMax;
 
@@ -38,11 +27,7 @@ public class SwerveModule {
         private final SparkClosedLoopController m_turningPIDController;
         private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
-        /**
-         * Constructs a SwerveModule and configures the driving and turning motor,
-         * encoder, and PID controller.
-         */
-        public SwerveModule(int drivingCANId, int turningCANId, int CANcoderID, boolean drivingInverted) {
+        public ModuleIOSpark(int drivingCANId, int turningCANId, int CANcoderID, boolean drivingInverted) {
                 m_drivingSparkMax = new SparkMax(drivingCANId, MotorType.kBrushless);
                 m_turningSparkMax = new SparkMax(turningCANId, MotorType.kBrushless);
 
@@ -84,7 +69,6 @@ public class SwerveModule {
                 m_turningConfig.inverted(false);
                 m_drivingConfig.inverted(drivingInverted);
 
-
                 // Enable PID wrap around for the turning motor. This will allow the PID
                 // controller to go through 0 to get to the setpoint i.e. going from 350 degrees
                 // to 10 degrees will go through 0 rather than the other direction which is a
@@ -111,7 +95,6 @@ public class SwerveModule {
 
                 m_drivingConfig.idleMode(SwerveModuleConstants.DRIVING_MOTOR_IDLE_MODE);
                 m_turningConfig.idleMode(SwerveModuleConstants.TURNING_MOTOR_IDLE_MODE);
-                
 
                 m_drivingConfig.smartCurrentLimit(SwerveModuleConstants.DRIVING_MOTOR_CURRENT_LIMIT_AMPS);
                 m_turningConfig.smartCurrentLimit(SwerveModuleConstants.TURNING_MOTOR_CURRENT_LIMIT_AMPS);
@@ -126,29 +109,24 @@ public class SwerveModule {
 
                 m_desiredState.angle = new Rotation2d(0);
                 m_drivingEncoder.setPosition(0);
+
+                resetEncoders();
         }
 
-        /**
-         * Returns the current state of the module.
-         *
-         * @return The current state of the module.
-         */
+        @Override
         public SwerveModuleState getState() {
                 return new SwerveModuleState(m_drivingEncoder.getVelocity(),
                                 new Rotation2d(m_turningEncoder.getPosition()));
         }
 
-        /**
-         * Returns the current position of the module.
-         *
-         * @return The current position of the module.
-         */
+        @Override
         public SwerveModulePosition getPosition() {
                 return new SwerveModulePosition(
                                 m_drivingEncoder.getPosition(),
                                 new Rotation2d(m_turningEncoder.getPosition()));
         }
 
+        @Override
         /**
          * Sets the desired state for the module.
          *
@@ -200,28 +178,10 @@ public class SwerveModule {
                                                                                       // virtual absolute position
         }
 
-        /**
-         * Calibrates the virtual position (i.e. sets position offset) of the absolute
-         * encoder.
-         */
-        // public void calibrateVirtualPosition(double angle) {
-        //         m_turningAbsoluteEncoder.setPositionOffset(angle);
-        // }
-
-        public RelativeEncoder getDrivingEncoder() {
-                return m_drivingEncoder;
-        }
-
-        public RelativeEncoder getTurningEncoder() {
-                return m_turningEncoder;
-        }
-
-        public CanCoder getTurningAbsoluteEncoder() {
-                return m_turningAbsoluteEncoder;
-        }
-
-        public SwerveModuleState getDesiredState() {
-                return m_desiredState;
+        @Override
+        public void updateInputs(ModuleIOInputs inputs) {
+                inputs.turningTemp = m_turningSparkMax.getMotorTemperature();
+                inputs.driveTemp = m_drivingSparkMax.getMotorTemperature();
         }
 
 }

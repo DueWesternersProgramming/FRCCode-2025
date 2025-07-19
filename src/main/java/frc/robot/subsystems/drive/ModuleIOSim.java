@@ -1,15 +1,11 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
-package frc.robot.subsystems.drive.swerve;
+package frc.robot.subsystems.drive;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 
-public class SwerveModuleSim {
+public class ModuleIOSim implements ModuleIO {
     /**
      * Main timer to simulate the passage of time.
      */
@@ -41,12 +37,12 @@ public class SwerveModuleSim {
      */
     private SwerveModuleState state = new SwerveModuleState(0.0, new Rotation2d(0));
 
-    public SwerveModuleSim() {
-
+    public ModuleIOSim() {
         this.timer.start();
         this.lastTime = timer.get();
     }
 
+    @Override
     /**
      * Sets the desired state for the module.
      *
@@ -73,10 +69,12 @@ public class SwerveModuleSim {
         fakePos += fakeSpeed * dt; // 20 ms
     }
 
+    @Override
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(fakePos, state.angle);
     }
 
+    @Override
     public SwerveModuleState getState() {
         return state;
     }
@@ -84,4 +82,10 @@ public class SwerveModuleSim {
     public static double getPeriodicRate() {
         return dt;
     }
+
+    @Override
+    public void updateInputs(ModuleIOInputs inputs) {
+
+    }
+
 }
