@@ -34,10 +34,9 @@ public class ElevatorSubsystemIOSpark implements ElevatorSubsystemIO {
 
         // default before auto/teleop changes it
         elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(10000);
-        elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(6500);
+        elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(7500);
 
-        elevatorMotor1Config.closedLoop.pid(0.5, 0.0, 2);
-
+        elevatorMotor1Config.closedLoop.pid(0.75, 0.0, 2);
         elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1, true);
 
         elevatorMotor1.configure(elevatorMotor1Config, ResetMode.kResetSafeParameters,
