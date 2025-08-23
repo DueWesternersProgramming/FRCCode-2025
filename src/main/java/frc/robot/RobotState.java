@@ -8,13 +8,18 @@ import frc.robot.utils.TimestampedPose;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import org.littletonrobotics.junction.AutoLogOutput;
+
 public class RobotState {
 
     // public static boolean isManualControl = true;
     public static boolean canRotate = false;
     public static boolean xLocked = false;
     public static Pose2d robotPose = new Pose2d();
+    @AutoLogOutput
     public static Boolean isQuestNavPoseReset = false;
+    @AutoLogOutput
+    public static Boolean manualQuestEnable = true;
     private static final Queue<TimestampedPose> questMeasurements = new LinkedBlockingQueue<>(20);
     private static final Queue<TimestampedPose> aprilTagCameraMeasurements = new LinkedBlockingQueue<>(20);
 

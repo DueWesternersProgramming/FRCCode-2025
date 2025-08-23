@@ -239,6 +239,7 @@ public class RobotContainer {
 
                 new JoystickButton(driveJoystick, 4)
                                 .whileTrue(new SequentialCommandGroup(
+                                                new InstantCommand(() -> RobotState.manualQuestEnable = false),
                                                 Commands.deferredProxy(
                                                                 () -> questNavSubsystem.resetPoseYaw(new Rotation2d())),
                                                 driveSubsystem.gyroReset()));

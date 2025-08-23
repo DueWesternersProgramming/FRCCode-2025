@@ -1,5 +1,7 @@
 package frc.robot.automation;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConstants.ScoringConstants.Setpoints;
 
@@ -53,5 +55,4 @@ public class AutomationSelector {
         System.out.println("Retrieved HP: " + value);
         return value;
     }
-
 }

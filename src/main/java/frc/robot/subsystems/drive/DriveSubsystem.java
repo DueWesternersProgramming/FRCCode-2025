@@ -215,7 +215,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         // QuestNav poses:
 
-        if (DriverStation.isEnabled()) {
+        if (DriverStation.isEnabled() && RobotState.manualQuestEnable) {
 
             while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
                 m_odometry.addVisionMeasurement(
