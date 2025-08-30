@@ -16,6 +16,7 @@ import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.RobotConstants.VisionConstants.AprilTagCameraConfig;
 import frc.robot.RobotConstants.VisionConstants.VisionSource;
 import frc.robot.utils.CowboyUtils;
+import frc.robot.utils.TimestampedPose;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,21 +50,25 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
 
         if (!results.isEmpty()) {
 
-            //photonPoseEstimator.setLastPose(RobotState.robotPose);
+            // photonPoseEstimator.setLastPose(RobotState.robotPose);
             try {
 
                 if (results.size() > 0) {
                     for (PhotonPipelineResult result : results) {
                         if (result.hasTargets()) {
-                            //PhotonTrackedTarget target = result.getBestTarget();
+                            PhotonTrackedTarget target = result.getBestTarget();
+
+                            inputs.bestTargetArea = target.getArea();
 
                             Optional<EstimatedRobotPose> estimatedRobotPose = photonPoseEstimator.update(result);
                             estimatedRobotPose.ifPresent(est -> {
                                 Pose2d pose = estimatedRobotPose.get().estimatedPose.toPose2d();
                                 inputs.pose = pose;
                                 RobotState.offerAprilTagCameraMeasurement(
-                                        new frc.robot.utils.TimestampedPose(pose, estimatedRobotPose.get().timestampSeconds));
+                                        new TimestampedPose(pose,
+                                                estimatedRobotPose.get().timestampSeconds));
                             });
+
                         }
                     }
                 }
@@ -74,6 +79,7 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
 
     }
 
+    @Override
     public List<PhotonPipelineResult> getResult() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
             return photonCamera.getAllUnreadResults();
@@ -83,6 +89,7 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
         }
     }
 
+    @Override
     public boolean isCameraConnected() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
             return photonCamera.isConnected();
@@ -91,6 +98,7 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
         }
     }
 
+    @Override
     public PhotonTrackedTarget getBestTarget() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
             return getResult().get(0).getBestTarget();
@@ -99,7 +107,8 @@ public class AprilTagCameraIOPhoton implements AprilTagCameraIO {
         }
     }
 
-    public double getTargetYaw() {
+    @Override
+    public double getBestTargetYaw() {
         if (SubsystemEnabledConstants.VISION_SUBSYSTEM_ENABLED) {
             return getBestTarget().getYaw();
         } else {

@@ -31,7 +31,7 @@ public class VisionSubsystem extends SubsystemBase {
             VisionConstants.VisionSource source) {
     }
 
-    private final List<AprilTagCamera> aprilTagCameras = new ArrayList<>();
+    public List<AprilTagCamera> aprilTagCameras = new ArrayList<>();
 
     public VisionSubsystem() {
         for (AprilTagCameraConfig config : VisionConstants.CAMERA_CONFIGS) {

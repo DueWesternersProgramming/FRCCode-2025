@@ -29,7 +29,6 @@ public class Robot extends LoggedRobot {
 
     public Robot() {
         Logger.recordMetadata("FRCCode-2025", "FRCCode-2025"); // Set a metadata value
-
         if (isReal()) {
             // In real robot mode, log to a USB stick and NetworkTables
             Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
@@ -73,6 +72,7 @@ public class Robot extends LoggedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+        RobotState.visionPoseStatePeriodic(m_robotContainer.visionSubsystem, m_robotContainer.questNavSubsystem);
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

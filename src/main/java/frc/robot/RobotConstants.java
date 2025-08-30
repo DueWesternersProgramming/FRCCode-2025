@@ -393,6 +393,7 @@ public final class RobotConstants {
         }
 
         public static final class VisionConstants {
+                public static final int[] REEF_IDS = { 6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22 };
 
                 public static final record AprilTagCameraConfig(VisionSource source, SimCameraConfig simConfig) {
                 }
@@ -404,6 +405,7 @@ public final class RobotConstants {
                                 ? Optional.of(new VisionSystemSim("AprilTagSim"))
                                 : Optional.empty();
 
+                // configure our camera objects here
                 public static final List<AprilTagCameraConfig> CAMERA_CONFIGS = List.of(
                                 // Front Left
                                 new AprilTagCameraConfig(
@@ -516,12 +518,6 @@ public final class RobotConstants {
         }
 
         public static final class QuestNavConstants {
-                // public static final Transform2d ROBOT_TO_QUEST = new Transform2d(
-                // new Translation2d(0, 0), // Use the quest offset calculation command to
-                // // determine this
-                // Rotation2d.kCCW_90deg); // This is the rotation from the Quest Nav to the
-                // robot center.
-                // // Ours faces left.
                 public static final Matrix<N3, N1> QUESTNAV_STD_DEVS = VecBuilder.fill(
                                 0.02, // Trust down to 2cm in X direction
                                 0.02, // Trust down to 2cm in Y direction

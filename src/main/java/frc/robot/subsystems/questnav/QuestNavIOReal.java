@@ -13,9 +13,6 @@ import gg.questnav.questnav.QuestNav;
 public class QuestNavIOReal implements QuestNavIO {
     private final QuestNav questNav = new QuestNav();
 
-    // LoggedNetworkNumber questOffsetX = new LoggedNetworkNumber("/Tuning/QuestOffsetX", 0.0);
-    // LoggedNetworkNumber questOffsetY = new LoggedNetworkNumber("/Tuning/QuestOffsetY", 0.0);
-
     public static Transform2d ROBOT_TO_QUEST = new Transform2d(
             new Translation2d(.0958, .20249092),
             Rotation2d.kCCW_90deg);
@@ -43,7 +40,8 @@ public class QuestNavIOReal implements QuestNavIO {
     @Override
     public void updateInputs(QuestIOInputs inputs) {
 
-        //ROBOT_TO_QUEST = new Transform2d(questOffsetX.get(), questOffsetY.get(), Rotation2d.kCCW_90deg);
+        // ROBOT_TO_QUEST = new Transform2d(questOffsetX.get(), questOffsetY.get(),
+        // Rotation2d.kCCW_90deg);
 
         inputs.connected = isConnected();
 
