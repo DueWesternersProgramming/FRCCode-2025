@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotConstants.VisionConstants;
+import frc.robot.RobotConstants.VisionConstants.VisionMode;
 import frc.robot.subsystems.questnav.QuestNavSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.subsystems.vision.VisionSubsystem.AprilTagCamera;
@@ -18,15 +19,14 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class RobotState {
-
-    // public static boolean isManualControl = true;
+    public static Boolean isAutoAlignActive = false;
+    public static VisionMode visionMode = VisionMode.APRIL_TAG_ONLY; // start with april tag only
     public static boolean canRotate = false;
     public static boolean xLocked = false;
     public static Pose2d robotPose = new Pose2d();
     @AutoLogOutput
     public static Boolean isQuestNavPoseReset = false;
     @AutoLogOutput
-    public static Boolean manualQuestEnable = true;
     private static final Queue<TimestampedPose> questMeasurements = new LinkedBlockingQueue<>(20);
     private static final Queue<TimestampedPose> aprilTagCameraMeasurements = new LinkedBlockingQueue<>(20);
 
@@ -51,28 +51,38 @@ public class RobotState {
     }
 
     public static void visionPoseStatePeriodic(VisionSubsystem visionSubsystem, QuestNavSubsystem questSubsystem) {
-        if (DriverStation.isEnabled()) {
+        // This method will keep track of the best pose source to use on the fly (auto,
+        // autoalign, etc.), and
+        // set the state machine to the respective mode.
 
+        if (DriverStation.isEnabled()) {
             AprilTagCamera frontLeft = visionSubsystem.aprilTagCameras.get(0); // grab instance of camera
-            // we use FL since it is the most reliable for the reef.
-            if (frontLeft.inputs().hasTargets) {
-                for (int i : VisionConstants.REEF_IDS) {
-                    if (frontLeft.io().getBestTarget().fiducialId == i) {
-                        // continue with logic here
-                        if (frontLeft.io().getBestTarget().getArea() < .3) {
-                            // don't use targets that are too far away.
-                            break;
+            // we use FL since it is the most reliable results for the reef.
+            if (DriverStation.isAutonomous() || isAutoAlignActive) {
+
+                if (frontLeft.inputs().hasTargets) {
+                    for (int i : VisionConstants.REEF_IDS) {
+                        if (frontLeft.io().getBestTarget().fiducialId == i) {
+                            double tagDistance = frontLeft.io().getBestTarget().bestCameraToTarget.getTranslation()
+                                    .getNorm();
+                            Logger.recordOutput("VisionSubsystem/TagDistance", tagDistance);
+                            // distance is less than 2.75 meters (about 9 ft)
+                            if (tagDistance < 2.75) {
+                                visionMode = VisionMode.APRIL_TAG_ONLY;
+                                break;
+                                // If in auto or autoalign is active, and we see a reef tag within reasonable
+                                // distance, use it only.
+                            }
                         }
-                        // Looking good, we can use FL camera pose results with confidence now
-                        Logger.recordOutput("VisionSubsystem/ShouldUseFrontLeftPose", true);
                     }
                 }
-                Logger.recordOutput("VisionSubsystem/ShouldUseFrontLeftPose", false);
-                return; // did not see any of the reef tags
             }
-            Logger.recordOutput("VisionSubsystem/ShouldUseFrontLeftPose", false);
-
+        } else {
+            visionMode = VisionMode.APRIL_TAG_ONLY; // april tag source only when disabled
         }
-        Logger.recordOutput("VisionSubsystem/ShouldUseFrontLeftPose", false);
+
+        Logger.recordOutput("VisionSubsystem/VisionSourceMode", visionMode.toString()); // log vision mode for debugging
+
+        Logger.recordOutput("RobotState/AutoAlignActive", isAutoAlignActive);
     }
 }

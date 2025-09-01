@@ -393,6 +393,12 @@ public final class RobotConstants {
         }
 
         public static final class VisionConstants {
+                public static enum VisionMode {
+                        APRIL_TAG_ONLY,
+                        QUEST_NAV_ONLY,
+                        HYBRID
+                }
+
                 public static final int[] REEF_IDS = { 6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22 };
 
                 public static final record AprilTagCameraConfig(VisionSource source, SimCameraConfig simConfig) {

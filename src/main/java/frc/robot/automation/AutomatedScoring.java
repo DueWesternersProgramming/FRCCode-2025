@@ -13,6 +13,7 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.utils.CowboyUtils;
+import frc.robot.RobotState;
 import frc.robot.RobotConstants.ScoringConstants;
 import frc.robot.RobotConstants.WristConstants;
 import frc.robot.RobotConstants.ScoringConstants.Setpoints;
@@ -77,6 +78,7 @@ public class AutomatedScoring {
             DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem) {
 
         Pose2d pose = getReefPose(reefSide, position, drivesubsystem.getPose());
+        RobotState.isAutoAlignActive = true;
         if (position == 1) {
 
             return new ParallelCommandGroup(

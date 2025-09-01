@@ -239,7 +239,6 @@ public class RobotContainer {
 
                 new JoystickButton(driveJoystick, 4)
                                 .whileTrue(new SequentialCommandGroup(
-                                                new InstantCommand(() -> RobotState.manualQuestEnable = false),
                                                 Commands.deferredProxy(
                                                                 () -> questNavSubsystem.resetPoseYaw(new Rotation2d())),
                                                 driveSubsystem.gyroReset()));
@@ -253,7 +252,9 @@ public class RobotContainer {
                                                                 PortConstants.Controller.DRIVE_COMMAND_Y_AXIS),
                                                 driveSubsystem,
                                                 elevatorSubsystem,
-                                                wristSubsystem)));
+                                                wristSubsystem)))
+                                .onFalse(new InstantCommand(
+                                                () -> RobotState.isAutoAlignActive = false));
 
                 new JoystickButton(driveJoystick, 11).whileTrue(
                                 AutomatedScoring.humanPlayerPickupNoPathing(

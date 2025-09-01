@@ -1,11 +1,6 @@
 package frc.robot.subsystems.drive;
 
-import java.util.Optional;
 import java.util.stream.IntStream;
-
-import org.photonvision.EstimatedRobotPose;
-
-import com.studica.frc.AHRS;
 
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -16,8 +11,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
@@ -38,8 +31,6 @@ import frc.robot.subsystems.drive.gyro.GyroIOInputsAutoLogged;
 import frc.robot.subsystems.vision.VisionSubsystem;
 import frc.robot.utils.SwerveUtils;
 import frc.robot.utils.TimestampedPose;
-
-import com.fasterxml.jackson.core.format.InputAccessor.Std;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.PathfindingCommand;
 import com.pathplanner.lib.config.PIDConstants;
@@ -65,7 +56,10 @@ public class DriveSubsystem extends SubsystemBase {
     private double m_prevTime = WPIUtilJNI.now() * 1e-6;
     private Rotation2d m_trackedRotation = new Rotation2d();
 
-    private static SwerveDrivePoseEstimator m_odometry;
+    private static SwerveDrivePoseEstimator hybridOdometry;
+    private static SwerveDrivePoseEstimator visionOdometry;
+    private static SwerveDrivePoseEstimator questNavOdometry;
+    private static Pose2d swappingPoseSource = new Pose2d();
 
     GyroIO gyroIO;
     GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
@@ -85,7 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
                     .mapToObj(i -> new ModuleIOInputsAutoLogged())
                     .toArray(ModuleIOInputsAutoLogged[]::new);
 
-            m_odometry = new SwerveDrivePoseEstimator(
+            hybridOdometry = new SwerveDrivePoseEstimator(
                     DrivetrainConstants.DRIVE_KINEMATICS,
                     gyroIO.getGyroRotation2d(),
                     new SwerveModulePosition[] {
@@ -95,30 +89,30 @@ public class DriveSubsystem extends SubsystemBase {
                             moduleIOs[3].getPosition()
                     }, new Pose2d());
 
-            // swerveModules[0] = new SwerveModule(// Front Left
-            // RobotConstants.PortConstants.CAN.FRONT_LEFT_DRIVING,
-            // RobotConstants.PortConstants.CAN.FRONT_LEFT_TURNING,
-            // RobotConstants.PortConstants.CAN.FRONT_LEFT_STEERING, false);
+            visionOdometry = new SwerveDrivePoseEstimator(
+                    DrivetrainConstants.DRIVE_KINEMATICS,
+                    gyroIO.getGyroRotation2d(),
+                    new SwerveModulePosition[] {
+                            moduleIOs[0].getPosition(),
+                            moduleIOs[1].getPosition(),
+                            moduleIOs[2].getPosition(),
+                            moduleIOs[3].getPosition()
+                    }, new Pose2d());
 
-            // swerveModules[1] = new SwerveModule( // Front Right
-            // RobotConstants.PortConstants.CAN.FRONT_RIGHT_DRIVING,
-            // RobotConstants.PortConstants.CAN.FRONT_RIGHT_TURNING,
-            // RobotConstants.PortConstants.CAN.FRONT_RIGHT_STEERING, false);
-
-            // swerveModules[2] = new SwerveModule( // Rear Left
-            // RobotConstants.PortConstants.CAN.REAR_LEFT_DRIVING,
-            // RobotConstants.PortConstants.CAN.REAR_LEFT_TURNING,
-            // RobotConstants.PortConstants.CAN.REAR_LEFT_STEERING, false);
-
-            // swerveModules[3] = new SwerveModule( // Rear Right
-            // RobotConstants.PortConstants.CAN.REAR_RIGHT_DRIVING,
-            // RobotConstants.PortConstants.CAN.REAR_RIGHT_TURNING,
-            // RobotConstants.PortConstants.CAN.REAR_RIGHT_STEERING, false);
+            questNavOdometry = new SwerveDrivePoseEstimator(
+                    DrivetrainConstants.DRIVE_KINEMATICS,
+                    gyroIO.getGyroRotation2d(),
+                    new SwerveModulePosition[] {
+                            moduleIOs[0].getPosition(),
+                            moduleIOs[1].getPosition(),
+                            moduleIOs[2].getPosition(),
+                            moduleIOs[3].getPosition()
+                    }, new Pose2d());
 
             gyroIO.reset();
             resetEncoders();
 
-            m_odometry = new SwerveDrivePoseEstimator(
+            hybridOdometry = new SwerveDrivePoseEstimator(
                     DrivetrainConstants.DRIVE_KINEMATICS,
                     gyroIO.getGyroRotation2d(),
                     new SwerveModulePosition[] {
@@ -127,7 +121,6 @@ public class DriveSubsystem extends SubsystemBase {
                             moduleIOs[2].getPosition(),
                             moduleIOs[3].getPosition()
                     }, new Pose2d(0, 0, new Rotation2d()));
-
         }
 
         try {
@@ -137,7 +130,7 @@ public class DriveSubsystem extends SubsystemBase {
             e.printStackTrace();
         }
 
-        // Configure AutoBuilder last
+        // Configure AutoBuilder
         AutoBuilder.configure(
                 this::getPose, // Robot pose supplier
                 this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
@@ -166,7 +159,6 @@ public class DriveSubsystem extends SubsystemBase {
                 this // Reference to this subsystem to set requirements
         );
         PathfindingCommand.warmupCommand().schedule();
-
     }
 
     public SwerveModuleState[] getModuleStates() {
@@ -183,14 +175,13 @@ public class DriveSubsystem extends SubsystemBase {
         // Update the odometry (Called in periodic)
 
         if (RobotBase.isSimulation()) {
-
             m_trackedRotation = m_trackedRotation.plus(new Rotation2d(
                     DrivetrainConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).omegaRadiansPerSecond
                             * ModuleIOSim.getPeriodicRate()));
             gyroIO.setGyroAngle(m_trackedRotation.getDegrees());
         }
 
-        m_odometry.update(
+        hybridOdometry.update(
                 gyroIO.getGyroRotation2d(),
                 new SwerveModulePosition[] {
                         moduleIO[0].getPosition(),
@@ -198,9 +189,45 @@ public class DriveSubsystem extends SubsystemBase {
                         moduleIO[2].getPosition(),
                         moduleIO[3].getPosition()
                 });
-        RobotState.robotPose = m_odometry.getEstimatedPosition();
 
-        Logger.recordOutput("DriveSubsystem/OdometryPose", m_odometry.getEstimatedPosition());
+        visionOdometry.update(
+                gyroIO.getGyroRotation2d(),
+                new SwerveModulePosition[] {
+                        moduleIO[0].getPosition(),
+                        moduleIO[1].getPosition(),
+                        moduleIO[2].getPosition(),
+                        moduleIO[3].getPosition()
+                });
+
+        questNavOdometry.update(
+                gyroIO.getGyroRotation2d(),
+                new SwerveModulePosition[] {
+                        moduleIO[0].getPosition(),
+                        moduleIO[1].getPosition(),
+                        moduleIO[2].getPosition(),
+                        moduleIO[3].getPosition()
+                });
+
+        switch (RobotState.visionMode) {
+            case APRIL_TAG_ONLY:
+                swappingPoseSource = visionOdometry.getEstimatedPosition();
+                break;
+            case QUEST_NAV_ONLY:
+                swappingPoseSource = questNavOdometry.getEstimatedPosition();
+                break;
+            case HYBRID:
+                swappingPoseSource = hybridOdometry.getEstimatedPosition();
+                break;
+            default:
+                swappingPoseSource = hybridOdometry.getEstimatedPosition();
+        }
+
+        RobotState.robotPose = swappingPoseSource;
+
+        Logger.recordOutput("DriveSubsystem/OdometryPoseSwapping", swappingPoseSource);
+        Logger.recordOutput("DriveSubsystem/OdometryPoseHybrid", hybridOdometry.getEstimatedPosition());
+        Logger.recordOutput("DriveSubsystem/OdometryPoseVision", visionOdometry.getEstimatedPosition());
+        Logger.recordOutput("DriveSubsystem/OdometryPoseQuestNav", questNavOdometry.getEstimatedPosition());
     }
 
     private void updateOdometrySensorMeasurements() {
@@ -209,16 +236,21 @@ public class DriveSubsystem extends SubsystemBase {
 
         TimestampedPose timestampedPose;
         while ((timestampedPose = RobotState.getAprilTagCameraMeasurments().poll()) != null) {
-            m_odometry.addVisionMeasurement(
+            hybridOdometry.addVisionMeasurement(
+                    timestampedPose.pose(), timestampedPose.timestamp()); // May need to add std devs for pv
+            visionOdometry.addVisionMeasurement(
                     timestampedPose.pose(), timestampedPose.timestamp()); // May need to add std devs for pv
         }
 
         // QuestNav poses:
 
-        if (DriverStation.isEnabled() && RobotState.manualQuestEnable) {
+        if (DriverStation.isEnabled()) { // even though the vision state will never actualy enter hybrid or quest only
+                                         // in disabled state, we don't add poses until the quest pose is reset.
 
             while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
-                m_odometry.addVisionMeasurement(
+                hybridOdometry.addVisionMeasurement(
+                        timestampedPose.pose(), timestampedPose.timestamp(), QuestNavConstants.QUESTNAV_STD_DEVS);
+                questNavOdometry.addVisionMeasurement(
                         timestampedPose.pose(), timestampedPose.timestamp(), QuestNavConstants.QUESTNAV_STD_DEVS);
             }
         }
@@ -249,7 +281,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Pose2d getPose() {
-        return SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED ? m_odometry.getEstimatedPosition() : new Pose2d();
+        return SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED ? hybridOdometry.getEstimatedPosition() : new Pose2d();
     }
 
     public void resetPose(Pose2d pose) {
@@ -258,7 +290,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     public void resetOdometry(Pose2d pose) {
         if (SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED) {
-            m_odometry.resetPosition(
+            hybridOdometry.resetPosition(
                     gyroIO.getGyroRotation2d(),
                     new SwerveModulePosition[] {
                             moduleIO[0].getPosition(),
