@@ -133,7 +133,7 @@ public class DriveSubsystem extends SubsystemBase {
         // Configure AutoBuilder
         AutoBuilder.configure(
                 this::getPose, // Robot pose supplier
-                this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+                this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
                 this::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 (speeds) -> runChassisSpeeds(speeds, false), // Method that will drive the robot given ROBOT RELATIVE
                                                              // ChassisSpeeds. Also optionally outputs individual module
@@ -281,11 +281,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Pose2d getPose() {
-        return SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED ? hybridOdometry.getEstimatedPosition() : new Pose2d();
-    }
-
-    public void resetPose(Pose2d pose) {
-        resetOdometry(pose);
+        return SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED ? swappingPoseSource : new Pose2d();
     }
 
     public void resetOdometry(Pose2d pose) {
@@ -299,6 +295,27 @@ public class DriveSubsystem extends SubsystemBase {
                             moduleIO[3].getPosition()
                     },
                     pose);
+
+            visionOdometry.resetPosition(
+                    gyroIO.getGyroRotation2d(),
+                    new SwerveModulePosition[] {
+                            moduleIO[0].getPosition(),
+                            moduleIO[1].getPosition(),
+                            moduleIO[2].getPosition(),
+                            moduleIO[3].getPosition()
+                    },
+                    pose);
+
+            questNavOdometry.resetPosition(
+                    gyroIO.getGyroRotation2d(),
+                    new SwerveModulePosition[] {
+                            moduleIO[0].getPosition(),
+                            moduleIO[1].getPosition(),
+                            moduleIO[2].getPosition(),
+                            moduleIO[3].getPosition()
+                    },
+                    pose);
+
         }
     }
 
