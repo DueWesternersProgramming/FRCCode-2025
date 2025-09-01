@@ -55,6 +55,8 @@ public class RobotState {
         // autoalign, etc.), and
         // set the state machine to the respective mode.
 
+        visionMode = VisionMode.QUEST_NAV_ONLY; // default to quest nav at the start but change that below
+
         if (DriverStation.isEnabled()) {
             AprilTagCamera frontLeft = visionSubsystem.aprilTagCameras.get(0); // grab instance of camera
             // we use FL since it is the most reliable results for the reef.
