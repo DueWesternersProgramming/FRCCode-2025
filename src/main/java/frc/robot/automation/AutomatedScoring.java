@@ -118,22 +118,12 @@ public class AutomatedScoring {
 
     };
 
-    public static Command humanPlayerPickup(int humanPlayerSide, DriveSubsystem drivesubsystem,
-            ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
-            ClawSubsystem clawSubsystem) {
-
-        return new ParallelCommandGroup(
-                new AlignWithPose(drivesubsystem, pathPlanToHP(humanPlayerSide)),
-                elevatorSubsystem.goToHumanPlayerPickup(), wristSubsystem.goToHumanPlayerSetpoint(),
-                clawSubsystem.intakeCoral());
-    }
-
-    public static Command humanPlayerPickupNoPathing(DriveSubsystem drivesubsystem,
+    public static Command groundIntake(DriveSubsystem drivesubsystem,
             ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
             ClawSubsystem clawSubsystem) {
 
         return new ParallelCommandGroup(elevatorSubsystem.goToHumanPlayerPickup(),
-                wristSubsystem.goToHumanPlayerSetpoint(),
+                wristSubsystem.goToGroundIntake(),
                 clawSubsystem.intakeCoral());
 
     }

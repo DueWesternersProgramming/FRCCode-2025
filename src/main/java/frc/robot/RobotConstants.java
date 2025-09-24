@@ -32,7 +32,7 @@ public final class RobotConstants {
         public static final class ScoringConstants {
 
                 public enum Setpoints {
-                        HOME,
+                        HOME, // Retracted
                         HP,
                         L1,
                         L2,
@@ -173,11 +173,10 @@ public final class RobotConstants {
                 public static final double ELEVATOR_MIN_HEIGHT = -2;
 
                 public static final class HeightSetpoints {
-                        public static final double HOME = -3;
-                        public static final double HP = -49.5;
+                        public static final double HOME = -3; // Retracted position
+                        public static final double GROUND_INTAKE = -49.5;
 
                         public static final class Coral {
-                                // Example of a completed switch statement
                                 public static final double L1 = -20;
                                 public static final double L2 = -45;
                                 public static final double L3 = -69.5;
@@ -190,7 +189,7 @@ public final class RobotConstants {
 
                         public static final class SimConstants {
                                 public static final double HOME = 0;
-                                public static final double HP = .35;
+                                public static final double GROUND_INTAKE = .35;
                                 public static final double L1 = 0.2;
                                 public static final double L2 = 0.3;
                                 public static final double L3 = 0.55;
@@ -201,7 +200,7 @@ public final class RobotConstants {
 
         public static final class ClawConstants {
                 public static final double INTAKE_CORAL_SPEED = 0.5;
-                public static final double OUTTAKE_CORAL_SPEED = -1;
+                public static final double OUTTAKE_CORAL_SPEED = .6;
                 public static final double INTAKE_ALGAE_SPEED = -0.75;
                 public static final double OUTTAKE_ALGAE_SPEED = 1;
         }
@@ -211,8 +210,8 @@ public final class RobotConstants {
                 public static final double ELEVATOR_MAX_ANGLE = 30.0;
 
                 public static final class AngleSetpoints {
-                        public static final double HOME = -5;
-                        public static final double HP = -13.0;
+                        public static final double HOME = -5; // Retracted position
+                        public static final double GROUND_INTAKE = -13.0;
 
                         public static final class Coral {
                                 public static final double L1 = -10;
@@ -227,7 +226,7 @@ public final class RobotConstants {
 
                         public static final class SimConstants {
                                 public static final double HOME = 0;
-                                public static final double HP = 0;
+                                public static final double GROUND_INTAKE = 0;
                                 public static final double L1 = 0;
                                 public static final double L2 = 0;
                                 public static final double L3 = 0;

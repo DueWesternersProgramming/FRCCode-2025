@@ -71,8 +71,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public Command goToHumanPlayerPickup() {
         return new InstantCommand(() -> {
-            io.goToSetpoint(CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.HP
-                    : ElevatorConstants.HeightSetpoints.HP);
+            io.goToSetpoint(CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.GROUND_INTAKE
+                    : ElevatorConstants.HeightSetpoints.GROUND_INTAKE);
         }, this);
     }
 

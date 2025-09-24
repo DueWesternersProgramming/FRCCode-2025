@@ -73,11 +73,11 @@ public class WristSubsystem extends SubsystemBase {
         }, this);
     }
 
-    public Command goToHumanPlayerSetpoint() {
+    public Command goToGroundIntake() {
         return new InstantCommand(() -> {
 
-            io.goToSetpoint(CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.HP
-                    : WristConstants.AngleSetpoints.HP);
+            io.goToSetpoint(CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.GROUND_INTAKE
+                    : WristConstants.AngleSetpoints.GROUND_INTAKE);
 
         }, this);
     }

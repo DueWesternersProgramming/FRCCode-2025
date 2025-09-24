@@ -171,6 +171,8 @@ public class RobotContainer {
                 }
 
                 driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
+                elevatorSubsystem.setDefaultCommand(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
+                wristSubsystem.setDefaultCommand(new MoveWristManual(wristSubsystem, operatorJoystick));
 
                 createNamedCommands();
 
@@ -202,9 +204,10 @@ public class RobotContainer {
                                 AutomatedScoring.scoreCoralNoPathing(Setpoints.L3, elevatorSubsystem, wristSubsystem,
                                                 clawSubsystem));
 
-                NamedCommands.registerCommand("HumanPlayer",
-                                AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem, elevatorSubsystem,
-                                                wristSubsystem, clawSubsystem));
+                // NamedCommands.registerCommand("HumanPlayer",
+                // AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem,
+                // elevatorSubsystem,
+                // wristSubsystem, clawSubsystem));
 
                 NamedCommands.registerCommand("GrabLowAlgae",
                                 AutomatedScoring.grabAlgaeNoPathing(Setpoints.L2, elevatorSubsystem, wristSubsystem,
@@ -230,7 +233,8 @@ public class RobotContainer {
 
         private void configureButtonBindings() {
 
-                new JoystickButton(driveJoystick, 6).onTrue(questNavSubsystem.calibrateCommand(driveSubsystem));
+                // new JoystickButton(driveJoystick,
+                // 6).onTrue(questNavSubsystem.calibrateCommand(driveSubsystem));
 
                 new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
                                 .onFalse(RobotState.setCanRotate(false));
@@ -257,12 +261,12 @@ public class RobotContainer {
                                                 () -> RobotState.isAutoAlignActive = false));
 
                 new JoystickButton(driveJoystick, 11).whileTrue(
-                                AutomatedScoring.humanPlayerPickupNoPathing(
+                                AutomatedScoring.groundIntake(
                                                 driveSubsystem,
                                                 elevatorSubsystem,
                                                 wristSubsystem,
                                                 clawSubsystem))
-                                .onFalse(new SequentialCommandGroup(clawSubsystem.stopClaw(), new WaitCommand(1),
+                                .onFalse(new SequentialCommandGroup(clawSubsystem.stopClaw(), new WaitCommand(.5),
                                                 AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem)));
 
                 new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral())
@@ -295,9 +299,9 @@ public class RobotContainer {
                 new JoystickButton(operatorJoystick, 5)
                                 .whileTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
 
-                // Human Player, LEFT POV BUTTON
+                // Ground Intake, LEFT POV BUTTON
                 new POVButton(operatorJoystick, 270)
-                                .whileTrue(AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem,
+                                .whileTrue(AutomatedScoring.groundIntake(driveSubsystem,
                                                 elevatorSubsystem,
                                                 wristSubsystem, clawSubsystem));
 
