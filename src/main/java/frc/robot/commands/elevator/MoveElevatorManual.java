@@ -22,7 +22,7 @@ public class MoveElevatorManual extends Command {
 
     @Override
     public void execute() {
-        elevatorSubsystem.moveAtSpeed(joystick.getRawAxis(Controller.ELEVATOR_MANUAL_CONTROL));
+        elevatorSubsystem.moveAtSpeed(joystick.getRawAxis(Controller.ELEVATOR_MANUAL_CONTROL)*.3 + 0.06);
         // elevatorSubsystem.setMotorVoltage(-.2);
     }
 

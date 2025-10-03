@@ -169,23 +169,22 @@ public final class RobotConstants {
         }
 
         public static final class ElevatorConstants {
-                public static final double ELEVATOR_MAX_HEIGHT = -71;
-                public static final double ELEVATOR_MIN_HEIGHT = -2;
+                public static final double ELEVATOR_MAX_HEIGHT = 71;
+                public static final double ELEVATOR_MIN_HEIGHT = 2;
 
                 public static final class HeightSetpoints {
-                        public static final double HOME = -3;
-                        public static final double HP = -49.5;
+                        public static final double HOME = 0.5;
+                        public static final double HP = 9.9;
 
                         public static final class Coral {
-                                // Example of a completed switch statement
-                                public static final double L1 = -20;
-                                public static final double L2 = -45;
-                                public static final double L3 = -69.5;
+                                public static final double L1 = 8.15;
+                                public static final double L2 = 12;
+                                public static final double L3 = 16.9;
                         }
 
                         public static final class Algae {
-                                public static final double L2 = -42;
-                                public static final double L3 = -70;
+                                public static final double L2 = 42;
+                                public static final double L3 = 70;
                         }
 
                         public static final class SimConstants {

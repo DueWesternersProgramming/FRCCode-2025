@@ -30,11 +30,11 @@ public class ElevatorSubsystemIOSpark implements ElevatorSubsystemIO {
         elevatorMotor2Config = new SparkMaxConfig();
 
         elevatorMotor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-        elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(1);
+        elevatorMotor1Config.closedLoop.maxMotion.allowedClosedLoopError(.3);
 
         // default before auto/teleop changes it
-        elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(10000);
-        elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(7500);
+        elevatorMotor1Config.closedLoop.maxMotion.maxVelocity(9000);
+        elevatorMotor1Config.closedLoop.maxMotion.maxAcceleration(3000);
 
         elevatorMotor1Config.closedLoop.pid(0.75, 0.0, 2);
         elevatorMotor2Config.follow(CAN.ELEVATOR_MOTOR_1, true);
@@ -53,7 +53,7 @@ public class ElevatorSubsystemIOSpark implements ElevatorSubsystemIO {
     @Override
     public void goToSetpoint(double position) {
         elevatorMotor1Controller.setReference(position, ControlType.kMAXMotionPositionControl,
-                ClosedLoopSlot.kSlot0, -.2);
+                ClosedLoopSlot.kSlot0, 0.7);
     }
 
     @Override
