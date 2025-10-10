@@ -174,17 +174,17 @@ public final class RobotConstants {
 
                 public static final class HeightSetpoints {
                         public static final double HOME = 0.5;
-                        public static final double HP = 9.9;
+                        public static final double HP = 12.4;
 
                         public static final class Coral {
                                 public static final double L1 = 8.15;
                                 public static final double L2 = 12;
-                                public static final double L3 = 16.9;
+                                public static final double L3 = 17.35;
                         }
 
                         public static final class Algae {
-                                public static final double L2 = 42;
-                                public static final double L3 = 70;
+                                public static final double L2 = 8.4;
+                                public static final double L3 = 17.2;
                         }
 
                         public static final class SimConstants {
@@ -214,14 +214,14 @@ public final class RobotConstants {
                         public static final double HP = -13.0;
 
                         public static final class Coral {
-                                public static final double L1 = -10;
+                                public static final double L1 = -9;
                                 public static final double L2 = -3;
                                 public static final double L3 = -7;
                         }
 
                         public static final class Algae {
-                                public static final double L2 = 12.75;
-                                public static final double L3 = 13.5;
+                                public static final double L2 = 5;
+                                public static final double L3 = 8.5;
                         }
 
                         public static final class SimConstants {

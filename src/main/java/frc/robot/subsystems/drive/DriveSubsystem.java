@@ -224,6 +224,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         RobotState.robotPose = swappingPoseSource;
 
+        Logger.recordOutput("DriveSubsystem/OdometryMode", RobotState.visionMode.toString());
         Logger.recordOutput("DriveSubsystem/OdometryPoseSwapping", swappingPoseSource);
         Logger.recordOutput("DriveSubsystem/OdometryPoseHybrid", hybridOdometry.getEstimatedPosition());
         Logger.recordOutput("DriveSubsystem/OdometryPoseVision", visionOdometry.getEstimatedPosition());

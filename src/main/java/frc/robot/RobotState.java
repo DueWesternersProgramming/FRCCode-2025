@@ -50,41 +50,50 @@ public class RobotState {
         return new InstantCommand(() -> canRotate = state);
     }
 
-    public static void visionPoseStatePeriodic(VisionSubsystem visionSubsystem, QuestNavSubsystem questSubsystem) {
-        // This method will keep track of the best pose source to use on the fly (auto,
-        // autoalign, etc.), and
-        // set the state machine to the respective mode.
+    // public static void visionPoseStatePeriodic(VisionSubsystem visionSubsystem, QuestNavSubsystem questSubsystem) {
+    //     // This method will keep track of the best pose source to use on the fly (auto,
+    //     // autoalign, etc.), and
+    //     // set the state machine to the respective mode.
 
-        visionMode = VisionMode.QUEST_NAV_ONLY; // default to quest nav at the start but change that below
+    //     visionMode = VisionMode.QUEST_NAV_ONLY; // default to quest nav at the start but change that below
+    //     if (questSubsystem.isConnected()) {
 
-        if (DriverStation.isEnabled()) {
-            AprilTagCamera frontLeft = visionSubsystem.aprilTagCameras.get(0); // grab instance of camera
-            // we use FL since it is the most reliable results for the reef.
-            if (DriverStation.isAutonomous() || isAutoAlignActive) {
+    //         if (DriverStation.isEnabled()) {
+    //             AprilTagCamera frontLeft = visionSubsystem.aprilTagCameras.get(0); // grab instance of camera
+    //             // we use FL since it is the most reliable results for the reef.
+    //             if (DriverStation.isAutonomous() || isAutoAlignActive) {
 
-                if (frontLeft.inputs().hasTargets) {
-                    for (int i : VisionConstants.REEF_IDS) {
-                        if (frontLeft.io().getBestTarget().fiducialId == i) {
-                            double tagDistance = frontLeft.io().getBestTarget().bestCameraToTarget.getTranslation()
-                                    .getNorm();
-                            Logger.recordOutput("VisionSubsystem/TagDistance", tagDistance);
-                            // distance is less than 2.75 meters (about 9 ft)
-                            if (tagDistance < 2.75) {
-                                visionMode = VisionMode.APRIL_TAG_ONLY;
-                                break;
-                                // If in auto or autoalign is active, and we see a reef tag within reasonable
-                                // distance, use it only.
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            visionMode = VisionMode.APRIL_TAG_ONLY; // april tag source only when disabled
-        }
+    //                 if (frontLeft.inputs().hasTargets) {
+    //                     for (int i : VisionConstants.REEF_IDS) {
+    //                         if (frontLeft.io().getBestTarget().fiducialId == i) {
+    //                             double tagDistance = frontLeft.io().getBestTarget().bestCameraToTarget.getTranslation()
+    //                                     .getNorm();
+    //                             Logger.recordOutput("VisionSubsystem/TagDistance", tagDistance);
+    //                             // distance is less than 2.75 meters (about 9 ft)
+    //                             if (tagDistance < 2.75) {
+    //                                 visionMode = VisionMode.APRIL_TAG_ONLY;
+    //                                 break;
+    //                                 // If in auto or autoalign is active, and we see a reef tag within reasonable
+    //                                 // distance, use it only.
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         } else {
+    //             visionMode = VisionMode.APRIL_TAG_ONLY; // april tag source only when disabled
+    //         }
 
-        Logger.recordOutput("VisionSubsystem/VisionSourceMode", visionMode.toString()); // log vision mode for debugging
+    //     }
 
-        Logger.recordOutput("RobotState/AutoAlignActive", isAutoAlignActive);
-    }
+    //     else {
+    //         visionMode = VisionMode.APRIL_TAG_ONLY; // april tag source only when disabled
+    //     }
+
+    //     Logger.recordOutput("VisionSubsystem/QuestConnected", questSubsystem.isConnected());
+
+    //     Logger.recordOutput("VisionSubsystem/VisionSourceMode", visionMode.toString()); // log vision mode for debugging
+
+    //     Logger.recordOutput("RobotState/AutoAlignActive", isAutoAlignActive);
+    // }
 }
