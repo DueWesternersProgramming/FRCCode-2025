@@ -12,6 +12,8 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.RobotConstants.VisionConstants.VisionMode;
+import frc.robot.utils.CowboyUtils;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -72,7 +74,15 @@ public class Robot extends LoggedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
-        //RobotState.visionPoseStatePeriodic(m_robotContainer.visionSubsystem, m_robotContainer.questNavSubsystem);
+        // RobotState.visionPoseStatePeriodic(m_robotContainer.visionSubsystem,
+        // m_robotContainer.questNavSubsystem);
+
+        if (DriverStation.isEnabled() && m_robotContainer.questNavSubsystem.isConnected()) {
+            RobotState.visionMode = VisionMode.QUEST_NAV_ONLY;
+        } else {
+            RobotState.visionMode = VisionMode.APRIL_TAG_ONLY;
+        }
+
     }
 
     /** This function is called once each time the robot enters Disabled mode. */
@@ -115,15 +125,18 @@ public class Robot extends LoggedRobot {
         if (!DriverStation.isFMSAttached()) {
             m_robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
             RobotState.isQuestNavPoseReset = true;
+
         }
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+
     }
 
     @Override
     public void teleopPeriodic() {
+
     }
 
     @Override
