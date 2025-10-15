@@ -29,6 +29,15 @@ import frc.robot.utils.CowboyUtils.RobotModes;
 
 public final class RobotConstants {
 
+        public static final class SimMode {
+                public enum SimModes {
+                        REGULAR,
+                        REPLAY,
+                }
+
+                public static final SimModes SIM_MODE = SimModes.REPLAY;
+        }
+
         public static final class ScoringConstants {
 
                 public enum Setpoints {

@@ -4,14 +4,17 @@
 
 package frc.robot;
 
+import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.RobotConstants.SimMode;
 import frc.robot.RobotConstants.VisionConstants.VisionMode;
 import frc.robot.utils.CowboyUtils;
 
@@ -36,16 +39,22 @@ public class Robot extends LoggedRobot {
             Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
             Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
         } else if (isSimulation()) {
-            setUseTiming(true); // Use normal timing in sim
+            DriverStation.silenceJoystickConnectionWarning(true);
+            System.out.println("Running in simulation mode: " + SimMode.SIM_MODE);
 
-            // Optional: comment out the replay setup if not using AdvantageScope replay
-            // String logPath = LogFileUtil.findReplayLog();
-            // Logger.setReplaySource(new WPILOGReader(logPath));
-            // Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath,
-            // "_sim")));
+            if (SimMode.SIM_MODE == SimMode.SimModes.REPLAY) {
+                setUseTiming(false); // Run as fast as possible in replay
+                // Optional: comment out the replay setup if not using AdvantageScope replay
+                String logPath = LogFileUtil.findReplayLog();
+                Logger.setReplaySource(new WPILOGReader(logPath));
+                // Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath,
+                // "_sim")));
+            } else {
+                setUseTiming(true); // Use normal timing in regular sim
+            }
+
             Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
 
-            // Instead, just create a new log file like we do on real robot
             Logger.addDataReceiver(new WPILOGWriter("logs/sim-" + System.currentTimeMillis() + ".wpilog"));
         } else {
             System.out.println("Unknown robot mode. Please verify robot configuration.");
@@ -77,11 +86,12 @@ public class Robot extends LoggedRobot {
         // RobotState.visionPoseStatePeriodic(m_robotContainer.visionSubsystem,
         // m_robotContainer.questNavSubsystem);
 
-        if (DriverStation.isEnabled() && m_robotContainer.questNavSubsystem.isConnected()) {
-            RobotState.visionMode = VisionMode.QUEST_NAV_ONLY;
-        } else {
-            RobotState.visionMode = VisionMode.APRIL_TAG_ONLY;
-        }
+        // if (DriverStation.isEnabled() &&
+        // m_robotContainer.questNavSubsystem.isConnected()) {
+        // RobotState.visionMode = VisionMode.QUEST_NAV_ONLY;
+        // } else {
+        // RobotState.visionMode = VisionMode.APRIL_TAG_ONLY;
+        // }
 
     }
 

@@ -140,7 +140,6 @@ public class RobotContainer {
                                 break;
 
                         default:
-                                // Replayed robot, disable IO implementations
 
                                 moduleIOs = new ModuleIO[] {
                                                 new ModuleIO() {

@@ -24,6 +24,7 @@ import frc.robot.RobotState;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.RobotConstants.QuestNavConstants;
+import frc.robot.RobotConstants.SimMode;
 import frc.robot.RobotConstants.SubsystemEnabledConstants;
 import frc.robot.subsystems.drive.ModuleIO.ModuleIOInputs;
 import frc.robot.subsystems.drive.gyro.GyroIO;
@@ -59,7 +60,6 @@ public class DriveSubsystem extends SubsystemBase {
     private static SwerveDrivePoseEstimator hybridOdometry;
     private static SwerveDrivePoseEstimator visionOdometry;
     private static SwerveDrivePoseEstimator questNavOdometry;
-    private static Pose2d swappingPoseSource = new Pose2d();
 
     GyroIO gyroIO;
     GyroIOInputsAutoLogged gyroInputs = new GyroIOInputsAutoLogged();
@@ -87,40 +87,10 @@ public class DriveSubsystem extends SubsystemBase {
                             moduleIOs[1].getPosition(),
                             moduleIOs[2].getPosition(),
                             moduleIOs[3].getPosition()
-                    }, new Pose2d());
-
-            visionOdometry = new SwerveDrivePoseEstimator(
-                    DrivetrainConstants.DRIVE_KINEMATICS,
-                    gyroIO.getGyroRotation2d(),
-                    new SwerveModulePosition[] {
-                            moduleIOs[0].getPosition(),
-                            moduleIOs[1].getPosition(),
-                            moduleIOs[2].getPosition(),
-                            moduleIOs[3].getPosition()
-                    }, new Pose2d());
-
-            questNavOdometry = new SwerveDrivePoseEstimator(
-                    DrivetrainConstants.DRIVE_KINEMATICS,
-                    gyroIO.getGyroRotation2d(),
-                    new SwerveModulePosition[] {
-                            moduleIOs[0].getPosition(),
-                            moduleIOs[1].getPosition(),
-                            moduleIOs[2].getPosition(),
-                            moduleIOs[3].getPosition()
-                    }, new Pose2d());
+                    }, new Pose2d(0, 0, new Rotation2d()));
 
             gyroIO.reset();
             resetEncoders();
-
-            hybridOdometry = new SwerveDrivePoseEstimator(
-                    DrivetrainConstants.DRIVE_KINEMATICS,
-                    gyroIO.getGyroRotation2d(),
-                    new SwerveModulePosition[] {
-                            moduleIOs[0].getPosition(),
-                            moduleIOs[1].getPosition(),
-                            moduleIOs[2].getPosition(),
-                            moduleIOs[3].getPosition()
-                    }, new Pose2d(0, 0, new Rotation2d()));
         }
 
         try {
@@ -174,7 +144,7 @@ public class DriveSubsystem extends SubsystemBase {
     private void updateOdometry() {
         // Update the odometry (Called in periodic)
 
-        if (RobotBase.isSimulation()) {
+        if (RobotBase.isSimulation() && SimMode.SIM_MODE == SimMode.SimModes.REGULAR) {
             m_trackedRotation = m_trackedRotation.plus(new Rotation2d(
                     DrivetrainConstants.DRIVE_KINEMATICS.toChassisSpeeds(getModuleStates()).omegaRadiansPerSecond
                             * ModuleIOSim.getPeriodicRate()));
@@ -190,71 +160,37 @@ public class DriveSubsystem extends SubsystemBase {
                         moduleIO[3].getPosition()
                 });
 
-        visionOdometry.update(
-                gyroIO.getGyroRotation2d(),
-                new SwerveModulePosition[] {
-                        moduleIO[0].getPosition(),
-                        moduleIO[1].getPosition(),
-                        moduleIO[2].getPosition(),
-                        moduleIO[3].getPosition()
-                });
-
-        questNavOdometry.update(
-                gyroIO.getGyroRotation2d(),
-                new SwerveModulePosition[] {
-                        moduleIO[0].getPosition(),
-                        moduleIO[1].getPosition(),
-                        moduleIO[2].getPosition(),
-                        moduleIO[3].getPosition()
-                });
-
-        switch (RobotState.visionMode) {
-            case APRIL_TAG_ONLY:
-                swappingPoseSource = visionOdometry.getEstimatedPosition();
-                break;
-            case QUEST_NAV_ONLY:
-                swappingPoseSource = questNavOdometry.getEstimatedPosition();
-                break;
-            case HYBRID:
-                swappingPoseSource = hybridOdometry.getEstimatedPosition();
-                break;
-            default:
-                swappingPoseSource = hybridOdometry.getEstimatedPosition();
-        }
-
-        RobotState.robotPose = swappingPoseSource;
-
         Logger.recordOutput("DriveSubsystem/OdometryMode", RobotState.visionMode.toString());
-        Logger.recordOutput("DriveSubsystem/OdometryPoseSwapping", swappingPoseSource);
         Logger.recordOutput("DriveSubsystem/OdometryPoseHybrid", hybridOdometry.getEstimatedPosition());
-        Logger.recordOutput("DriveSubsystem/OdometryPoseVision", visionOdometry.getEstimatedPosition());
-        Logger.recordOutput("DriveSubsystem/OdometryPoseQuestNav", questNavOdometry.getEstimatedPosition());
+
     }
 
     private void updateOdometrySensorMeasurements() {
 
-        // PV poses:
+        // // PV poses:
 
-        TimestampedPose timestampedPose;
-        while ((timestampedPose = RobotState.getAprilTagCameraMeasurments().poll()) != null) {
-            hybridOdometry.addVisionMeasurement(
-                    timestampedPose.pose(), timestampedPose.timestamp()); // May need to add std devs for pv
-            visionOdometry.addVisionMeasurement(
-                    timestampedPose.pose(), timestampedPose.timestamp()); // May need to add std devs for pv
-        }
+        // TimestampedPose timestampedPose;
+        // while ((timestampedPose = RobotState.getAprilTagCameraMeasurments().poll())
+        // != null) {
+        // hybridOdometry.addVisionMeasurement(
+        // timestampedPose.pose(), timestampedPose.timestamp());
+        // visionOdometry.addVisionMeasurement(
+        // timestampedPose.pose(), timestampedPose.timestamp());
+        // }
 
-        // QuestNav poses:
+        // // QuestNav poses:
 
-        if (DriverStation.isEnabled()) { // even though the vision state will never actualy enter hybrid or quest only
-                                         // in disabled state, we don't add poses until the quest pose is reset.
+        // if (DriverStation.isEnabled()) {
 
-            while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
-                hybridOdometry.addVisionMeasurement(
-                        timestampedPose.pose(), timestampedPose.timestamp(), QuestNavConstants.QUESTNAV_STD_DEVS);
-                questNavOdometry.addVisionMeasurement(
-                        timestampedPose.pose(), timestampedPose.timestamp(), QuestNavConstants.QUESTNAV_STD_DEVS);
-            }
-        }
+        // while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
+        // hybridOdometry.addVisionMeasurement(
+        // timestampedPose.pose(), timestampedPose.timestamp(),
+        // QuestNavConstants.QUESTNAV_STD_DEVS);
+        // // questNavOdometry.addVisionMeasurement(
+        // // timestampedPose.pose(), timestampedPose.timestamp(),
+        // // QuestNavConstants.QUESTNAV_STD_DEVS);
+        // }
+        // }
     }
 
     @Override
@@ -282,7 +218,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Pose2d getPose() {
-        return SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED ? swappingPoseSource : new Pose2d();
+        return SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED ? hybridOdometry.getEstimatedPosition() : new Pose2d();
     }
 
     public void resetOdometry(Pose2d pose) {

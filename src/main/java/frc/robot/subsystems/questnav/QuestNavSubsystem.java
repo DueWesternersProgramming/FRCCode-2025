@@ -61,15 +61,15 @@ public class QuestNavSubsystem extends SubsystemBase {
         Boolean isPoseWithinTolerance = true;
 
         if (inputs.correctedPose.getTranslation().getDistance(RobotState.robotPose.getTranslation()) > Units
-                .inchesToMeters(4)) {
-            isPoseWithinTolerance = false;
+                .inchesToMeters(10)) {
+            isPoseWithinTolerance = true;
         }
         Logger.recordOutput("QuestNavSubsystem/isPoseInTolerance", isPoseWithinTolerance);
 
-        if (DriverStation.isEnabled() && RobotState.isQuestNavPoseReset && isPoseWithinTolerance) {
-            RobotState.offerQuestMeasurement(new TimestampedPose(getRobotPose(),
-                    inputs.timestamp));
-        }
+        // if (DriverStation.isEnabled() && RobotState.isQuestNavPoseReset) {
+        RobotState.offerQuestMeasurement(new TimestampedPose(getRobotPose(),
+                inputs.timestamp));
+        // }
     }
 
 }
