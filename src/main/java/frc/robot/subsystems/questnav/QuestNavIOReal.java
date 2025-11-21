@@ -1,13 +1,12 @@
 package frc.robot.subsystems.questnav;
 
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
-
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.RobotConstants.QuestNavConstants;
+import gg.questnav.questnav.PoseFrame;
 import gg.questnav.questnav.QuestNav;
 
 public class QuestNavIOReal implements QuestNavIO {
@@ -18,18 +17,24 @@ public class QuestNavIOReal implements QuestNavIO {
             Rotation2d.kCCW_90deg);
 
     @Override
-    public Pose2d getUncorrectedPose() {
-        return questNav.getPose();
+    public Pose3d getUncorrectedPose() {
+        PoseFrame[] poseFrames = questNav.getAllUnreadPoseFrames();
+        if (poseFrames.length > 0) {
+            // Get the most recent Quest relative pose
+            Pose3d questPose = poseFrames[poseFrames.length - 1].questPose3d();
+            return questPose;
+        }
+        return Pose3d.kZero;
     }
 
     @Override
-    public Pose2d getCorrectedPose() {
-        return getUncorrectedPose().transformBy(ROBOT_TO_QUEST.inverse());
+    public Pose3d getCorrectedPose() {
+        return getUncorrectedPose().transformBy(new Transform3d(ROBOT_TO_QUEST.inverse()));
     }
 
     @Override
     public void setRobotPose(Pose2d pose) {
-        questNav.setPose(pose.transformBy(ROBOT_TO_QUEST));
+        questNav.setPose(new Pose3d(pose.transformBy(ROBOT_TO_QUEST)));
     }
 
     @Override
@@ -40,18 +45,17 @@ public class QuestNavIOReal implements QuestNavIO {
     @Override
     public void updateInputs(QuestIOInputs inputs) {
 
-        // ROBOT_TO_QUEST = new Transform2d(questOffsetX.get(), questOffsetY.get(),
-        // Rotation2d.kCCW_90deg);
-
         inputs.connected = isConnected();
 
         inputs.uncorrectedPose = getUncorrectedPose();
         inputs.correctedPose = getCorrectedPose();
 
         double timestamp = inputs.timestamp;
-        inputs.timestamp = questNav.getDataTimestamp();
+        inputs.timestamp = inputs.connected ? questNav.getAppTimestamp().getAsDouble() : 0.0; // Not sure if we need to
+                                                                                              // do the connection check
+                                                                                              // or not here
         inputs.timestampDelta = timestamp - inputs.timestamp;
-        inputs.batteryLevel = questNav.getBatteryPercent();
+        inputs.batteryLevel = questNav.getBatteryPercent().getAsInt();
 
         questNav.commandPeriodic();
 

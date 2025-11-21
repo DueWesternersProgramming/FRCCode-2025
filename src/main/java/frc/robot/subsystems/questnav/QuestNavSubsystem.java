@@ -30,7 +30,7 @@ public class QuestNavSubsystem extends SubsystemBase {
     }
 
     public Pose2d getRobotPose() {
-        return io.getCorrectedPose();
+        return io.getCorrectedPose().toPose2d();
     }
 
     public Boolean isConnected() {
@@ -39,7 +39,7 @@ public class QuestNavSubsystem extends SubsystemBase {
 
     public Command resetPoseYaw(Rotation2d yaw) {
         return new InstantCommand(() -> {
-            Pose2d currentPose = io.getCorrectedPose();
+            Pose2d currentPose = io.getCorrectedPose().toPose2d();
             Pose2d newPose = new Pose2d(currentPose.getTranslation(), yaw);
             io.setRobotPose(newPose);
         }, this);
@@ -47,9 +47,8 @@ public class QuestNavSubsystem extends SubsystemBase {
     }
 
     public Command calibrateCommand(DriveSubsystem driveSubsystem) {
-        return calibration.determineOffsetToRobotCenter(
-                driveSubsystem,
-                io.getCorrectedPose());
+        return new InstantCommand(() -> {
+        }, this);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class QuestNavSubsystem extends SubsystemBase {
         // Do filtering here in the future...
         Boolean isPoseWithinTolerance = true;
 
-        if (inputs.correctedPose.getTranslation().getDistance(RobotState.robotPose.getTranslation()) > Units
+        if (inputs.correctedPose.toPose2d().getTranslation().getDistance(RobotState.robotPose.getTranslation()) > Units
                 .inchesToMeters(10)) {
             isPoseWithinTolerance = true;
         }
