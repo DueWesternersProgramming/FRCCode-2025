@@ -26,11 +26,8 @@ public class RunAtVelocity extends Command {
 
     @Override
     public void execute() {
-        if (SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED) {
-            drive.drive(-x, -y, -rot, DrivetrainConstants.FIELD_RELATIVE, true);
-        } else {
-            drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
-        }
+        drive.drive(-x, -y, -rot, DrivetrainConstants.FIELD_RELATIVE, true);
+
     }
 
     @Override

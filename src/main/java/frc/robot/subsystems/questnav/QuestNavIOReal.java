@@ -51,9 +51,7 @@ public class QuestNavIOReal implements QuestNavIO {
         inputs.correctedPose = getCorrectedPose();
 
         double timestamp = inputs.timestamp;
-        inputs.timestamp = inputs.connected ? questNav.getAppTimestamp().getAsDouble() : 0.0; // Not sure if we need to
-                                                                                              // do the connection check
-                                                                                              // or not here
+        inputs.timestamp = questNav.getAppTimestamp().getAsDouble();
         inputs.timestampDelta = timestamp - inputs.timestamp;
         inputs.batteryLevel = questNav.getBatteryPercent().getAsInt();
 

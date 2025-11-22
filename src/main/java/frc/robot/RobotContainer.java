@@ -55,6 +55,7 @@ import frc.robot.subsystems.wrist.WristSubsystemIOSpark;
 import frc.robot.automation.AutomationSelector;
 import frc.robot.RobotConstants.PortConstants;
 import frc.robot.utils.CowboyUtils;
+import frc.robot.utils.QuestCalibration;
 import frc.robot.utils.CowboyUtils.RobotModes;
 import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.RobotConstants.ScoringConstants.Setpoints;
@@ -229,7 +230,13 @@ public class RobotContainer {
 
         private void configureButtonBindings() {
 
-                new JoystickButton(driveJoystick, 6).onTrue(questNavSubsystem.calibrateCommand(driveSubsystem));
+                new JoystickButton(driveJoystick, 6).onTrue(QuestCalibration
+                                .CollectCalibrationDataCommand(
+                                                driveSubsystem::runChassisSpeeds,
+                                                driveSubsystem::resetOdometry,
+                                                questNavSubsystem::getUncorrectedPose,
+                                                driveSubsystem,
+                                                questNavSubsystem));
 
                 new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
                                 .onFalse(RobotState.setCanRotate(false));

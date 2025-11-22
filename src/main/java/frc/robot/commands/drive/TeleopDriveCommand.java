@@ -23,50 +23,47 @@ public class TeleopDriveCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        //drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
+        // drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
     }
 
     @Override
     public void execute() {
-        if (SubsystemEnabledConstants.DRIVE_SUBSYSTEM_ENABLED) {
-            boolean fieldRelative = DrivetrainConstants.FIELD_RELATIVE;
+        boolean fieldRelative = DrivetrainConstants.FIELD_RELATIVE;
 
-            double xRaw = -(joystick.getRawAxis(Controller.DRIVE_COMMAND_X_AXIS));
-            double yRaw = -(joystick.getRawAxis(Controller.DRIVE_COMMAND_Y_AXIS));
-            double rotRaw = -(joystick.getRawAxis(Controller.DRIVE_COMMAND_ROT_AXIS));
+        double xRaw = -(joystick.getRawAxis(Controller.DRIVE_COMMAND_X_AXIS));
+        double yRaw = -(joystick.getRawAxis(Controller.DRIVE_COMMAND_Y_AXIS));
+        double rotRaw = -(joystick.getRawAxis(Controller.DRIVE_COMMAND_ROT_AXIS));
 
-            double xConstrained = MathUtil.applyDeadband(
-                    MathUtil.clamp(xRaw, -TeleopConstants.MAX_SPEED_PERCENT, TeleopConstants.MAX_SPEED_PERCENT),
-                    RobotConstants.PortConstants.Controller.JOYSTICK_AXIS_THRESHOLD);
-            double yConstrained = MathUtil.applyDeadband(
-                    MathUtil.clamp(yRaw, -TeleopConstants.MAX_SPEED_PERCENT, TeleopConstants.MAX_SPEED_PERCENT),
-                    RobotConstants.PortConstants.Controller.JOYSTICK_AXIS_THRESHOLD);
-            double rotConstrained = MathUtil.applyDeadband(
-                    MathUtil.clamp(rotRaw, -TeleopConstants.MAX_SPEED_PERCENT, TeleopConstants.MAX_SPEED_PERCENT),
-                    RobotConstants.PortConstants.Controller.JOYSTICK_AXIS_THRESHOLD);
+        double xConstrained = MathUtil.applyDeadband(
+                MathUtil.clamp(xRaw, -TeleopConstants.MAX_SPEED_PERCENT, TeleopConstants.MAX_SPEED_PERCENT),
+                RobotConstants.PortConstants.Controller.JOYSTICK_AXIS_THRESHOLD);
+        double yConstrained = MathUtil.applyDeadband(
+                MathUtil.clamp(yRaw, -TeleopConstants.MAX_SPEED_PERCENT, TeleopConstants.MAX_SPEED_PERCENT),
+                RobotConstants.PortConstants.Controller.JOYSTICK_AXIS_THRESHOLD);
+        double rotConstrained = MathUtil.applyDeadband(
+                MathUtil.clamp(rotRaw, -TeleopConstants.MAX_SPEED_PERCENT, TeleopConstants.MAX_SPEED_PERCENT),
+                RobotConstants.PortConstants.Controller.JOYSTICK_AXIS_THRESHOLD);
 
-            double xSquared = Math.copySign(xConstrained * xConstrained, xConstrained);
-            double ySquared = Math.copySign(yConstrained * yConstrained, yConstrained);
-            double rotSquared = Math.copySign(rotConstrained * rotConstrained, rotConstrained);
+        double xSquared = Math.copySign(xConstrained * xConstrained, xConstrained);
+        double ySquared = Math.copySign(yConstrained * yConstrained, yConstrained);
+        double rotSquared = Math.copySign(rotConstrained * rotConstrained, rotConstrained);
 
-            if (RobotState.xLocked) {
-                drive.setX();
-                return;
-            }
+        if (RobotState.xLocked) {
+            drive.setX();
+            return;
+        }
 
-            if (RobotState.canRotate) {
-                drive.drive(ySquared, xSquared, rotSquared, fieldRelative, true);
-            } else {
-                drive.drive(ySquared, xSquared, 0, fieldRelative, true);
-            }
-
+        if (RobotState.canRotate) {
+            drive.drive(ySquared, xSquared, rotSquared, fieldRelative, true);
+        } else {
+            drive.drive(ySquared, xSquared, 0, fieldRelative, true);
         }
 
     }
 
     @Override
     public void initialize() {
-        //drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
+        // drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
     }
 
     @Override

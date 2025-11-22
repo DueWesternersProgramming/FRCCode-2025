@@ -10,15 +10,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.RobotState;
-import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.utils.QuestCalibration;
 import frc.robot.utils.TimestampedPose;
 
 public class QuestNavSubsystem extends SubsystemBase {
-    QuestNavIO io;
+    public QuestNavIO io;
     QuestIOInputsAutoLogged inputs = new QuestIOInputsAutoLogged();
-
-    private final QuestCalibration calibration = new QuestCalibration();
 
     public QuestNavSubsystem(QuestNavIO io) {
         this.io = io;
@@ -33,6 +29,10 @@ public class QuestNavSubsystem extends SubsystemBase {
         return io.getCorrectedPose().toPose2d();
     }
 
+    public Pose2d getUncorrectedPose() {
+        return io.getUncorrectedPose().toPose2d();
+    }
+
     public Boolean isConnected() {
         return io.isConnected();
     }
@@ -44,11 +44,6 @@ public class QuestNavSubsystem extends SubsystemBase {
             io.setRobotPose(newPose);
         }, this);
 
-    }
-
-    public Command calibrateCommand(DriveSubsystem driveSubsystem) {
-        return new InstantCommand(() -> {
-        }, this);
     }
 
     @Override
@@ -65,10 +60,10 @@ public class QuestNavSubsystem extends SubsystemBase {
         }
         Logger.recordOutput("QuestNavSubsystem/isPoseInTolerance", isPoseWithinTolerance);
 
-        // if (DriverStation.isEnabled() && RobotState.isQuestNavPoseReset) {
-        RobotState.offerQuestMeasurement(new TimestampedPose(getRobotPose(),
-                inputs.timestamp));
-        // }
+        if (DriverStation.isEnabled() && RobotState.isQuestNavPoseReset && isPoseWithinTolerance) {
+            RobotState.offerQuestMeasurement(new TimestampedPose(getRobotPose(),
+                    inputs.timestamp));
+        }
     }
 
 }
