@@ -11,11 +11,19 @@ public interface GyroIO {
         public double gyroAngle = 0.0;
     }
 
-    default double getGyroAngle() {
+    default double getGyroYawAngle() {
         return 0.0;
     }
 
-    default Rotation2d getGyroRotation2d() {
+    default double getGyroPitchAngle() {
+        return 0.0;
+    }
+
+    default double getGyroRollAngle() {
+        return 0.0;
+    }
+
+    default Rotation2d getGyroYawRotation2d() {
         return Rotation2d.fromDegrees(0.0);
     }
 

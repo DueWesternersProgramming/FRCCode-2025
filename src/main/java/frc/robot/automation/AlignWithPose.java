@@ -8,6 +8,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.RobotState;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.utils.CowboyUtils;
 
@@ -35,7 +36,7 @@ public class AlignWithPose extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        driveSubsystem.drive(0, 0, 0, true, true);
+        driveSubsystem.drive(0, 0, 0, true, true, RobotState.isAntiTippingEnabled);
     }
 
     @Override
@@ -51,9 +52,9 @@ public class AlignWithPose extends Command {
                 1);
 
         if (CowboyUtils.isRedAlliance()) {
-            driveSubsystem.drive(-xSpeed, -ySpeed, rotSpeed, true, true);
+            driveSubsystem.drive(-xSpeed, -ySpeed, rotSpeed, true, true, RobotState.isAntiTippingEnabled);
         } else {
-            driveSubsystem.drive(xSpeed, ySpeed, rotSpeed, true, true);
+            driveSubsystem.drive(xSpeed, ySpeed, rotSpeed, true, true, RobotState.isAntiTippingEnabled);
         }
 
     }
@@ -66,7 +67,7 @@ public class AlignWithPose extends Command {
         rotController.reset(driveSubsystem.getPose().getRotation().getDegrees());
 
         // Optionally, stop the drive before starting
-        driveSubsystem.drive(0, 0, 0, true, true);
+        driveSubsystem.drive(0, 0, 0, true, true, false);
     }
 
     @Override

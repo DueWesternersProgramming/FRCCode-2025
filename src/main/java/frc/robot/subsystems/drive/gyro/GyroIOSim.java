@@ -1,9 +1,6 @@
 package frc.robot.subsystems.drive.gyro;
 
-import com.studica.frc.AHRS;
-
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.utils.CowboyUtils;
 
 public class GyroIOSim implements GyroIO {
@@ -14,13 +11,23 @@ public class GyroIOSim implements GyroIO {
     }
 
     @Override
-    public double getGyroAngle() {
+    public double getGyroYawAngle() {
         return fakeGyro + (CowboyUtils.isRedAlliance() ? 180 : 0);
     }
 
     @Override
-    public Rotation2d getGyroRotation2d() {
-        return Rotation2d.fromDegrees(getGyroAngle());
+    public double getGyroPitchAngle() {
+        return 0.0;
+    }
+
+    @Override
+    public double getGyroRollAngle() {
+        return 0.0;
+    }
+
+    @Override
+    public Rotation2d getGyroYawRotation2d() {
+        return Rotation2d.fromDegrees(getGyroYawAngle());
     }
 
     @Override
@@ -51,6 +58,6 @@ public class GyroIOSim implements GyroIO {
     @Override
     public void updateInputs(GyroIOInputs inputs) {
         inputs.connected = true;
-        inputs.gyroAngle = getGyroAngle();
+        inputs.gyroAngle = getGyroYawAngle();
     }
 }

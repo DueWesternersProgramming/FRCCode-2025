@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.RobotConstants;
 import frc.robot.RobotState;
+import frc.robot.utils.AntiTipping;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.RobotConstants.DrivetrainConstants;
 import frc.robot.RobotConstants.QuestNavConstants;
@@ -67,6 +68,8 @@ public class DriveSubsystem extends SubsystemBase {
     ModuleIO[] moduleIO;
     ModuleIOInputsAutoLogged[] moduleInputs;
 
+    AntiTipping antiTipping;
+
     /** Creates a new Drivetrain. */
     public DriveSubsystem(ModuleIO[] moduleIOs, GyroIO gyroIO) {
         this.moduleIO = moduleIOs;
@@ -79,7 +82,7 @@ public class DriveSubsystem extends SubsystemBase {
 
         hybridOdometry = new SwerveDrivePoseEstimator(
                 DrivetrainConstants.DRIVE_KINEMATICS,
-                gyroIO.getGyroRotation2d(),
+                gyroIO.getGyroYawRotation2d(),
                 new SwerveModulePosition[] {
                         moduleIOs[0].getPosition(),
                         moduleIOs[1].getPosition(),
@@ -126,6 +129,15 @@ public class DriveSubsystem extends SubsystemBase {
                 this // Reference to this subsystem to set requirements
         );
         PathfindingCommand.warmupCommand().schedule();
+
+        AntiTipping antiTipping = new AntiTipping(
+                gyroIO::getGyroPitchAngle,
+                gyroIO::getGyroRollAngle,
+                0.04, // kP
+                4.0, // tipping threshold (degrees) //3
+                1.5 // max correction speed (m/s) //2.5
+        );
+
     }
 
     public SwerveModuleState[] getModuleStates() {
@@ -149,7 +161,7 @@ public class DriveSubsystem extends SubsystemBase {
         }
 
         hybridOdometry.update(
-                gyroIO.getGyroRotation2d(),
+                gyroIO.getGyroYawRotation2d(),
                 new SwerveModulePosition[] {
                         moduleIO[0].getPosition(),
                         moduleIO[1].getPosition(),
@@ -192,10 +204,12 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
 
+        antiTipping.calculate();
+
         updateOdometry();
         Logger.recordOutput("Module states", getModuleStates());
 
-        Logger.recordOutput("Gyro", gyroIO.getGyroAngle());
+        Logger.recordOutput("Gyro", gyroIO.getGyroYawAngle());
 
         for (int i = 0; i < moduleIO.length; i++) {
             moduleIO[i].updateInputs(moduleInputs[i]);
@@ -217,7 +231,7 @@ public class DriveSubsystem extends SubsystemBase {
     public void resetOdometry(Pose2d pose) {
 
         hybridOdometry.resetPosition(
-                gyroIO.getGyroRotation2d(),
+                gyroIO.getGyroYawRotation2d(),
                 new SwerveModulePosition[] {
                         moduleIO[0].getPosition(),
                         moduleIO[1].getPosition(),
@@ -227,7 +241,7 @@ public class DriveSubsystem extends SubsystemBase {
                 pose);
 
         // visionOdometry.resetPosition(
-        // gyroIO.getGyroRotation2d(),
+        // gyroIO.getGyroYawRotation2d(),
         // new SwerveModulePosition[] {
         // moduleIO[0].getPosition(),
         // moduleIO[1].getPosition(),
@@ -237,7 +251,7 @@ public class DriveSubsystem extends SubsystemBase {
         // pose);
 
         // questNavOdometry.resetPosition(
-        // gyroIO.getGyroRotation2d(),
+        // gyroIO.getGyroYawRotation2d(),
         // new SwerveModulePosition[] {
         // moduleIO[0].getPosition(),
         // moduleIO[1].getPosition(),
@@ -257,7 +271,8 @@ public class DriveSubsystem extends SubsystemBase {
      *                      field.
      * @param rateLimit     Whether to enable rate limiting for smoother control.
      */
-    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
+    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit,
+            boolean antiTippingEnabled) {
 
         double xSpeedCommanded;
         double ySpeedCommanded;
@@ -323,9 +338,14 @@ public class DriveSubsystem extends SubsystemBase {
         double ySpeedDelivered = ySpeedCommanded * DrivetrainConstants.MAX_SPEED_METERS_PER_SECOND;
         double rotDelivered = m_currentRotation * DrivetrainConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
 
-        ChassisSpeeds speeds = new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
+        ChassisSpeeds speeds;
+        if (antiTipping.isTipping() && antiTippingEnabled) {
+            speeds = antiTipping.getVelocityAntiTipping();
+        } else {
+            speeds = new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
+        }
 
-        Rotation2d rotation = gyroIO.getGyroRotation2d();
+        Rotation2d rotation = gyroIO.getGyroYawRotation2d();
 
         var swerveModuleStates = DrivetrainConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
                 fieldRelative
@@ -346,7 +366,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void runChassisSpeeds(ChassisSpeeds speeds, Boolean fieldRelative) {
-        Rotation2d rotation = Rotation2d.fromDegrees(gyroIO.getGyroAngle());
+        Rotation2d rotation = Rotation2d.fromDegrees(gyroIO.getGyroYawAngle());
 
         var swerveModuleStates = DrivetrainConstants.DRIVE_KINEMATICS.toSwerveModuleStates(
                 fieldRelative
@@ -423,7 +443,7 @@ public class DriveSubsystem extends SubsystemBase {
         double ySpeedDelivered = ySpeedCommanded * DrivetrainConstants.MAX_SPEED_METERS_PER_SECOND;
         double rotDelivered = m_currentRotation * DrivetrainConstants.MAX_ANGULAR_SPEED_RADIANS_PER_SECOND;
 
-        Rotation2d rotation = gyroIO.getGyroRotation2d();
+        Rotation2d rotation = gyroIO.getGyroYawRotation2d();
 
         return !fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
@@ -480,21 +500,19 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     /**
-     * Returns the heading of the robot.
+     * Returns the yaw heading of the robot.
      * 
      * @return the robot's heading in degrees, from -180 to 180
      */
     public Double getHeading() {
-        return gyroIO.getGyroAngle();
+        return gyroIO.getGyroYawAngle();
     }
 
     private ChassisSpeeds getChassisSpeeds() {
 
-        return RobotBase.isReal()
-                ? ChassisSpeeds.fromRobotRelativeSpeeds(gyroIO.getVelocityX(), gyroIO.getVelocityY(),
-                        Units.degreesToRadians(gyroIO.getRate()),
-                        gyroIO.getGyroRotation2d())
-                : ChassisSpeeds.fromRobotRelativeSpeeds(0, 0, 0, new Rotation2d());
+        return ChassisSpeeds.fromRobotRelativeSpeeds(gyroIO.getVelocityX(), gyroIO.getVelocityY(),
+                Units.degreesToRadians(gyroIO.getRate()),
+                gyroIO.getGyroYawRotation2d());
     }
 
     public Command gyroReset() {

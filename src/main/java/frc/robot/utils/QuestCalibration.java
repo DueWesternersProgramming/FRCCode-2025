@@ -18,16 +18,6 @@ import java.util.function.Supplier;
 
 public class QuestCalibration {
 
-        public static String ConvertCordsToCSVText(List<Pose2d> poses) {
-                String csvText = "X, Y\n";
-                for (Pose2d pose : poses) {
-                        csvText += pose.getX() + ", " + pose.getY() + "\n";
-                }
-                // System.out.println(csvText);
-                return csvText;
-
-        }
-
         /**
          * Collects and outputs calibration data by rotating the robot and recording
          * uncorrected
@@ -94,6 +84,16 @@ public class QuestCalibration {
                                         String csvText = ConvertCordsToCSVText(collectedPoses);
                                         System.out.println(csvText);
                                 }, driveSubsystem, questNavSubsystem);
+        }
+
+        public static String ConvertCordsToCSVText(List<Pose2d> poses) {
+                String csvText = "X, Y\n";
+                for (Pose2d pose : poses) {
+                        csvText += pose.getX() + ", " + pose.getY() + "\n";
+                }
+                // System.out.println(csvText);
+                return csvText;
+
         }
 
 }

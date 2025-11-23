@@ -54,16 +54,17 @@ public class TeleopDriveCommand extends Command {
         }
 
         if (RobotState.canRotate) {
-            drive.drive(ySquared, xSquared, rotSquared, fieldRelative, true);
+            drive.drive(ySquared, xSquared, rotSquared, fieldRelative, true, RobotState.isAntiTippingEnabled);
         } else {
-            drive.drive(ySquared, xSquared, 0, fieldRelative, true);
+            drive.drive(ySquared, xSquared, 0, fieldRelative, true, RobotState.isAntiTippingEnabled);
         }
 
     }
 
     @Override
     public void initialize() {
-        // drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true);
+        // drive.drive(0, 0, 0, DrivetrainConstants.FIELD_RELATIVE, true,
+        // RobotState.isAntiTippingEnabled);
     }
 
     @Override

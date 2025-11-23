@@ -13,13 +13,23 @@ public class GyroIONAVX implements GyroIO {
     }
 
     @Override
-    public double getGyroAngle() {
+    public double getGyroYawAngle() {
         return m_gyro.getAngle() * DrivetrainConstants.GYRO_ORIENTATION;
     }
 
     @Override
-    public Rotation2d getGyroRotation2d() {
-        return Rotation2d.fromDegrees(getGyroAngle());
+    public double getGyroPitchAngle() {
+        return m_gyro.getPitch();
+    }
+
+    @Override
+    public double getGyroRollAngle() {
+        return m_gyro.getRoll();
+    }
+
+    @Override
+    public Rotation2d getGyroYawRotation2d() {
+        return Rotation2d.fromDegrees(getGyroYawAngle());
     }
 
     @Override
@@ -51,6 +61,6 @@ public class GyroIONAVX implements GyroIO {
     @Override
     public void updateInputs(GyroIOInputs inputs) {
         inputs.connected = m_gyro.isConnected();
-        inputs.gyroAngle = getGyroAngle();
+        inputs.gyroAngle = getGyroYawAngle();
     }
 }
