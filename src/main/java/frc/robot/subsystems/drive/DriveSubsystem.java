@@ -130,7 +130,7 @@ public class DriveSubsystem extends SubsystemBase {
         );
         PathfindingCommand.warmupCommand().schedule();
 
-        AntiTipping antiTipping = new AntiTipping(
+        antiTipping = new AntiTipping(
                 gyroIO::getGyroPitchAngle,
                 gyroIO::getGyroRollAngle,
                 0.04, // kP
