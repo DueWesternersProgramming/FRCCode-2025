@@ -131,10 +131,10 @@ public class DriveSubsystem extends SubsystemBase {
         PathfindingCommand.warmupCommand().schedule();
 
         antiTipping = new AntiTipping(
-                gyroIO::getGyroPitchAngle,
                 gyroIO::getGyroRollAngle,
+                gyroIO::getGyroPitchAngle,
                 0.04, // kP
-                4.0, // tipping threshold (degrees) //3
+                2.0, // tipping threshold (degrees) //3
                 1.5 // max correction speed (m/s) //2.5
         );
 
@@ -340,7 +340,8 @@ public class DriveSubsystem extends SubsystemBase {
 
         ChassisSpeeds speeds;
         if (antiTipping.isTipping() && antiTippingEnabled) {
-            speeds = antiTipping.getVelocityAntiTipping();
+            ChassisSpeeds ogSpeeds = antiTipping.getVelocityAntiTipping();
+            speeds = ogSpeeds;//new ChassisSpeeds(ogSpeeds.vyMetersPerSecond, ogSpeeds.vxMetersPerSecond, ogSpeeds.omegaRadiansPerSecond);
         } else {
             speeds = new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
         }

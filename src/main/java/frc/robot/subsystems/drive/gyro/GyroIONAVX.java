@@ -24,7 +24,7 @@ public class GyroIONAVX implements GyroIO {
 
     @Override
     public double getGyroRollAngle() {
-        return m_gyro.getRoll();
+        return -m_gyro.getRoll(); //TODO: FIX 
     }
 
     @Override
