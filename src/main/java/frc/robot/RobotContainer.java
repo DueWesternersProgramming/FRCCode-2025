@@ -7,7 +7,6 @@ package frc.robot;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistribution;
@@ -52,7 +51,7 @@ import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.subsystems.wrist.WristSubsystemIO;
 import frc.robot.subsystems.wrist.WristSubsystemIOSim;
 import frc.robot.subsystems.wrist.WristSubsystemIOSpark;
-import frc.robot.automation.AutomationSelector;
+import frc.robot.automation.AutomationTabletInput;
 import frc.robot.RobotConstants.PortConstants;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.utils.QuestCalibration;
@@ -74,9 +73,9 @@ public class RobotContainer {
                         RobotConstants.PortConstants.Controller.OPERATOR_JOYSTICK);
 
         ModuleIO[] moduleIOs;
-        public final AutomationSelector automationSelector = new AutomationSelector();
+        public final AutomationTabletInput automationTabletInput = new AutomationTabletInput();
 
-        SendableChooser<Command> m_autoPositionChooser = new SendableChooser<>();
+        SendableChooser<Command> autoChooser = new SendableChooser<>();
 
         PowerDistribution pdp;
 
@@ -178,8 +177,8 @@ public class RobotContainer {
 
                 try {
                         pdp = new PowerDistribution(CAN.PDH, ModuleType.kRev);
-                        m_autoPositionChooser = AutoBuilder.buildAutoChooser("Test Auto");
-                        Shuffleboard.getTab("Autonomous Selection").add(m_autoPositionChooser);
+                        autoChooser = AutoBuilder.buildAutoChooser("Test Auto");
+                        Shuffleboard.getTab("Autonomous Selection").add(autoChooser);
                         Shuffleboard.getTab("Power").add(pdp);
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -251,9 +250,9 @@ public class RobotContainer {
 
                 new JoystickButton(driveJoystick, 2).whileTrue(
                                 Commands.deferredProxy(() -> AutomatedScoring.fullReefAutomation(
-                                                automationSelector.getReefSide(),
-                                                automationSelector.getPosition(),
-                                                automationSelector.getHeight(),
+                                                automationTabletInput.getReefSide(),
+                                                automationTabletInput.getPosition(),
+                                                automationTabletInput.getHeight(),
                                                 () -> -driveJoystick.getRawAxis(
                                                                 PortConstants.Controller.DRIVE_COMMAND_Y_AXIS),
                                                 driveSubsystem,
@@ -350,8 +349,8 @@ public class RobotContainer {
         }
 
         public Command getAutonomousCommand() {
-                if (m_autoPositionChooser.getSelected() != null) {
-                        return m_autoPositionChooser.getSelected();
+                if (autoChooser.getSelected() != null) {
+                        return autoChooser.getSelected();
                 } else {
                         return driveSubsystem.gyroReset();
                 }

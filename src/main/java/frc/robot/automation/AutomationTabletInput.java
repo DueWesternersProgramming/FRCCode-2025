@@ -1,13 +1,11 @@
 package frc.robot.automation;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotConstants.ScoringConstants.Setpoints;
 
-public class AutomationSelector {
+public class AutomationTabletInput {
 
-    public AutomationSelector() {
+    public AutomationTabletInput() {
         // Publish initial values to SmartDashboard
         SmartDashboard.putNumber("Reef Side", 1); // 1-6 counter clockwise. see strategy docs.
         SmartDashboard.putNumber("Position", 1); // 0 for left, 1 for middle, 2 for right

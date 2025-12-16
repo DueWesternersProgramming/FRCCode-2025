@@ -355,25 +355,25 @@ public final class RobotConstants {
                 }
         }
 
-        public static final class AutonomousConstants {
-                // public static final boolean FLIP_PATHPLANNER_AUTOS = false;
+        // public static final class AutonomousConstants {
+        // // public static final boolean FLIP_PATHPLANNER_AUTOS = false;
 
-                public static final double X_CONTROLLER_P = 3.5;
-                public static final double Y_CONTROLLER_P = 3.5;
-                public static final double THETA_CONTROLLER_P = 5;
+        // // public static final double X_CONTROLLER_P = 3.5;
+        // // public static final double Y_CONTROLLER_P = 3.5;
+        // // public static final double THETA_CONTROLLER_P = 5;
 
-                public static final double X_CONTROLLER_I = 0;
-                public static final double Y_CONTROLLER_I = 0;
-                public static final double THETA_CONTROLLER_I = 0;
+        // // public static final double X_CONTROLLER_I = 0;
+        // // public static final double Y_CONTROLLER_I = 0;
+        // // public static final double THETA_CONTROLLER_I = 0;
 
-                public static final double X_CONTROLLER_D = 0;
-                public static final double Y_CONTROLLER_D = 0;
-                public static final double THETA_CONTROLLER_D = 0;
+        // // public static final double X_CONTROLLER_D = 0;
+        // // public static final double Y_CONTROLLER_D = 0;
+        // // public static final double THETA_CONTROLLER_D = 0;
 
-                public static final double FIELD_LENGTH_INCHES = 54 * 12 + 1; // 54ft 1in
-                public static final double FIELD_WIDTH_INCHES = 26 * 12 + 7; // 26ft 7in
+        // // public static final double FIELD_LENGTH_INCHES = 54 * 12 + 1; // 54ft 1in
+        // // public static final double FIELD_WIDTH_INCHES = 26 * 12 + 7; // 26ft 7in
 
-        }
+        // }
 
         public static final class TeleopConstants {
                 public static final double MAX_SPEED_PERCENT = 1; // ex: 0.4 -> 40%
@@ -537,7 +537,25 @@ public final class RobotConstants {
                 public static final Transform2d ROBOT_TO_QUEST = new Transform2d(
                                 new Translation2d(.0958, .20249092),
                                 Rotation2d.kCCW_90deg);
+        }
 
+        public static final class ConfigurableAutonsConstants {
+                public enum HumanPlayerPositions {
+                        LEFT,
+                        RIGHT
+                }
+
+                public enum StartingPositions {
+                        LEFT,
+                        MIDDLE,
+                        RIGHT
+                }
+
+                public enum SidePosition {
+                        LEFT,
+                        ALGAE,
+                        RIGHT
+                }
         }
 
         public static final class SubsystemEnabledConstants {
