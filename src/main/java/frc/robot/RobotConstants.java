@@ -13,6 +13,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -533,6 +534,10 @@ public final class RobotConstants {
                                 0.02, // Trust down to 2cm in Y direction
                                 0.035 // Trust down to 2 degrees rotational
                 );
+                public static final Transform2d ROBOT_TO_QUEST = new Transform2d(
+                                new Translation2d(.0958, .20249092),
+                                Rotation2d.kCCW_90deg);
+
         }
 
         public static final class SubsystemEnabledConstants {
