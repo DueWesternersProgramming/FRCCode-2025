@@ -28,6 +28,7 @@ import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.elevator.MoveElevatorManual;
 import frc.robot.commands.wrist.MoveWristManual;
+import frc.robot.configurableAutos.ConfigurableAutons;
 import frc.robot.subsystems.claw.ClawIOSim;
 import frc.robot.subsystems.claw.ClawIOSpark;
 import frc.robot.subsystems.claw.ClawSubsystem;
@@ -76,6 +77,8 @@ public class RobotContainer {
         public final AutomationTabletInput automationTabletInput = new AutomationTabletInput();
 
         SendableChooser<Command> autoChooser = new SendableChooser<>();
+
+        ConfigurableAutons configurableAutons;
 
         PowerDistribution pdp;
 
@@ -176,6 +179,7 @@ public class RobotContainer {
                 configureButtonBindings();
 
                 try {
+                        configurableAutons = new ConfigurableAutons();
                         pdp = new PowerDistribution(CAN.PDH, ModuleType.kRev);
                         autoChooser = AutoBuilder.buildAutoChooser("Test Auto");
                         Shuffleboard.getTab("Autonomous Selection").add(autoChooser);

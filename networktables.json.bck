@@ -1,0 +1,10 @@
+[
+  {
+    "name": "DynamicAutoConfigurations/TestValue",
+    "type": "double",
+    "value": 63.0,
+    "properties": {
+      "persistent": true
+    }
+  }
+]

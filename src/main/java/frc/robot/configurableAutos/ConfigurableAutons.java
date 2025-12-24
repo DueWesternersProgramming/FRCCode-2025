@@ -1,55 +1,66 @@
 package frc.robot.configurableAutos;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import edu.wpi.first.networktables.DoublePublisher;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StringPublisher;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import frc.robot.RobotConstants.ConfigurableAutonsConstants.HumanPlayerPositions;
-import frc.robot.RobotConstants.ConfigurableAutonsConstants.SidePosition;
-import frc.robot.RobotConstants.ConfigurableAutonsConstants.StartingPositions;
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ConfigurableAutons {
 
-    public enum AutonStepType {
-        INTAKE,
-        SCORE,
-        CLEAR_ALAGE,
+    // StringPublisher blockTypesPublisher;
+    // DoublePublisher testPublisher;
+    Gson gson;
+
+    public ConfigurableAutons() {
+        // NetworkTableInstance inst = NetworkTableInstance.getDefault();
+
+        // var blockTypesTopic =
+        // inst.getStringTopic("DynamicAutoConfigurations/BlockTypes");
+        // blockTypesTopic.setPersistent(true);
+        // blockTypesPublisher = blockTypesTopic.publish();
+
+        // var testTopic = inst.getDoubleTopic("DynamicAutoConfigurations/TestValue");
+        // testTopic.setPersistent(true);
+        // testPublisher = testTopic.publish();
+
+        gson = new Gson();
+        publishFullSchema();
     }
 
-    public class AutonStep {
-        public String actionDescription;
-        public AutonStepType type;
+    private void publishFullSchema() {
+        // may add a simpler way to define these later, but this is good for a
+        // prototype.
+        Map<String, Object> schema = new HashMap<>();
 
-        public AutonStep(String actionDescription, AutonStepType type, Optional<Object> HumanPlayerPosition,
-                Optional<Object> StartingPosition, Optional<Object> SidePosition) {
-            this.actionDescription = actionDescription;
-            this.type = type;
-            if (type == AutonStepType.INTAKE) {
-                // Additional properties for INTAKE can be added here
-            } else if (type == AutonStepType.SCORE) {
-                // Additional properties for SCORE can be added here
-            } else if (type == AutonStepType.CLEAR_ALAGE) {
-                // Additional properties for CLEAR_ALAGE can be added here
-            }
+        schema.put("Score Coral", createBlockMap(new ArrayList<>(List.of("Reef Side", "Position", "Level"))));
+        schema.put("Pickup Coral", createBlockMap(new ArrayList<>(List.of("HP station")))); // 0 for left, 1 for right
+
+        String jsonStr = gson.toJson(schema);
+
+        SmartDashboard.putString("DynamicAutos/BlockTypes", jsonStr);
+        // blockTypesPublisher.set(jsonStr);
+        // testPublisher.set(67);
+    }
+
+    private Map<String, Object> createBlockMap(ArrayList<String> params) {
+        Object[] paramArray = new Object[params.size()];
+        for (int i = 0; i < params.size(); i++) {
+            paramArray[i] = Map.of(
+                    "name", params.get(i),
+                    "type", "double",
+                    "default", 0.0); // all params are doubles for now, may need to change
         }
+
+        Map<String, Object> blockMap = new HashMap<>();
+        blockMap.put("params", paramArray);
+        return blockMap;
     }
 
-    public void GenerateAuton() {
-        ArrayList<AutonStep> autonSteps = new ArrayList<>();
-
-        // Example of adding steps to the autonomous routine
-        autonSteps.add(new AutonStep("Intake from left side", AutonStepType.INTAKE,
-                Optional.of(HumanPlayerPositions.LEFT), Optional.empty(), Optional.of(SidePosition.LEFT)));
-
-        autonSteps.add(new AutonStep("Score at middle position", AutonStepType.SCORE,
-                Optional.empty(), Optional.of(StartingPositions.MIDDLE), Optional.empty()));
-
-        autonSteps.add(new AutonStep("Clear algae from right side", AutonStepType.CLEAR_ALAGE,
-                Optional.empty(), Optional.empty(), Optional.of(SidePosition.ALGAE)));
-
-        // Further processing of autonSteps can be done here
-
-        for (AutonStep step : autonSteps) {
-            System.out.println("Running now: " + step.actionDescription + ", Type: " + step.type);
-        }
-    }
 }
