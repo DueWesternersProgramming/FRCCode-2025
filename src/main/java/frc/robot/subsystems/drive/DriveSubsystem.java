@@ -175,30 +175,29 @@ public class DriveSubsystem extends SubsystemBase {
 
     private void updateOdometrySensorMeasurements() {
 
-        // // PV poses:
+        // PV poses:
 
-        // TimestampedPose timestampedPose;
-        // while ((timestampedPose = RobotState.getAprilTagCameraMeasurments().poll())
-        // != null) {
-        // hybridOdometry.addVisionMeasurement(
-        // timestampedPose.pose(), timestampedPose.timestamp());
-        // // visionOdometry.addVisionMeasurement(
-        // // timestampedPose.pose(), timestampedPose.timestamp());
-        // }
+        TimestampedPose timestampedPose;
+        while ((timestampedPose = RobotState.getAprilTagCameraMeasurments().poll()) != null) {
+            hybridOdometry.addVisionMeasurement(
+                    timestampedPose.pose(), timestampedPose.timestamp());
+            // visionOdometry.addVisionMeasurement(
+            // timestampedPose.pose(), timestampedPose.timestamp());
+        }
 
-        // // QuestNav poses:
+        // QuestNav poses:
 
-        // if (DriverStation.isEnabled()) {
+        if (DriverStation.isEnabled()) {
 
-        // while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
-        // hybridOdometry.addVisionMeasurement(
-        // timestampedPose.pose(), timestampedPose.timestamp(),
-        // QuestNavConstants.QUESTNAV_STD_DEVS);
-        // // questNavOdometry.addVisionMeasurement(
-        // // timestampedPose.pose(), timestampedPose.timestamp(),
-        // // QuestNavConstants.QUESTNAV_STD_DEVS);
-        // }
-        // }
+            while ((timestampedPose = RobotState.getQuestMeasurments().poll()) != null) {
+                hybridOdometry.addVisionMeasurement(
+                        timestampedPose.pose(), timestampedPose.timestamp(),
+                        QuestNavConstants.QUESTNAV_STD_DEVS);
+                // questNavOdometry.addVisionMeasurement(
+                // timestampedPose.pose(), timestampedPose.timestamp(),
+                // QuestNavConstants.QUESTNAV_STD_DEVS);
+            }
+        }
     }
 
     @Override
@@ -341,7 +340,8 @@ public class DriveSubsystem extends SubsystemBase {
         ChassisSpeeds speeds;
         if (antiTipping.isTipping() && antiTippingEnabled) {
             ChassisSpeeds ogSpeeds = antiTipping.getVelocityAntiTipping();
-            speeds = ogSpeeds;//new ChassisSpeeds(ogSpeeds.vyMetersPerSecond, ogSpeeds.vxMetersPerSecond, ogSpeeds.omegaRadiansPerSecond);
+            speeds = ogSpeeds;// new ChassisSpeeds(ogSpeeds.vyMetersPerSecond, ogSpeeds.vxMetersPerSecond,
+                              // ogSpeeds.omegaRadiansPerSecond);
         } else {
             speeds = new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered);
         }

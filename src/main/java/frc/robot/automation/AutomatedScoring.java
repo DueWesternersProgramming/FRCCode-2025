@@ -73,7 +73,7 @@ public class AutomatedScoring {
         return targetPose;
     }
 
-    public static Command fullReefAutomation(int reefSide, int position,
+    public static Command fullReefAutomationPerpendicularLineup(int reefSide, int position,
             Setpoints height, Supplier<Double> perpendicularSpeed,
             DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem) {
 

@@ -4,6 +4,9 @@
 
 package frc.robot;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -28,7 +31,9 @@ import frc.robot.commands.RobotSystemsCheckCommand;
 import frc.robot.commands.drive.TeleopDriveCommand;
 import frc.robot.commands.elevator.MoveElevatorManual;
 import frc.robot.commands.wrist.MoveWristManual;
-import frc.robot.configurableAutos.ConfigurableAutons;
+import frc.robot.configurableAutos.AutoCommandDef;
+import frc.robot.configurableAutos.AutoParamDef;
+import frc.robot.configurableAutos.DynamicAutoRegistry;
 import frc.robot.subsystems.claw.ClawIOSim;
 import frc.robot.subsystems.claw.ClawIOSpark;
 import frc.robot.subsystems.claw.ClawSubsystem;
@@ -77,8 +82,6 @@ public class RobotContainer {
         public final AutomationTabletInput automationTabletInput = new AutomationTabletInput();
 
         SendableChooser<Command> autoChooser = new SendableChooser<>();
-
-        ConfigurableAutons configurableAutons;
 
         PowerDistribution pdp;
 
@@ -179,7 +182,19 @@ public class RobotContainer {
                 configureButtonBindings();
 
                 try {
-                        configurableAutons = new ConfigurableAutons();
+                        DynamicAutoRegistry dynamicAutoRegistry = new DynamicAutoRegistry();
+
+                        dynamicAutoRegistry.registerCommand(
+                                        new AutoCommandDef(
+                                                        "Score Coral",
+                                                        List.of(
+                                                                        new AutoParamDef("Reef Side", 1),
+                                                                        new AutoParamDef("Position", 0),
+                                                                        new AutoParamDef("Level", 3)),
+                                                        null)); // TODO add factory for interpertation to build commands
+
+                        dynamicAutoRegistry.publishCommands();
+
                         pdp = new PowerDistribution(CAN.PDH, ModuleType.kRev);
                         autoChooser = AutoBuilder.buildAutoChooser("Test Auto");
                         Shuffleboard.getTab("Autonomous Selection").add(autoChooser);
@@ -253,7 +268,7 @@ public class RobotContainer {
                                                 driveSubsystem.gyroReset()));
 
                 new JoystickButton(driveJoystick, 2).whileTrue(
-                                Commands.deferredProxy(() -> AutomatedScoring.fullReefAutomation(
+                                Commands.deferredProxy(() -> AutomatedScoring.fullReefAutomationPerpendicularLineup(
                                                 automationTabletInput.getReefSide(),
                                                 automationTabletInput.getPosition(),
                                                 automationTabletInput.getHeight(),
