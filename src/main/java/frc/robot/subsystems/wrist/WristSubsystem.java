@@ -50,6 +50,33 @@ public class WristSubsystem extends SubsystemBase {
         }, this);
     }
 
+    public Command goToCoralScoreSetpoint(int level) {
+        return new InstantCommand(() -> {
+            double setpoint;
+            switch (level) {
+                case 1:
+                    setpoint = CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.L1
+                            : WristConstants.AngleSetpoints.Coral.L1;
+                    break;
+                case 2:
+                    setpoint = CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.L2
+                            : WristConstants.AngleSetpoints.Coral.L2;
+                    break;
+                case 3:
+                    setpoint = CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.L3
+                            : WristConstants.AngleSetpoints.Coral.L3;
+                    break;
+                default:
+                    setpoint = CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.HOME
+                            : WristConstants.AngleSetpoints.HOME;
+                    break;
+            }
+
+            io.goToSetpoint(setpoint);
+
+        }, this);
+    }
+
     public Command goToAlgaeGrabSetpoint(Setpoints level) {
         return new InstantCommand(() -> {
             double setpoint;
@@ -59,6 +86,29 @@ public class WristSubsystem extends SubsystemBase {
                             : WristConstants.AngleSetpoints.Algae.L2;
                     break;
                 case L3:
+                    setpoint = CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.L3
+                            : WristConstants.AngleSetpoints.Algae.L3;
+                    break;
+                default:
+                    setpoint = CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.HOME
+                            : WristConstants.AngleSetpoints.HOME;
+                    break;
+            }
+
+            io.goToSetpoint(setpoint);
+
+        }, this);
+    }
+
+    public Command goToAlgaeGrabSetpoint(int level) {
+        return new InstantCommand(() -> {
+            double setpoint;
+            switch (level) {
+                case 2:
+                    setpoint = CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.L2
+                            : WristConstants.AngleSetpoints.Algae.L2;
+                    break;
+                case 3:
                     setpoint = CowboyUtils.isSim() ? WristConstants.AngleSetpoints.SimConstants.L3
                             : WristConstants.AngleSetpoints.Algae.L3;
                     break;

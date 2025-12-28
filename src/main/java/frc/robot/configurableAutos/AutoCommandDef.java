@@ -12,7 +12,7 @@ import java.util.List;
  * @param factory The factory to create the command. List<AutoParamDef>
  */
 public record AutoCommandDef(
-                String name,
-                List<AutoParamDef> params,
-                AutoCommandFactory factory) {
+        String name,
+        List<AutoParamDef> params,
+        AutoCommandFactory factory) {
 }

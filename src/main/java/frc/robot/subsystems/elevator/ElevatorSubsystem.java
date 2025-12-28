@@ -46,6 +46,31 @@ public class ElevatorSubsystem extends SubsystemBase {
         }, this);
     }
 
+    public Command goToCoralScoreSetpoint(int level) {
+        return new InstantCommand(() -> {
+            double setpoint;
+            switch (level) {
+                case 1:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L1
+                            : ElevatorConstants.HeightSetpoints.Coral.L1;
+                    break;
+                case 2:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L2
+                            : ElevatorConstants.HeightSetpoints.Coral.L2;
+                    break;
+                case 3:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L3
+                            : ElevatorConstants.HeightSetpoints.Coral.L3;
+                    break;
+                default:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.HOME
+                            : ElevatorConstants.HeightSetpoints.HOME;
+                    break;
+            }
+            io.goToSetpoint(setpoint);
+        }, this);
+    }
+
     public Command goToAlgaeGrabSetpoint(Setpoints level) {
         return new InstantCommand(() -> {
             double setpoint;
@@ -55,6 +80,29 @@ public class ElevatorSubsystem extends SubsystemBase {
                             : ElevatorConstants.HeightSetpoints.Algae.L2;
                     break;
                 case L3:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L3
+                            : ElevatorConstants.HeightSetpoints.Algae.L3;
+                    break;
+                default:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.HOME
+                            : ElevatorConstants.HeightSetpoints.HOME;
+                    break;
+            }
+
+            io.goToSetpoint(setpoint);
+
+        }, this);
+    }
+
+    public Command goToAlgaeGrabSetpoint(int level) {
+        return new InstantCommand(() -> {
+            double setpoint;
+            switch (level) {
+                case 2:
+                    setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L2
+                            : ElevatorConstants.HeightSetpoints.Algae.L2;
+                    break;
+                case 3:
                     setpoint = CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.L3
                             : ElevatorConstants.HeightSetpoints.Algae.L3;
                     break;

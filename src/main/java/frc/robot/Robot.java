@@ -17,11 +17,13 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotConstants.SimMode;
+import frc.robot.RobotState.AutoMode;
 
 public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
-    private RobotContainer m_robotContainer = new RobotContainer();
+    private RobotContainer robotContainer = new RobotContainer();
 
     public Robot() {
         Logger.recordMetadata("FRCCode-2025", "FRCCode-2025"); // Set a metadata value
@@ -70,11 +72,11 @@ public class Robot extends LoggedRobot {
     public void robotPeriodic() {
 
         CommandScheduler.getInstance().run();
-        // RobotState.visionPoseStatePeriodic(m_robotContainer.visionSubsystem,
-        // m_robotContainer.questNavSubsystem);
+        // RobotState.visionPoseStatePeriodic(robotContainer.visionSubsystem,
+        // robotContainer.questNavSubsystem);
 
         // if (DriverStation.isEnabled() &&
-        // m_robotContainer.questNavSubsystem.isConnected()) {
+        // robotContainer.questNavSubsystem.isConnected()) {
         // RobotState.visionMode = VisionMode.QUEST_NAV_ONLY;
         // } else {
         // RobotState.visionMode = VisionMode.APRIL_TAG_ONLY;
@@ -99,14 +101,16 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
-        m_robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
+        robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
         RobotState.isQuestNavPoseReset = true;
 
-        m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-
-        // schedule the autonomous command (example)
-        if (m_autonomousCommand != null) {
-            m_autonomousCommand.schedule();
+        if (robotContainer.getSelectedAutoMode() == AutoMode.DYNAMIC_AUTO) {
+            Commands.deferredProxy(() -> robotContainer.dynamicAutoRegistry.buildAuto()).schedule();
+        } else {
+            m_autonomousCommand = robotContainer.getPPAutonomousCommand();
+            if (m_autonomousCommand != null) {
+                m_autonomousCommand.schedule();
+            }
         }
     }
 
@@ -119,7 +123,7 @@ public class Robot extends LoggedRobot {
         CommandScheduler.getInstance().cancelAll();
 
         if (!DriverStation.isFMSAttached()) {
-            m_robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
+            robotContainer.questNavSubsystem.setRobotPose(RobotState.robotPose);
             RobotState.isQuestNavPoseReset = true;
 
         }
@@ -150,7 +154,7 @@ public class Robot extends LoggedRobot {
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
 
-        m_robotContainer.getTestingCommand().schedule();
+        robotContainer.getTestingCommand().schedule();
     }
 
     @Override

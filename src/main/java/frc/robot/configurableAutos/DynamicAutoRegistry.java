@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 public class DynamicAutoRegistry {
     Map<String, AutoCommandDef> registry;
@@ -31,9 +33,52 @@ public class DynamicAutoRegistry {
     public Command buildCommand(String name, Map<String, Integer> params) {
         AutoCommandDef def = registry.get(name);
         if (def != null) {
+            System.out.println("Building command: " + name + " with params: " + params);
             return def.factory().create(params);
         }
         return null;
+    }
+
+    public Command buildAuto() {
+        System.out.println("Building auto...");
+
+        SequentialCommandGroup cmd = new SequentialCommandGroup(
+                new InstantCommand(() -> System.out.println("EA Sports"))
+                        .withName("Startup Print"));
+
+        String routineJson = SmartDashboard.getString(
+                "DynamicAutos/routineJson",
+                "{}");
+
+        System.out.println("Routine JSON: " + routineJson);
+
+        Map<?, ?> root = gson.fromJson(routineJson, Map.class); // {"blockNum"={{"type":"example"}, {params:{}}}}
+
+        for (Map.Entry<?, ?> entry : root.entrySet()) {
+            Map<?, ?> block = (Map<?, ?>) entry.getValue();
+            System.out.println("Processing block: " + block);
+
+            String type = (String) block.get("type");
+            Map<?, ?> params = (Map<?, ?>) block.get("params");
+
+            Map<String, Integer> paramMap = new HashMap<>();
+
+            for (Map.Entry<?, ?> paramEntry : params.entrySet()) {
+                paramMap.put(
+                        (String) paramEntry.getKey(),
+                        Integer.parseInt((String) paramEntry.getValue()));
+            }
+
+            Command step = buildCommand(type, paramMap);
+
+            if (step != null) {
+                cmd.addCommands(step.withName(type));
+            } else {
+                System.out.println("Unknown command type: " + type);
+            }
+        }
+
+        return cmd;
     }
 
     public void publishCommands() {
@@ -51,10 +96,8 @@ public class DynamicAutoRegistry {
 
                 paramList.add(paramEntry);
             }
-
             schema.put(name, Map.of("params", paramList));
         }
-
         String jsonStr = gson.toJson(schema);
         SmartDashboard.putString("DynamicAutos/BlockTypes", jsonStr);
     }

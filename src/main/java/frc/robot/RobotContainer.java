@@ -7,6 +7,8 @@ package frc.robot;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -64,6 +66,7 @@ import frc.robot.utils.QuestCalibration;
 import frc.robot.utils.CowboyUtils.RobotModes;
 import frc.robot.RobotConstants.PortConstants.CAN;
 import frc.robot.RobotConstants.ScoringConstants.Setpoints;
+import frc.robot.RobotState.AutoMode;
 import frc.robot.automation.AutomatedScoring;
 
 //@Logged(name = "RobotContainer")
@@ -81,7 +84,10 @@ public class RobotContainer {
         ModuleIO[] moduleIOs;
         public final AutomationTabletInput automationTabletInput = new AutomationTabletInput();
 
-        SendableChooser<Command> autoChooser = new SendableChooser<>();
+        SendableChooser<Command> autoPPChooser = new SendableChooser<>();
+        SendableChooser<AutoMode> autoMode = new SendableChooser<>();
+
+        DynamicAutoRegistry dynamicAutoRegistry;
 
         PowerDistribution pdp;
 
@@ -182,24 +188,33 @@ public class RobotContainer {
                 configureButtonBindings();
 
                 try {
-                        DynamicAutoRegistry dynamicAutoRegistry = new DynamicAutoRegistry();
+                        dynamicAutoRegistry = new DynamicAutoRegistry();
 
-                        dynamicAutoRegistry.registerCommand(
-                                        new AutoCommandDef(
-                                                        "Score Coral",
-                                                        List.of(
-                                                                        new AutoParamDef("Reef Side", 1),
-                                                                        new AutoParamDef("Position", 0),
-                                                                        new AutoParamDef("Level", 3)),
-                                                        null)); // TODO add factory for interpertation to build commands
+                        dynamicAutoRegistry.registerCommand(new AutoCommandDef("Score Coral",
+                                        List.of(new AutoParamDef("Reef Side", 6), new AutoParamDef("Position", 0),
+                                                        new AutoParamDef("Level", 3)),
+                                        params -> Commands.deferredProxy(
+                                                        // this is the command factory
+                                                        () -> new InstantCommand(() -> System.out.println(params)))));
 
                         dynamicAutoRegistry.publishCommands();
 
                         pdp = new PowerDistribution(CAN.PDH, ModuleType.kRev);
-                        autoChooser = AutoBuilder.buildAutoChooser("Test Auto");
-                        Shuffleboard.getTab("Autonomous Selection").add(autoChooser);
+
+                        autoPPChooser = AutoBuilder.buildAutoChooser("Test Auto");
+
+                        Shuffleboard.getTab("Autonomous Selection").add(autoPPChooser);
+
+                        autoMode.addOption("Pathplanner", AutoMode.PP_AUTO);
+                        autoMode.setDefaultOption("Dynamic", AutoMode.DYNAMIC_AUTO);
+
+                        Shuffleboard.getTab("Autonomous Selection").add("PathPlannerAutoSelector", autoPPChooser);
+                        Shuffleboard.getTab("Autonomous Selection").add("AutoModeSelector", autoMode);
+
                         Shuffleboard.getTab("Power").add(pdp);
-                } catch (Exception e) {
+                } catch (
+
+                Exception e) {
                         e.printStackTrace();
                 }
         }
@@ -269,7 +284,7 @@ public class RobotContainer {
 
                 new JoystickButton(driveJoystick, 2).whileTrue(
                                 Commands.deferredProxy(() -> AutomatedScoring.fullReefAutomationPerpendicularLineup(
-                                                automationTabletInput.getReefSide(),
+                                                automationTabletInput.getReefSide(), // TRIVIAL!!!
                                                 automationTabletInput.getPosition(),
                                                 automationTabletInput.getHeight(),
                                                 () -> -driveJoystick.getRawAxis(
@@ -367,12 +382,20 @@ public class RobotContainer {
 
         }
 
-        public Command getAutonomousCommand() {
-                if (autoChooser.getSelected() != null) {
-                        return autoChooser.getSelected();
+        public Command getPPAutonomousCommand() {
+                if (autoPPChooser.getSelected() != null) {
+                        return autoPPChooser.getSelected();
                 } else {
                         return driveSubsystem.gyroReset();
                 }
+        }
+
+        public AutoMode getSelectedAutoMode() {
+
+                AutoMode selectedAutoMode = autoMode.getSelected();
+                Logger.recordOutput("Selected Auto Mode", selectedAutoMode);
+
+                return selectedAutoMode;
         }
 
         public Command getTestingCommand() {

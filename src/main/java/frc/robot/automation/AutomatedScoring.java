@@ -61,8 +61,20 @@ public class AutomatedScoring {
         return closestReefSide;
     }
 
-    private static Pose2d getReefPose(int reefSide, int position, Pose2d currentPose) {
+    private static Pose2d getClosestReefPose(int position, Pose2d currentPose) {
         targetPose = ScoringConstants.REEF_SIDE_POSES[getClosesetReefSide(currentPose) - 1][position];
+
+        if (CowboyUtils.isRedAlliance()) {
+            targetPose = FlippingUtil.flipFieldPose(targetPose);
+        }
+        targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
+                new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 180)));
+
+        return targetPose;
+    }
+
+    private static Pose2d getReefPose(int reefSide, int position, Pose2d currentPose) {
+        targetPose = ScoringConstants.REEF_SIDE_POSES[reefSide - 1][position];
 
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
@@ -77,7 +89,7 @@ public class AutomatedScoring {
             Setpoints height, Supplier<Double> perpendicularSpeed,
             DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem) {
 
-        Pose2d pose = getReefPose(reefSide, position, drivesubsystem.getPose());
+        Pose2d pose = getClosestReefPose(position, drivesubsystem.getPose());
         RobotState.isAutoAlignActive = true;
         if (position == 1) {
 
@@ -91,6 +103,32 @@ public class AutomatedScoring {
             return new ParallelCommandGroup(
 
                     new AlignPerpendicularToPoseCommand(drivesubsystem, pose, perpendicularSpeed),
+                    new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
+                            wristSubsystem.goToCoralScoreSetpoint(height)));
+        }
+
+    }
+
+    public static Command fullReefAutomationDynamicAuto(int reefSide, int position,
+            int height,
+            DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+            ClawSubsystem clawSubsystem) {
+
+        Pose2d pose = getReefPose(reefSide, position, drivesubsystem.getPose());
+        RobotState.isAutoAlignActive = true;
+        if (position == 1) {
+            return new ParallelCommandGroup(
+
+                    PPmoveToPose(pose),
+                    new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
+                            wristSubsystem.goToAlgaeGrabSetpoint(height)),
+                    clawSubsystem.intakeAlgae());
+        } else {
+
+            return new ParallelCommandGroup(
+
+                    PPmoveToPose(pose),
+
                     new SequentialCommandGroup(elevatorSubsystem.goToCoralScoreSetpoint(height),
                             wristSubsystem.goToCoralScoreSetpoint(height)));
         }
