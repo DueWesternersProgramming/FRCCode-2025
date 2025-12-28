@@ -2,12 +2,15 @@ package frc.robot.automation;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.claw.ClawSubsystem;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.elevator.ElevatorSubsystem;
@@ -15,10 +18,11 @@ import frc.robot.subsystems.wrist.WristSubsystem;
 import frc.robot.utils.CowboyUtils;
 import frc.robot.RobotState;
 import frc.robot.RobotConstants.ScoringConstants;
-import frc.robot.RobotConstants.WristConstants;
 import frc.robot.RobotConstants.ScoringConstants.Setpoints;
 
 import java.util.function.Supplier;
+
+import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.PathConstraints;
@@ -30,7 +34,7 @@ public class AutomatedScoring {
     private static Pose2d pathPlanToHP(int humanPlayerSide) {
         targetPose = ScoringConstants.HP_POSES.get(humanPlayerSide); // no -1 since 0 is left and 1 is
                                                                      // right
-                                                                     // and indexing starts at 0'
+                                                                     // and indexing starts at 0
         if (CowboyUtils.isRedAlliance()) {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
         }
@@ -38,7 +42,7 @@ public class AutomatedScoring {
     }
 
     public static int getClosesetReefSide(Pose2d currentPose) {
-        int closestReefSide = 1; // 1-based index.
+        int closestReefSide = 1; // 1-based indexing for reef faces.
         // Compare using 0-based index for the array.
         for (int i = 1; i < 7; i++) {
             Pose2d comparisonPose = ScoringConstants.REEF_SIDE_POSES[i - 1][1];
@@ -68,7 +72,8 @@ public class AutomatedScoring {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
         }
         targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-                new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees())));// +180
+                new Rotation2d(
+                        Math.toRadians(targetPose.getRotation().getDegrees() + (CowboyUtils.isSim() ? 0 : 180))));
 
         return targetPose;
     }
@@ -80,7 +85,8 @@ public class AutomatedScoring {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
         }
         targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-                new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees())));// +180
+                new Rotation2d(
+                        Math.toRadians(targetPose.getRotation().getDegrees() + (CowboyUtils.isSim() ? 0 : 180))));// +180
 
         return targetPose;
     }
@@ -109,6 +115,18 @@ public class AutomatedScoring {
 
     }
 
+    /**
+     * Full reef automation with pathing to reef side and scoring/grabbing
+     * 
+     * @param reefSide          1-6 for reef sides
+     * @param position          0 for left pole, 1 for algae grab, 2 for right pole
+     * @param height            int for level to score 1->L1, 2->L2, 3->L3
+     * @param drivesubsystem
+     * @param elevatorSubsystem
+     * @param wristSubsystem
+     * @param clawSubsystem
+     * 
+     */
     public static Command fullReefAutomationDynamicAuto(int reefSide, int position,
             int height,
             DriveSubsystem drivesubsystem, ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
@@ -118,9 +136,16 @@ public class AutomatedScoring {
         RobotState.isAutoAlignActive = true;
         if (position == 1) {
             return new ParallelCommandGroup(
-
-                    PPmoveToPose(pose),
-                    new SequentialCommandGroup(elevatorSubsystem.goToAlgaeGrabSetpoint(height),
+                    new SequentialCommandGroup(
+                            PPmoveToPose( // this gives insurance that we actually pathplan at a straight angle to grab
+                                          // algae
+                                    pose.transformBy(
+                                            new Transform2d(
+                                                    new Translation2d(-.75, 0.0),
+                                                    new Rotation2d()))),
+                            PPmoveToPose(pose)),
+                    new SequentialCommandGroup(
+                            elevatorSubsystem.goToAlgaeGrabSetpoint(height),
                             wristSubsystem.goToAlgaeGrabSetpoint(height)),
                     clawSubsystem.intakeAlgae());
         } else {
@@ -133,6 +158,31 @@ public class AutomatedScoring {
                             wristSubsystem.goToCoralScoreSetpoint(height)));
         }
 
+    }
+
+    /**
+     * Full human player automation with pathing to human player station
+     * 
+     * @param humanPlayerSide   0 for left side, 1 for right sides
+     * @param drivesubsystem
+     * @param elevatorSubsystem
+     * @param wristSubsystem
+     * @param clawSubsystem
+     * @return
+     */
+
+    public static Command fullHumanPlayerAutomationDynamicAuto(int humanPlayerSide,
+            DriveSubsystem drivesubsystem,
+            ElevatorSubsystem elevatorSubsystem, WristSubsystem wristSubsystem,
+            ClawSubsystem clawSubsystem) {
+
+        Pose2d pose = pathPlanToHP(humanPlayerSide);
+
+        return new SequentialCommandGroup(new ParallelCommandGroup(
+
+                PPmoveToPose(pose),
+                elevatorSubsystem.goToHumanPlayerPickup(), wristSubsystem.goToHumanPlayerSetpoint(),
+                clawSubsystem.intakeCoral()), new WaitCommand(2), clawSubsystem.stopClaw());
     }
 
     public static Command scoreCoralNoPathing(Setpoints level, ElevatorSubsystem elevatorSubsystem,
@@ -183,7 +233,7 @@ public class AutomatedScoring {
 
         // Since AutoBuilder is configured, we can use it to build pathfinding commands
         Command pathfindingCommand = AutoBuilder.pathfindToPose(
-                targetPose,
+                pose,
                 constraints // Rotation delay distance in meters. This is how far the robot should travel
                             // before attempting to rotate.
         );

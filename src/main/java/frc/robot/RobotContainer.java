@@ -188,7 +188,7 @@ public class RobotContainer {
                 try {
                         dynamicAutoRegistry = new DynamicAutoRegistry();
 
-                        dynamicAutoRegistry.registerCommand(new AutoCommandDef("Score Coral",
+                        dynamicAutoRegistry.registerCommand(new AutoCommandDef("Score Coral/Remove Algae",
                                         List.of(new AutoParamDef("Reef Side", 6), new AutoParamDef("Position", 0),
                                                         new AutoParamDef("Level", 3)),
                                         params -> Commands.deferredProxy(
@@ -196,6 +196,14 @@ public class RobotContainer {
                                                         () -> AutomatedScoring.fullReefAutomationDynamicAuto(
                                                                         params.get("Reef Side"), params.get("Position"),
                                                                         params.get("Level"), driveSubsystem,
+                                                                        elevatorSubsystem, wristSubsystem,
+                                                                        clawSubsystem))));
+
+                        dynamicAutoRegistry.registerCommand(new AutoCommandDef("HP Coral Pickup",
+                                        List.of(new AutoParamDef("HP station", 0)), params -> Commands.deferredProxy(
+                                                        // this is the command factory
+                                                        () -> AutomatedScoring.fullHumanPlayerAutomationDynamicAuto(
+                                                                        params.get("HP station"), driveSubsystem,
                                                                         elevatorSubsystem, wristSubsystem,
                                                                         clawSubsystem))));
 
@@ -396,7 +404,7 @@ public class RobotContainer {
 
         public AutoMode getSelectedAutoMode() {
                 AutoMode selectedAutoMode = autoMode.getSelected();
-                Logger.recordOutput("Selected Auto Mode", selectedAutoMode);
+                Logger.recordOutput("RobotState/Selected Auto Mode", selectedAutoMode);
 
                 return selectedAutoMode;
         }

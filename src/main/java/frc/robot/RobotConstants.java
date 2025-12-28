@@ -56,7 +56,7 @@ public final class RobotConstants {
                         // Reef 1 ALGAE
                         REEF_SIDE_POSES[0][1] = new Pose2d(3.146, 4.025, new Rotation2d(Math.toRadians(0)));
 
-                        // TODO Reef 1 RIGHT
+                        // Reef 1 RIGHT
                         REEF_SIDE_POSES[0][2] = new Pose2d(3.146, 3.859, new Rotation2d(Math.toRadians(0)));
 
                         // Reef 2 LEFT
@@ -65,7 +65,7 @@ public final class RobotConstants {
                         // Reef 2 ALGAE
                         REEF_SIDE_POSES[1][1] = new Pose2d(3.812, 2.861, new Rotation2d(Math.toRadians(60)));
 
-                        // TODO Reef 2 RIGHT
+                        // Reef 2 RIGHT
                         REEF_SIDE_POSES[1][2] = new Pose2d(3.978, 2.801, new Rotation2d(Math.toRadians(60)));
 
                         // Reef 3 LEFT
@@ -74,7 +74,7 @@ public final class RobotConstants {
                         // Reef 3 ALGAE
                         REEF_SIDE_POSES[2][1] = new Pose2d(5.168, 2.868, new Rotation2d(Math.toRadians(120)));
 
-                        // TODO Reef 3 RIGHT
+                        // Reef 3 RIGHT
                         REEF_SIDE_POSES[2][2] = new Pose2d(5.302, 2.954, new Rotation2d(Math.toRadians(120)));
 
                         // Reef 4 LEFT
@@ -83,7 +83,7 @@ public final class RobotConstants {
                         // Reef 4 ALGAE
                         REEF_SIDE_POSES[3][1] = new Pose2d(5.827, 4.025, new Rotation2d(Math.toRadians(180)));
 
-                        // TODO Reef 4 RIGHT
+                        // Reef 4 RIGHT
                         REEF_SIDE_POSES[3][2] = new Pose2d(5.827, 4.171, new Rotation2d(Math.toRadians(180)));
 
                         // Reef 5 LEFT
@@ -92,7 +92,7 @@ public final class RobotConstants {
                         // Reef 5 ALGAE
                         REEF_SIDE_POSES[4][1] = new Pose2d(5.155, 5.183, new Rotation2d(Math.toRadians(-120)));
 
-                        // TODO Reef 5 RIGHT
+                        // RIGHT
                         REEF_SIDE_POSES[4][2] = new Pose2d(5.022, 5.262, new Rotation2d(Math.toRadians(-120)));
 
                         // Reef 6 LEFT
@@ -101,22 +101,13 @@ public final class RobotConstants {
                         // Reef 6 ALGAE
                         REEF_SIDE_POSES[5][1] = new Pose2d(3.825, 5.183, new Rotation2d(Math.toRadians(-60)));
 
-                        // TODO Reef 6 RIGHT
+                        // Reef 6 RIGHT
                         REEF_SIDE_POSES[5][2] = new Pose2d(3.665, 5.096, new Rotation2d(Math.toRadians(-60)));
                 }
 
-                // OLD LIST BEFORE WE CHANGED TO MULTI DIMENSIONAL ARRAY FOR REEF POSES
-                // public static final List<Pose2d> REEF_SIDE_POSES = List.of(
-                // new Pose2d(3.153, 4.025, new Rotation2d(Math.toRadians(0))),
-                // new Pose2d(3.822, 2.874, new Rotation2d(Math.toRadians(60))),
-                // new Pose2d(5.168, 2.904, new Rotation2d(Math.toRadians(120))),
-                // new Pose2d(5.766, 4.001, new Rotation2d(Math.toRadians(180))),
-                // new Pose2d(5.203, 5.152, new Rotation2d(Math.toRadians(-120))),
-                // new Pose2d(3.800, 5.164, new Rotation2d(Math.toRadians(-60))));
-
                 public static final List<Pose2d> HP_POSES = List.of(
-                                new Pose2d(1.11, 7.125, new Rotation2d(Units.degreesToRadians(125))),
-                                new Pose2d(1.007, 0.884, new Rotation2d(Units.degreesToRadians(-125))));
+                                new Pose2d(1.11, 7.125, new Rotation2d(Units.degreesToRadians(125))), // L
+                                new Pose2d(1.007, 0.884, new Rotation2d(Units.degreesToRadians(-125))));// R
 
         }
 
@@ -355,26 +346,6 @@ public final class RobotConstants {
                         public static final int WRIST_MANUAL_CONTROL = 5;
                 }
         }
-
-        // public static final class AutonomousConstants {
-        // // public static final boolean FLIP_PATHPLANNER_AUTOS = false;
-
-        // // public static final double X_CONTROLLER_P = 3.5;
-        // // public static final double Y_CONTROLLER_P = 3.5;
-        // // public static final double THETA_CONTROLLER_P = 5;
-
-        // // public static final double X_CONTROLLER_I = 0;
-        // // public static final double Y_CONTROLLER_I = 0;
-        // // public static final double THETA_CONTROLLER_I = 0;
-
-        // // public static final double X_CONTROLLER_D = 0;
-        // // public static final double Y_CONTROLLER_D = 0;
-        // // public static final double THETA_CONTROLLER_D = 0;
-
-        // // public static final double FIELD_LENGTH_INCHES = 54 * 12 + 1; // 54ft 1in
-        // // public static final double FIELD_WIDTH_INCHES = 26 * 12 + 7; // 26ft 7in
-
-        // }
 
         public static final class TeleopConstants {
                 public static final double MAX_SPEED_PERCENT = 1; // ex: 0.4 -> 40%

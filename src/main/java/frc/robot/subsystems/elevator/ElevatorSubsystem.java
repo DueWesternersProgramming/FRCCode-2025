@@ -22,6 +22,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command goToCoralScoreSetpoint(Setpoints level) {
+        Logger.recordOutput("ElevatorSubsystem/CurrentSetpoint", "Coral L" + level.toString());
         return new InstantCommand(() -> {
             double setpoint;
             switch (level) {
@@ -47,6 +48,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command goToCoralScoreSetpoint(int level) {
+        Logger.recordOutput("ElevatorSubsystem/CurrentSetpoint", "Coral L" + level);
         return new InstantCommand(() -> {
             double setpoint;
             switch (level) {
@@ -72,6 +74,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command goToAlgaeGrabSetpoint(Setpoints level) {
+        Logger.recordOutput("ElevatorSubsystem/CurrentSetpoint", "Algae L" + level.toString());
         return new InstantCommand(() -> {
             double setpoint;
             switch (level) {
@@ -95,6 +98,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command goToAlgaeGrabSetpoint(int level) {
+        Logger.recordOutput("ElevatorSubsystem/CurrentSetpoint", "Algae L" + level);
         return new InstantCommand(() -> {
             double setpoint;
             switch (level) {
