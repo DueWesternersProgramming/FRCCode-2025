@@ -68,7 +68,7 @@ public class AutomatedScoring {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
         }
         targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-                new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 180)));
+                new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees())));// +180
 
         return targetPose;
     }
@@ -80,7 +80,7 @@ public class AutomatedScoring {
             targetPose = FlippingUtil.flipFieldPose(targetPose);
         }
         targetPose = new Pose2d(targetPose.getX(), targetPose.getY(),
-                new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees() + 180)));
+                new Rotation2d(Math.toRadians(targetPose.getRotation().getDegrees())));// +180
 
         return targetPose;
     }
@@ -178,8 +178,8 @@ public class AutomatedScoring {
 
     public static Command PPmoveToPose(Pose2d pose) {
         PathConstraints constraints = new PathConstraints(
-                1.0, 1.0,
-                Units.degreesToRadians(140), Units.degreesToRadians(120));
+                3.0, 3.0,
+                Units.degreesToRadians(360), Units.degreesToRadians(540));
 
         // Since AutoBuilder is configured, we can use it to build pathfinding commands
         Command pathfindingCommand = AutoBuilder.pathfindToPose(

@@ -56,7 +56,6 @@ public class DynamicAutoRegistry {
 
         for (Map.Entry<?, ?> entry : root.entrySet()) {
             Map<?, ?> block = (Map<?, ?>) entry.getValue();
-            System.out.println("Processing block: " + block);
 
             String type = (String) block.get("type");
             Map<?, ?> params = (Map<?, ?>) block.get("params");
@@ -72,9 +71,9 @@ public class DynamicAutoRegistry {
             Command step = buildCommand(type, paramMap);
 
             if (step != null) {
-                cmd.addCommands(step.withName(type));
+                cmd.addCommands(step);
             } else {
-                System.out.println("Unknown command type: " + type);
+                System.out.println("Unknown command type: " + type); // TODO: test this
             }
         }
 

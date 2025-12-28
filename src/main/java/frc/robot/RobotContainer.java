@@ -181,8 +181,6 @@ public class RobotContainer {
                                 break;
                 }
 
-                driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
-
                 createNamedCommands();
 
                 configureButtonBindings();
@@ -195,7 +193,11 @@ public class RobotContainer {
                                                         new AutoParamDef("Level", 3)),
                                         params -> Commands.deferredProxy(
                                                         // this is the command factory
-                                                        () -> new InstantCommand(() -> System.out.println(params)))));
+                                                        () -> AutomatedScoring.fullReefAutomationDynamicAuto(
+                                                                        params.get("Reef Side"), params.get("Position"),
+                                                                        params.get("Level"), driveSubsystem,
+                                                                        elevatorSubsystem, wristSubsystem,
+                                                                        clawSubsystem))));
 
                         dynamicAutoRegistry.publishCommands();
 
@@ -262,6 +264,8 @@ public class RobotContainer {
         }
 
         private void configureButtonBindings() {
+
+                driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
 
                 new JoystickButton(driveJoystick, 6).onTrue(QuestCalibration
                                 .CollectCalibrationDataCommand(
@@ -391,7 +395,6 @@ public class RobotContainer {
         }
 
         public AutoMode getSelectedAutoMode() {
-
                 AutoMode selectedAutoMode = autoMode.getSelected();
                 Logger.recordOutput("Selected Auto Mode", selectedAutoMode);
 

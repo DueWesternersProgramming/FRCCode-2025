@@ -87,7 +87,7 @@ public class Robot extends LoggedRobot {
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
-
+        CommandScheduler.getInstance().cancelAll(); // Hmm...
     }
 
     @Override
@@ -105,7 +105,7 @@ public class Robot extends LoggedRobot {
         RobotState.isQuestNavPoseReset = true;
 
         if (robotContainer.getSelectedAutoMode() == AutoMode.DYNAMIC_AUTO) {
-            Commands.deferredProxy(() -> robotContainer.dynamicAutoRegistry.buildAuto()).schedule();
+            robotContainer.dynamicAutoRegistry.buildAuto().schedule();
         } else {
             m_autonomousCommand = robotContainer.getPPAutonomousCommand();
             if (m_autonomousCommand != null) {
