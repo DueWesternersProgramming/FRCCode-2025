@@ -15,6 +15,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public ElevatorSubsystem(ElevatorSubsystemIO io) {
         this.io = io;
+        Logger.recordOutput("ElevatorSubsystem/CurrentSetpoint", "Home Setpoint");
     }
 
     public void setEncoderValue(double value) {
@@ -122,6 +123,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command goToHumanPlayerPickup() {
+        Logger.recordOutput("ElevatorSubsystem/CurrentSetpoint", "HP Station Setpoint");
         return new InstantCommand(() -> {
             io.goToSetpoint(CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.HP
                     : ElevatorConstants.HeightSetpoints.HP);
@@ -129,6 +131,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public Command goToHomeSetpoint() {
+        Logger.recordOutput("ElevatorSubsystem/CurrentSetpoint", "Home Setpoint");
         return new InstantCommand(() -> {
             io.goToSetpoint(CowboyUtils.isSim() ? ElevatorConstants.HeightSetpoints.SimConstants.HOME
                     : ElevatorConstants.HeightSetpoints.HOME);
