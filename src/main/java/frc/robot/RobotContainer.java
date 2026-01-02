@@ -77,9 +77,12 @@ public class RobotContainer {
         public final ElevatorSubsystem elevatorSubsystem;
         public final WristSubsystem wristSubsystem;
         public final ClawSubsystem clawSubsystem;
+        
         private final Joystick driveJoystick = new Joystick(RobotConstants.PortConstants.Controller.DRIVE_JOYSTICK);
         private final Joystick operatorJoystick = new Joystick(
                         RobotConstants.PortConstants.Controller.OPERATOR_JOYSTICK);
+
+        private final Joystick fullControlJoystick = new Joystick(2);
 
         ModuleIO[] moduleIOs;
         public final AutomationTabletInput automationTabletInput = new AutomationTabletInput();
@@ -273,113 +276,149 @@ public class RobotContainer {
 
         private void configureButtonBindings() {
 
-                driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, driveJoystick));
+                 // Above = DriveJoystick, Below = OperatorJoystick
 
-                new JoystickButton(driveJoystick, 6).onTrue(QuestCalibration
-                                .CollectCalibrationDataCommand(
-                                                driveSubsystem::runChassisSpeeds,
-                                                driveSubsystem::resetOdometry,
-                                                questNavSubsystem::getUncorrectedPose,
-                                                driveSubsystem,
-                                                questNavSubsystem));
+                 // Manual claw controls. Triggers.
 
-                new JoystickButton(driveJoystick, 1).onTrue(RobotState.setCanRotate(true))
-                                .onFalse(RobotState.setCanRotate(false));
+                 // Left Trigger
+                 new Trigger(() -> fullControlJoystick.getRawAxis(2) > .3).whileTrue(clawSubsystem.intakeCoral())
+                                 .whileTrue(AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem,
+                                                 elevatorSubsystem,
+                                                 wristSubsystem, clawSubsystem));
+                // Right Trigger
+                 new Trigger(() -> fullControlJoystick.getRawAxis(3) > .3).whileTrue(clawSubsystem.outtakeCoral())
+                                 .onFalse(clawSubsystem.stopClaw());
 
-                new JoystickButton(driveJoystick, 3).onChange(driveSubsystem.xCommand());
+                 // Algae bottom (L2 algae), A button
+                 new JoystickButton(fullControlJoystick, 1)
+                                 .whileTrue(AutomatedScoring.grabAlgaeNoPathing(Setpoints.L2, elevatorSubsystem,
+                                                 wristSubsystem,
+                                                 clawSubsystem));
+                //  .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
+                 // Algae top (L3 algae), Y button
+                 new JoystickButton(fullControlJoystick, 4)
+                                 .whileTrue(AutomatedScoring.grabAlgaeNoPathing(Setpoints.L3, elevatorSubsystem,
+                                                 wristSubsystem,
+                                                 clawSubsystem));
+                //  .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
+                // Start Button
+                 new JoystickButton(fullControlJoystick, 8)
+                                 .whileTrue(driveSubsystem.gyroReset());
 
-                new JoystickButton(driveJoystick, 4)
-                                .whileTrue(new SequentialCommandGroup(
-                                                Commands.deferredProxy(
-                                                                () -> questNavSubsystem.resetPoseYaw(new Rotation2d())),
-                                                driveSubsystem.gyroReset()));
+                 // L1, DOWN POV BUTTON (D-PAD)
+                 new POVButton(fullControlJoystick, 180)
+                                 .whileTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
 
-                new JoystickButton(driveJoystick, 2).whileTrue(
-                                Commands.deferredProxy(() -> AutomatedScoring.fullReefAutomationPerpendicularLineup(
-                                                automationTabletInput.getReefSide(), // TRIVIAL!!!
-                                                automationTabletInput.getPosition(),
-                                                automationTabletInput.getHeight(),
-                                                () -> -driveJoystick.getRawAxis(
-                                                                PortConstants.Controller.DRIVE_COMMAND_Y_AXIS),
-                                                driveSubsystem,
-                                                elevatorSubsystem,
-                                                wristSubsystem)))
-                                .onFalse(new InstantCommand(
-                                                () -> RobotState.isAutoAlignActive = false));
+                 // L2, RIGHT POV BUTTON (D-PAD)
+                 new POVButton(fullControlJoystick, 90)
+                                 .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L2, elevatorSubsystem,
+                                                 wristSubsystem,
+                                                 clawSubsystem));
 
-                new JoystickButton(driveJoystick, 11).whileTrue(
-                                AutomatedScoring.humanPlayerPickupNoPathing(
-                                                driveSubsystem,
-                                                elevatorSubsystem,
-                                                wristSubsystem,
-                                                clawSubsystem))
-                                .onFalse(new SequentialCommandGroup(clawSubsystem.stopClaw(), new WaitCommand(1),
-                                                AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem)));
+                 // L3, UP POV BUTTON (D-PAD)
+                 new POVButton(fullControlJoystick, 0)
+                                 .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L3, elevatorSubsystem,
+                                                 wristSubsystem,
+                                                 clawSubsystem));
+                // Left Button
+                 new JoystickButton(fullControlJoystick, 5)
+                                 .whileTrue(new MoveElevatorManual(elevatorSubsystem, fullControlJoystick));
+                 new JoystickButton(fullControlJoystick, 5)
+                                 .whileTrue(new MoveWristManual(wristSubsystem, fullControlJoystick));
+                // Right Button
+                 new JoystickButton(fullControlJoystick, 6).onTrue(new InstantCommand(() -> {
+                         elevatorSubsystem.setEncoderValue(0);
+                         wristSubsystem.setEncoderValue(0);
 
-                new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral())
-                                .onFalse(clawSubsystem.stopClaw());
-                new JoystickButton(driveJoystick, 7)
-                                .onTrue(new SequentialCommandGroup(new WaitCommand(0.1), clawSubsystem.outtakeCoral()))
-                                .onFalse(clawSubsystem.stopClaw());
+                 }));
 
-                // Above = DriveJoystick, Below = OperatorJoystick
 
-                // Manual claw controls. Triggers.
-                new Trigger(() -> operatorJoystick.getRawAxis(2) > .2).whileTrue(clawSubsystem.intakeCoral())
-                                .onFalse(clawSubsystem.stopClaw());
-                new Trigger(() -> operatorJoystick.getRawAxis(3) > .2).whileTrue(clawSubsystem.outtakeCoral())
-                                .onFalse(clawSubsystem.stopClaw());
 
-                // Algae bottom (L2 algae), A button
-                new JoystickButton(operatorJoystick, 1)
-                                .whileTrue(AutomatedScoring.grabAlgaeNoPathing(Setpoints.L2, elevatorSubsystem,
-                                                wristSubsystem,
-                                                clawSubsystem));
-                // .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
-                // Algae top (L3 algae), Y button
-                new JoystickButton(operatorJoystick, 4)
-                                .whileTrue(AutomatedScoring.grabAlgaeNoPathing(Setpoints.L3, elevatorSubsystem,
-                                                wristSubsystem,
-                                                clawSubsystem));
-                // .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
 
-                new JoystickButton(operatorJoystick, 5)
-                                .whileTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
 
-                // Human Player, LEFT POV BUTTON
-                new POVButton(operatorJoystick, 270)
-                                .whileTrue(AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem,
-                                                elevatorSubsystem,
-                                                wristSubsystem, clawSubsystem));
 
-                // L1, DOWN POV BUTTON
-                new POVButton(operatorJoystick, 180)
-                                .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L1, elevatorSubsystem,
-                                                wristSubsystem,
-                                                clawSubsystem));
 
-                // L2, RIGHT POV BUTTON
-                new POVButton(operatorJoystick, 90)
-                                .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L2, elevatorSubsystem,
-                                                wristSubsystem,
-                                                clawSubsystem));
 
-                // L3, RIGHT POV BUTTON
-                new POVButton(operatorJoystick, 0)
-                                .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L3, elevatorSubsystem,
-                                                wristSubsystem,
-                                                clawSubsystem));
 
-                new JoystickButton(operatorJoystick, 7)
-                                .whileTrue(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
-                new JoystickButton(operatorJoystick, 7)
-                                .whileTrue(new MoveWristManual(wristSubsystem, operatorJoystick));
 
-                new JoystickButton(operatorJoystick, 8).onTrue(new InstantCommand(() -> {
-                        elevatorSubsystem.setEncoderValue(0);
-                        wristSubsystem.setEncoderValue(0);
+                
 
-                }));
+                driveSubsystem.setDefaultCommand(new TeleopDriveCommand(driveSubsystem, fullControlJoystick));
+
+                
+                // new JoystickButton(driveJoystick, 11).whileTrue(
+                //                 AutomatedScoring.humanPlayerPickupNoPathing(
+                //                                 driveSubsystem,
+                //                                 elevatorSubsystem,
+                //                                 wristSubsystem,
+                //                                 clawSubsystem))
+                //                 .onFalse(new SequentialCommandGroup(clawSubsystem.stopClaw(), new WaitCommand(1),
+                //                                 AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem)));
+
+                // new JoystickButton(driveJoystick, 9).whileTrue(clawSubsystem.intakeCoral())
+                //                 .onFalse(clawSubsystem.stopClaw());
+                // new JoystickButton(driveJoystick, 7)
+                //                 .onTrue(new SequentialCommandGroup(new WaitCommand(0.1), clawSubsystem.outtakeCoral()))
+                //                 .onFalse(clawSubsystem.stopClaw());
+
+                // // Above = DriveJoystick, Below = OperatorJoystick
+
+                // // Manual claw controls. Triggers.
+                // new Trigger(() -> operatorJoystick.getRawAxis(2) > .2).whileTrue(clawSubsystem.intakeCoral())
+                //                 .onFalse(clawSubsystem.stopClaw());
+                // new Trigger(() -> operatorJoystick.getRawAxis(3) > .2).whileTrue(clawSubsystem.outtakeCoral())
+                //                 .onFalse(clawSubsystem.stopClaw());
+
+                // // Algae bottom (L2 algae), A button
+                // new JoystickButton(operatorJoystick, 1)
+                //                 .whileTrue(AutomatedScoring.grabAlgaeNoPathing(Setpoints.L2, elevatorSubsystem,
+                //                                 wristSubsystem,
+                //                                 clawSubsystem));
+                // // .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
+                // // Algae top (L3 algae), Y button
+                // new JoystickButton(operatorJoystick, 4)
+                //                 .whileTrue(AutomatedScoring.grabAlgaeNoPathing(Setpoints.L3, elevatorSubsystem,
+                //                                 wristSubsystem,
+                //                                 clawSubsystem));
+                // // .onFalse(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
+
+                // new JoystickButton(operatorJoystick, 5)
+                //                 .whileTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem));
+
+                // // Human Player, LEFT POV BUTTON
+                // new POVButton(operatorJoystick, 270)
+                //                 .whileTrue(AutomatedScoring.humanPlayerPickupNoPathing(driveSubsystem,
+                //                                 elevatorSubsystem,
+                //                                 wristSubsystem, clawSubsystem));
+
+                // // L1, DOWN POV BUTTON
+                // new POVButton(operatorJoystick, 180)
+                //                 .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L1, elevatorSubsystem,
+                //                                 wristSubsystem,
+                //                                 clawSubsystem));
+
+                // // L2, RIGHT POV BUTTON
+                // new POVButton(operatorJoystick, 90)
+                //                 .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L2, elevatorSubsystem,
+                //                                 wristSubsystem,
+                //                                 clawSubsystem));
+
+                // // L3, RIGHT POV BUTTON
+                // new POVButton(operatorJoystick, 0)
+                //                 .whileTrue(AutomatedScoring.scoreCoralNoPathing(Setpoints.L3, elevatorSubsystem,
+                //                                 wristSubsystem,
+                //                                 clawSubsystem));
+
+                // new JoystickButton(operatorJoystick, 7)
+                //                 .whileTrue(new MoveElevatorManual(elevatorSubsystem, operatorJoystick));
+                // new JoystickButton(operatorJoystick, 7)
+                //                 .whileTrue(new MoveWristManual(wristSubsystem, operatorJoystick));
+
+                // new JoystickButton(operatorJoystick, 8).onTrue(new InstantCommand(() -> {
+                //         elevatorSubsystem.setEncoderValue(0);
+                //         wristSubsystem.setEncoderValue(0);
+
+                // }));
 
                 new Trigger(() -> SmartDashboard.getBoolean("HomeSubsystems", false))
                                 .onTrue(AutomatedScoring.homeSubsystems(elevatorSubsystem, wristSubsystem))
